@@ -1,0 +1,41 @@
+﻿Lab Meeting 21/11/2020
+
+
+Meeting Minutes: 80 minutes
+
+
+-bus vs harvard implementation - work towards doing bus implementation (Harvard has separate data areas for instructions and other data, and can be quickly done together if we don’t have time and haven’t got a working implementation).
+
+
+-Data Sheet, we can make at the end (Aryan can take lead on this one when the time comes?).
+
+
+-Focus on functionality over efficiency, however there is a hard limit of CPI 36 worst case. Trim, performance is not a marking factor.
+
+
+-waitrequest from Avalon spec allows for arbitrary delays in order to maintain instruction integrity.
+
+
+-Cache implementation needed to avoid fetch delays from memory.
+
+
+-reset: Sets all registers to 0, PC set to 0xBFC0000, start of 4MB region. PC also meant to be 0? Chase up which is correct.
+
+
+-Delegation of roles:
+        -Chern: Instructions, decode
+        -Justin and Ben: Testbenches
+        -Tian: Memory Access
+        -Aryan: Assembler
+
+
+-Make your own branches to work on the Git to avoid merge conflicts if ever.
+
+
+-Skeleton to be finished by 7th Dec (16 days), half of instructions and test-bench/cases, barebones of assembler by that point.
+
+
+-Aim to have the whole project finished by the sanity check (16th Dec).
+
+
+-Weekly meetings to be held on Saturdays.

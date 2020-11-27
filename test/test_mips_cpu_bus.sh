@@ -1,6 +1,5 @@
-# bin bash
-
-#set eou pipefail??
+#!/bin/bash
+set -eou pipefail
 
 
 #arguments

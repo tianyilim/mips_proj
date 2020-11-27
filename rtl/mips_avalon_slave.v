@@ -24,6 +24,7 @@ module mips_avalon_slave(
     parameter WRITE_DELAY = READ_DELAY;     // How long will waitrequest be asserted on write?
     parameter RAM_INIT_FILE = "";           // Initialise RAM from elsewhere
 
+    logic[31:0] towrite;                 // Just something to implement byteeenable
     reg[31:0] memory [MEM_SIZE-1:0];    // Memory is contained here
     integer wait_ctr = -1;                   // Waits implemented here
     integer waiting = 0;
@@ -50,8 +51,13 @@ module mips_avalon_slave(
                 if (waiting) begin
                     if (wait_ctr==0) begin
                         // Have waited relevant cycles, perform the write operation
+                        // Damn, this feels inefficient...
                         waiting = 0;
-                        memory[address-ADDR_START] = writedata;    // Offset the addressing space
+                        towrite[31:24] = (byteenable[3]) ? writedata[31:24] : towrite[31:24];
+                        towrite[23:16] = (byteenable[2]) ? writedata[23:16] : towrite[23:16];
+                        towrite[15:8] =  (byteenable[1]) ? writedata[15:8] : towrite[15:8];
+                        towrite[7:0] =   (byteenable[0]) ? writedata[7:0] : towrite[7:0];
+                        memory[address-ADDR_START] = towrite;    // Offset the addressing space
                         wait_ctr = -1;
                         $display("RAM : WRITE : Wrote %h data at address %h", writedata, address);
                     end else begin
@@ -61,6 +67,7 @@ module mips_avalon_slave(
                 end else begin
                     wait_ctr = WRITE_DELAY-1; // Offset for timing requirements
                     waiting = 1;
+                    towrite = memory[address-ADDR_START];   // Just fetch this first
                     $display("RAM : STATUS : Write requested at address %h, wait for %d cycles", address, wait_ctr);
                 end
             end else if (read) begin

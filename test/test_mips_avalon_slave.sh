@@ -11,7 +11,8 @@ iverilog -g 2012 -Wall \
 
 # Auto-run 
 ./test/mips_avalon_slave_test
-gtkwave test_mips_avalon_slave_tb.vcd
+# Opens with savefiles
+gtkwave test_mips_avalon_slave_tb.vcd test_mips_avalon_slave_tb.gtkw -a test_mips_avalon_slave_tb.gtkw
 
 # Cleanup
 rm test/mips_avalon_slave_test

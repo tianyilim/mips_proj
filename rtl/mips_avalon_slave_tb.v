@@ -62,11 +62,45 @@ module mips_avalon_slave_tb;
         @(posedge clk);
         rst <= 0;
 
-        address <= 4+OFFSET;
+        address <= 0+OFFSET;
         write <= 1;
-        writedata <= 32'h420;
+        writedata <= 32'h11111111;
+        byteenable <= 4'b1111;
         @(posedge clk);
-        $display("TB : %t : Writing %h to address %h", $time, writedata, address);
+        $display("TB : %t : Writing %h to address %h with byteenable %b", $time, writedata, address, byteenable);
+
+        while(waitrequest) begin
+            @(posedge clk);
+        end
+
+        address <= 1+OFFSET;
+        write <= 1;
+        writedata <= 32'h11111111;
+        byteenable <= 4'b0111;
+        @(posedge clk);
+        $display("TB : %t : Writing %h to address %h with byteenable %b", $time, writedata, address, byteenable);
+
+        while(waitrequest) begin
+            @(posedge clk);
+        end
+
+        address <= 2+OFFSET;
+        write <= 1;
+        writedata <= 32'h11111111;
+        byteenable <= 4'b1001;
+        @(posedge clk);
+        $display("TB : %t : Writing %h to address %h with byteenable %b", $time, writedata, address, byteenable);
+
+        while(waitrequest) begin
+            @(posedge clk);
+        end
+
+        address <= 3+OFFSET;
+        write <= 1;
+        writedata <= 32'h11111111;
+        byteenable <= 4'b0110;
+        @(posedge clk);
+        $display("TB : %t : Writing %h to address %h with byteenable %b", $time, writedata, address, byteenable);
 
         while(waitrequest) begin
             @(posedge clk);

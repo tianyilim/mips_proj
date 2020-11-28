@@ -13,19 +13,20 @@ module mips_cache_writebuffer(
     output logic[3:0] write_byteenable, // Signals from the internal write buffer 
     output logic write_writeenable,
 
-    output logic full               // Assert when write buffer is filled!
+    output logic full,               // Assert when write buffer is filled!
+    output logic empty               // Assert when empty (debug output)
 );
 
     typedef enum logic[1:0] {
-        STATE_IDLE = 3'd0,
-        STATE_WRITE = 3'd1,
-        STATE_FULL = 3'd2
+        STATE_IDLE = 2'd0,
+        STATE_WRITE = 2'd1,
+        STATE_FULL = 2'd2
     } state_t;
 
-    parameter BUF_BITS = 5;
+    parameter BUF_BITS = 3;
     parameter BUFSIZE = $pow(2, BUF_BITS);  // Keeps it easy to keep track
 
-    reg full_buf [BUFSIZE-1:0]; 
+    reg [BUFSIZE-1:0] full_buf; 
     reg [31:0] addr_buf [BUFSIZE-1:0];
     reg [31:0] data_buf [BUFSIZE-1:0];
     reg [3:0] byte_en_buf [BUFSIZE-1:0];
@@ -36,12 +37,18 @@ module mips_cache_writebuffer(
 
     integer index;  // Iterator for reset
 
+    // Combinatorial FULL/EMPTY
+    // assign full = full_buf==$pow(2,BUFSIZE)-1;
+    // assign empty = full_buf==0;
+
     always @(posedge clk) begin
         if (rst) begin
+            // $display("WB : Reset");
             state <= STATE_IDLE;
             read_ptr <= 0;
             write_ptr <= 0;
             full <= 0;
+            empty <= 1;
             for (index=0; index<BUFSIZE; index=index+1) begin
                 full_buf[index] <= 0;
                 addr_buf[index] <= 0;
@@ -49,7 +56,7 @@ module mips_cache_writebuffer(
                 byte_en_buf[index] <= 0;
             end
         end else begin  // unreset behaviour
-
+            // $display("WB : Unreset");
             // writing always happens when not empty
             if (full_buf[write_ptr]) begin
                 write_writeenable <= 1;
@@ -74,6 +81,7 @@ module mips_cache_writebuffer(
                     addr_buf[read_ptr] <= addr;
                     data_buf[read_ptr] <= writedata;
                     byte_en_buf[read_ptr] <= byteenable;
+                    empty <= 0;
 
                     read_ptr <= read_ptr + 1;    // ovf is intentional
                     state <= STATE_WRITE;
@@ -81,7 +89,7 @@ module mips_cache_writebuffer(
             end
             STATE_WRITE: begin
                 // full check
-                if (full_buf==BUFSIZE-1) begin
+                if (full_buf==$pow(2,BUFSIZE)-1) begin
                     state <= STATE_FULL;        // Dont' accept any more write requests
                     read_ptr <= write_ptr;      
                     // Our next empty slot for reading is the one currently being written out of
@@ -97,6 +105,7 @@ module mips_cache_writebuffer(
                     state <= STATE_IDLE;
                     read_ptr <= 0;
                     write_ptr <= 0;
+                    empty <= 1;
                 end
             end
             STATE_FULL: begin
@@ -106,8 +115,8 @@ module mips_cache_writebuffer(
                     // Writing is an always process
                 end
             end
+            endcase
         end
-        
     end
 
 

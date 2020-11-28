@@ -18,7 +18,8 @@ module mips_avalon_slave(
     // Not synthesizable!
 
     parameter ADDR_START = 32'hBFC00000;    // By default, aligned to the start of the memory space
-    parameter MEM_SIZE = 8;
+    parameter MEM_SIZE = 1024;
+    assert (MEM_SIZE >= 1024) $error("Mem size too small, must be >1024");
     integer ADDR_END = MEM_SIZE + ADDR_START;
     parameter READ_DELAY = 2;               // How long will waitrequest be asserted on read?
     parameter WRITE_DELAY = READ_DELAY;     // How long will waitrequest be asserted on write?

@@ -1,6 +1,6 @@
 // Testbench for the Avalon Memory-mapped slave (RAM unit?)
 
-module mips_avalon_slave_tb;
+module tb_mips_avalon_slave;
     timeunit 1ns / 1ns;
 
     parameter RAM_INIT_FILE = "test/avalon_slave_sample.txt";
@@ -34,7 +34,7 @@ module mips_avalon_slave_tb;
     // Generate clock
     initial begin
         $dumpfile("test_mips_avalon_slave_tb.vcd");
-        $dumpvars(0, mips_avalon_slave_tb);
+        $dumpvars(0, tb_mips_avalon_slave);
         clk=0;
 
         address <= 0;

@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define reset_vct 0xbcf00000
 
@@ -98,9 +99,9 @@ FOR addu $s1, $s2, $s3 CALL AS rtype(addu, $s1, $s2, $s3, 0)
 FOR sll $s1, $s2, 5 CALL AS rtype(sll, $s1, 0, $s2, 5)
 FOR jr $s0 CALL AS rtype(jr, 0 $s0, 0, 0, 0)
 */
-unsigned int rtype(int fncode, int rd, int rs, int rt,  int shift)
+int rtype(int fncode, int rd, int rs, int rt,  int shift)
 {
-	unsigned int x = 0;
+	int x = 0;
 
 	fncode = (fncode & 0x3f);
 	shift = (shift & 0x1f) << 6;
@@ -125,9 +126,9 @@ FOR beq $s1, $s2, 5 CALL AS itype(beq, $s1, $s2, 5)
 FOR lw $s1, 100($s2) CALL AS itype(lw, $s1, $s2, 100)
 FOR sw $s1, 100($s2) CALL AS itype(sw, $s1, $s2, 100)
 */
-unsigned int itype(int opcode, int rt, int rs, int imm)
+int itype(int opcode, int rt, int rs, int imm)
 {
-	unsigned int x = 0;
+	int x = 0;
 
 	imm = (imm & 0xffff);
 	rt = (rt & 0x1f) << 16;
@@ -142,9 +143,9 @@ unsigned int itype(int opcode, int rt, int rs, int imm)
 	return x;
 }
 
-unsigned int jtype(int opcode, int imm)
+int jtype(int opcode, int imm)
 {
-	unsigned int x = 0;
+	int x = 0;
 
 	imm = (imm & 0x03ffffff);
 	opcode = (opcode & 0x3f) << 26;
@@ -158,7 +159,7 @@ unsigned int jtype(int opcode, int imm)
 void test_jr(FILE* fp)
 {
 	/*
-		addiu $v0, $zero, $zero
+		addiu $v0, $zero, 0
 		jr $zero
 	*/
 	int memloc, data;
@@ -167,7 +168,7 @@ void test_jr(FILE* fp)
 
 	memloc = reset_vct;
 	data = itype(addiu, $v0, $zero, 0);
-	fprintf(fp, "# %08x %08x ; addiu $v0, $zero, $zero\n", memloc, data);
+	fprintf(fp, "# %08x %08x ; addiu $v0, $zero, 0\n", memloc, data);
 
 	memloc += 4;
 	data = rtype(jr, 0, $zero, 0, 0);
@@ -255,13 +256,21 @@ int main(int argc, char** argv)
 		while (--argc)
 		{
 			puts(*++argv);
+
+			if (strcmp(*++argv, "jr") == 0)
+				for (int i = 0; i < 10; i++) test_jr(fp);
+			else if (strcmp(*++argv, "addiu") == 0)
+				for (int i = 0; i < 10; i++) test_addiu(fp);
+			else if (strcmp(*++argv, "lw") == 0)
+				for (int i = 0; i < 10; i++) test_lw(fp);
+
 		}
 	}
 	else
 	{
-		test_jr(fp);
-		test_addiu(fp);
-		test_lw(fp);
+		for (int i = 0; i < 10; i++) test_jr(fp);
+		for (int i = 0; i < 10; i++) test_addiu(fp);
+		for (int i = 0; i < 10; i++) test_lw(fp);
 
 	}
 

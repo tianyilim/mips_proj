@@ -43,7 +43,7 @@ module mips_cache_writebuffer(
     assign full = full_buf==$pow(2,BUFSIZE)-1;
     assign empty = full_buf==0;
     assign state_out = state;   // Debug
-    // assign write_writeenable = ~empty; // Write when there are things to write!
+    assign write_writeenable = ~empty; // Write when there are things to write!
 
     always @(posedge clk) begin
         if (rst) begin
@@ -51,7 +51,7 @@ module mips_cache_writebuffer(
             state <= STATE_IDLE;
             read_ptr <= 0;
             write_ptr <= 0;
-            write_writeenable <= 0;
+            // write_writeenable <= 0;
             // full <= 0;
             // empty <= 1;
             for (index=0; index<BUFSIZE; index=index+1) begin
@@ -64,13 +64,13 @@ module mips_cache_writebuffer(
             // $display("WB : Unreset");
             // writing always happens when not empty
             if (full_buf[write_ptr]) begin
-                write_writeenable <= 1;
+                // write_writeenable <= 1;
                 write_addr <= addr_buf[write_ptr];
                 write_data <= data_buf[write_ptr];
                 write_byteenable <= byte_en_buf[write_ptr];
                 if (~waitrequest) begin
                     // Only do this after waitrequest not asserted
-                    write_writeenable <= 0;
+                    // write_writeenable <= 0;
                     full_buf[write_ptr] <= 0;
                     write_ptr <= write_ptr + 1;
                 end

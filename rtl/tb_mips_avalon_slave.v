@@ -4,7 +4,7 @@ module tb_mips_avalon_slave;
     timeunit 1ns / 1ns;
 
     parameter RAM_INIT_FILE = "test/avalon_slave_sample.txt";
-    parameter TEST_MEM_SIZE = 8;
+    parameter TEST_MEM_SIZE = 1024;
     parameter TEST_READ_DELAY = 2;
     parameter TEST_WRITE_DELAY = TEST_READ_DELAY;
     parameter TIMEOUT_CYCLES = 10000;
@@ -33,6 +33,7 @@ module tb_mips_avalon_slave;
     
     // Generate clock
     initial begin
+        assert(TEST_MEM_SIZE > 1023) else $fatal(2, "Mem size too small, must be >1024"); // check memory size
         $dumpfile("test_mips_avalon_slave_tb.vcd");
         $dumpvars(0, tb_mips_avalon_slave);
         clk=0;

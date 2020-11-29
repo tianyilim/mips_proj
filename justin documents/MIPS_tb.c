@@ -58,7 +58,7 @@
 #define sra 0x03
 #define srav 0x07
 #define srl 0x02
-#define srlv 0c06
+#define srlv 0x06
 #define subu 0x23
 #define xor 0x26
 

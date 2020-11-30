@@ -244,6 +244,70 @@ void test_lw(FILE* fp)
 	fprintf(fp,"@ %08x\n", temp);
 }
 
+void test_sw(FILE* fp)
+{
+	/*
+		1. CPU points to a random location using $s0
+		2. CPU has a random number in $s1
+		3. CPU stores the random number into the random location
+		4. CPU reads the random number from the location back into $v0
+
+		addu $s0, $zero, $zero						1
+		lui $s0, ((randloc - 8) >> 16)				1
+		addiu $s0, $s0, (randloc - 8) & 0xffff		1
+		lui $s1, (rand() >> 16)						2
+		addiu $s1, $s1, rand() & 0xffff				2
+		sw $s1, 8($s0)								3
+		addiu $s0, $s0, 8							4
+		lw $v0, 0($s0)								4
+	*/
+	int memloc, data;
+
+	int randloc = reset_vct + 0x200 + (rand() & 0x3f) * 4;
+	int temp = (rand() << 18) ^ (rand() << 10) ^ (rand());
+
+	fprintf(fp, "` 8 testing sw\n");
+
+	memloc = reset_vct;
+	data = rtype(addu, $s0, $zero, $zero, 0);
+	fprintf(fp, "# %08x %08x ; addu $s0, $zero, $zero\n", memloc, data);
+
+	memloc += 4;
+	data = itype(lui, $s0, 0, (randloc - 8) >> 16);
+	fprintf(fp, "# %08x %08x ; lui $s0, ((randloc - 8) >> 16)\n", memloc, data);
+
+	memloc += 4;
+	data = itype(addiu, $s0, $s0, (randloc - 8) & 0xffff);
+	fprintf(fp, "# %08x %08x ; addiu $s0, $s0, (randloc - 8) & 0xffff\n", memloc, data);
+
+	memloc += 4;
+	data = itype(lui, $s1, 0, (temp) >> 16);
+	fprintf(fp, "# %08x %08x ; lui $s1, (rand() >> 16)\n", memloc, data);
+
+	memloc += 4;
+	data = itype(addiu, $s1, $s1, (temp) & 0xffff);
+	fprintf(fp, "# %08x %08x ; addiu $s1, $s1, (rand()) & 0xffff\n", memloc, data);
+
+	memloc += 4;
+	data = itype(sw, $s1, $s0, 8);
+	fprintf(fp, "# %08x %08x ; sw $v0, 8($s0)\n", memloc, data);
+
+	memloc += 4;
+	data = itype(addiu, $s0, $s0, 8);
+	fprintf(fp, "# %08x %08x ; addiu $s0, $s0, 8", memloc, data);
+
+	memloc += 4;
+	data = itype(lw, $v0, $s0, 8);
+	fprintf(fp, "# %08x %08x ; lw $v0, 8($s0)\n", memloc, data);
+
+	memloc += 4;
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp, "# %08x %08x ; jr $zero\n", memloc, data);
+
+
+	fprintf(fp, "@ %08x\n", temp);
+}
+
 
 int main(int argc, char** argv)
 {

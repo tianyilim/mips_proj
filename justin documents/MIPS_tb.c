@@ -58,7 +58,7 @@
 #define sra 0x03
 #define srav 0x07
 #define srl 0x02
-#define srlv 0x06
+#define srlv 0c06
 #define subu 0x23
 #define xor 0x26
 
@@ -213,7 +213,7 @@ void test_lw(FILE* fp)
 	int randloc = reset_vct + 0x200 + (rand() & 0x3f) * 4;
 	int temp = (rand() << 18) ^ (rand() << 10) ^ (rand());
 
-	fprintf(fp, "` 2 testing lw\n");
+	fprintf(fp, "` 4 testing lw\n");
 
 	memloc = randloc;
 	data = temp;
@@ -251,17 +251,19 @@ int main(int argc, char** argv)
 	FILE* fp = fopen("test_prog_list.txt", "w");
 	printf("argc = %d\n", argc);
 
+	char* ptr;
+
 	if (argc > 1)
 	{
 		while (--argc)
 		{
-			puts(*++argv);
+			ptr = *++argv;
 
-			if (strcmp(*++argv, "jr") == 0)
+			if (strcmp(ptr, "jr") == 0)
 				for (int i = 0; i < 10; i++) test_jr(fp);
-			else if (strcmp(*++argv, "addiu") == 0)
+			else if (strcmp(ptr, "addiu") == 0)
 				for (int i = 0; i < 10; i++) test_addiu(fp);
-			else if (strcmp(*++argv, "lw") == 0)
+			else if (strcmp(ptr, "lw") == 0)
 				for (int i = 0; i < 10; i++) test_lw(fp);
 
 		}

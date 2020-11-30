@@ -1,20 +1,16 @@
-
-
-
-
-
-` 2 hello hrth rt hrtrtrthrej
-# 00bcf345 789abcde ;comment
-# fabc9988 09384752 ;comment
-@ 546465ab
-
-
-
-
-` 1 blerghrehrt teh h erthe
-# 12345678 57482924 ; comment
-@ 546465ab
-
-
-
-
+` 2 testing jr
+# bcf00000 24020000 ; addiu $v0, $zero, $zero
+# bcf00004 00000008 ; jr $zero
+@ 00000000
+` 2 testing addiu
+# bcf00000 24022aa3 ; addiu $v0, $zero, rand()
+# bcf00004 00000008 ; jr $zero
+@ 00002aa3
+` 2 testing lw
+# bcf00290 121d795a ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 26100288 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ 121d795a

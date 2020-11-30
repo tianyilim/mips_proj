@@ -1,0 +1,25 @@
+﻿Lab Meeting 28/11/2020:
+
+
+Progress:
+
+
+-CH: Implementation with largest possible pos/neg in the 8 bit 16 bit range, deciding to implement a MU0 like cycle stage (3 cycle FETCH EXEC1 EXEC2), no pipelining required. Everything done in 3 cycles, opcodes implemented for instructions. Instruction decoded (minus register based logic). Harvard style foundation however ‘wrap around’ into 1 bus for separate instructions to be done.
+
+
+What to do next? Implementation of register file, related logic.
+
+
+-TY: Non-synthesizable Avalon slave designed. Currently writing a writebuffer for controlling the cache.
+
+
+-Justin: Full/Nearly full test bench infrastructure developed, assesses outputs, figures such as cycles per instruction etc.
+
+
+-BT: Bash files implemented, scripts made to evaluate test benches etc.
+
+
+-AG: Assembler research and design nearly complete, development cycle about to begin - Assembler to be finished by next meeting. (Will be implemented in C++).
+
+
+-VS: To take a look at the QEMU package to evaluate the MIPS reference outputs. Basic draft of report to be made.

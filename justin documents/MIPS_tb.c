@@ -1,8 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-// register constants
+#define reset_vct 0xbcf00000
+
+// registers
 #define $zero 0
 #define $at 1
 #define $v0 2
@@ -55,7 +58,7 @@
 #define sra 0x03
 #define srav 0x07
 #define srl 0x02
-#define srlv 0c06
+#define srlv 0x06
 #define subu 0x23
 #define xor 0x26
 
@@ -86,17 +89,22 @@
 #define sw 0x2b
 #define xori 0x0e
 
-
 // j type
 #define j 0x02
 #define jal 0x03
 
-
-unsigned int rtype(int rs, int rt, int rd, int shift, int fncode)
+/*
+example:
+FOR addu $s1, $s2, $s3 CALL AS rtype(addu, $s1, $s2, $s3, 0)
+FOR sll $s1, $s2, 5 CALL AS rtype(sll, $s1, 0, $s2, 5)
+FOR jr $s0 CALL AS rtype(jr, 0 $s0, 0, 0, 0)
+*/
+int rtype(int fncode, int rd, int rs, int rt,  int shift)
 {
-	unsigned int x = 0;
+	int x = 0;
 
-	shift = (shift & 0x3f) << 6;
+	fncode = (fncode & 0x3f);
+	shift = (shift & 0x1f) << 6;
 	rd = (rd & 0x1f) << 11;
 	rt = (rt & 0x1f) << 16;
 	rs = (rs & 0x1f) << 21;
@@ -110,32 +118,131 @@ unsigned int rtype(int rs, int rt, int rd, int shift, int fncode)
 	return x;
 }
 
-unsigned int itype(int opcode, int rs, int rd, int imm)
+
+/*
+example:
+FOR addiu $s1, $s2, 46 CALL AS itype(addiu, $s1, $s2, 46)
+FOR beq $s1, $s2, 5 CALL AS itype(beq, $s1, $s2, 5)
+FOR lw $s1, 100($s2) CALL AS itype(lw, $s1, $s2, 100)
+FOR sw $s1, 100($s2) CALL AS itype(sw, $s1, $s2, 100)
+*/
+int itype(int opcode, int rt, int rs, int imm)
 {
-	unsigned int x = 0;
+	int x = 0;
 
+	imm = (imm & 0xffff);
+	rt = (rt & 0x1f) << 16;
+	rs = (rs & 0x1f) << 21;
+	opcode = (opcode & 0x3f) << 26;
 
+	x |= imm;
+	x |= rt;
+	x |= rs;
+	x |= opcode;
 
 	return x;
 }
 
-unsigned int jtype(int opcode, int imm)
+int jtype(int opcode, int imm)
 {
-	unsigned int x = 0;
+	int x = 0;
 
+	imm = (imm & 0x03ffffff);
+	opcode = (opcode & 0x3f) << 26;
 
+	x |= imm;
+	x |= opcode;
 
 	return x;
 }
 
-
-void addi (FILE *fp)
+void test_jr(FILE* fp)
 {
 	/*
-		addi $v0, $zero, rand() 
+		addiu $v0, $zero, 0
+		jr $zero
 	*/
+	int memloc, data;
+
+	fprintf(fp, "` 2 testing jr\n");
+
+	memloc = reset_vct;
+	data = itype(addiu, $v0, $zero, 0);
+	fprintf(fp, "# %08x %08x ; addiu $v0, $zero, 0\n", memloc, data);
+
+	memloc += 4;
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp, "# %08x %08x ; jr $zero\n", memloc, data);
+
+	fprintf(fp, "@ %08x\n", 0);
 }
 
+void test_addiu(FILE *fp)
+{
+	/*
+		addiu $v0, $zero, rand()
+		jr $zero
+	*/
+	int memloc, data;
+
+	int temp = rand() & 0xffff;
+
+	fprintf(fp, "` 2 testing addiu\n");
+
+	memloc = reset_vct;
+	data = itype(addiu, $v0, $zero, temp);
+	fprintf(fp, "# %08x %08x ; addiu $v0, $zero, rand()\n", memloc, data);
+
+	memloc += 4;
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp, "# %08x %08x ; jr $zero\n", memloc, data);
+
+	fprintf(fp, "@ %08x\n", temp);
+}
+
+void test_lw(FILE* fp)
+{
+	/*
+		addu $s0, $zero, $zero
+		lui $s0, ((randloc - 8) >> 16)
+		addiu $s0, $s0, (randloc - 8) & 0xffff
+		lw $v0, 8($s0)
+	*/
+	int memloc, data;
+
+	int randloc = reset_vct + 0x200 + (rand() & 0x3f) * 4;
+	int temp = (rand() << 18) ^ (rand() << 10) ^ (rand());
+
+	fprintf(fp, "` 2 testing lw\n");
+
+	memloc = randloc;
+	data = temp;
+	fprintf(fp, "# %08x %08x ; load data into data memory\n", memloc, data);
+
+
+	memloc = reset_vct;
+	data = rtype(addu, $s0, $zero, $zero, 0);
+	fprintf(fp, "# %08x %08x ; addu $s0, $zero, $zero\n", memloc, data);
+	
+	memloc += 4;
+	data = itype(lui, $s0, 0, (randloc - 8) >> 16);
+	fprintf(fp, "# %08x %08x ; lui $s0, ((randloc - 8) >> 16)\n", memloc, data);
+
+	memloc += 4;
+	data = itype(addiu, $s0, $s0, (randloc - 8) & 0xffff);
+	fprintf(fp, "# %08x %08x ; addiu $s0, $s0, (randloc - 8) & 0xffff\n", memloc, data);
+
+	memloc += 4;
+	data = itype(lw, $v0, $s0, 8);
+	fprintf(fp, "# %08x %08x ; lw $v0, 8($s0)\n", memloc, data);
+
+	memloc += 4;
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp, "# %08x %08x ; jr $zero\n", memloc, data);
+
+
+	fprintf(fp,"@ %08x\n", temp);
+}
 
 
 int main(int argc, char** argv)
@@ -149,16 +256,25 @@ int main(int argc, char** argv)
 		while (--argc)
 		{
 			puts(*++argv);
+
+			if (strcmp(*++argv, "jr") == 0)
+				for (int i = 0; i < 10; i++) test_jr(fp);
+			else if (strcmp(*++argv, "addiu") == 0)
+				for (int i = 0; i < 10; i++) test_addiu(fp);
+			else if (strcmp(*++argv, "lw") == 0)
+				for (int i = 0; i < 10; i++) test_lw(fp);
+
 		}
 	}
 	else
 	{
-		
+		for (int i = 0; i < 10; i++) test_jr(fp);
+		for (int i = 0; i < 10; i++) test_addiu(fp);
+		for (int i = 0; i < 10; i++) test_lw(fp);
+
 	}
 
-	printf("yada = %d\n", $v0);
-
-	
+	fclose(fp);
 
 	return 0;
 }

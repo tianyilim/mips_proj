@@ -236,7 +236,7 @@ module mips_CPU_bus_tb;
 				$display("Pass... (so far) :p\n");
 			end
 			else begin
-				$fatal(2, "FAIL!\n");
+				$fatal(2, "FAIL! $v0 does not agree with expected result!\n");
 			end
 
 		end

@@ -9,6 +9,7 @@ module mips_cpu_harvard(
     output logic[3:0] byteenable,
     output logic[31:0]  instr_address,
     input logic[31:0]   instr_readdata,
+    output logic        instr_read,
 
     output logic[31:0]  data_address,
     output logic        data_write,
@@ -113,6 +114,7 @@ module mips_cpu_harvard(
     //Control assignments
     assign pc_next = pc + 4;
     assign instr_address = pc;
+    assign instr_read = (state == FETCH) ? 1 : 0;
     assign instr = state==EXEC2 ? instr_reg : instr_readdata;
 
     /*
@@ -131,13 +133,13 @@ module mips_cpu_harvard(
     assign rt_addr = instr[20:16];
     assign rd_addr = instr[15:11];
     assign return_reg = 5'b11111;
-    assign write_back_addr = (instr_type == R) ? rd_addr : ( (opcode == BRANCH) ? return_reg : rt_addr); // write back to register, as the dest reg is different for R type and I type, and for branch and link, return addr is reg31
+    assign write_back_addr = (instr_type == R) ? rd_addr : ( ((opcode == BRANCH) || (opcode == JAL)) ? return_reg : rt_addr); // write back to register, as the dest reg is different for R type and I type, and for branch and link, return addr is reg31
     assign shift = instr[10:6];
 
     assign fn_code = instr[5:0];
     assign imm = instr[15:0];
     assign jump_addr = instr[25:0];
-    assign imm_addr = rs_data + sixteen_extended;
+    assign imm_addr = rs_data + $signed(sixteen_extended);
 
     assign write_enable =((state == EXEC1) && (instr_type == R) && ((fn_code == ADDU) ||
                                                                     (fn_code == AND) ||
@@ -170,7 +172,7 @@ module mips_cpu_harvard(
                                                                                                                                                                                                                (opcode == LWR))) ? 1 : 0));
 
     //Mem access assignmemts
-    assign data_write = ((state == EXEC1) && (instr_type == I) && ((opcode == SB) ||
+    assign data_write = ((state == EXEC2) && (instr_type == I) && ((opcode == SB) ||
                                                                    (opcode == SH) ||
                                                                    (opcode == SW))) ? 1 : 0;
     assign data_read = ((state == EXEC1) && (instr_type == I) && ((opcode == LB)  ||
@@ -204,7 +206,7 @@ module mips_cpu_harvard(
                                                                    (opcode == SH) ||
                                                                    (opcode == SLTI) ||
                                                                    (opcode == SLTIU) ||
-                                                                   (opcode == SW))) ? imm : 0 ;
+                                                                   (opcode == SW))) ? imm : 0 ; //signed extension of the immediate field
 
 
 
@@ -333,7 +335,7 @@ module mips_cpu_harvard(
                 endcase
             end
             //I instruction
-            else if(instr_type == I) begin
+            else if((instr_type == I) || (instr_type == J)) begin
                 case(opcode)
                     ADDIU: begin // imm signed extended
                       write_back_data <= rs_data + sixteen_extended ;
@@ -343,19 +345,19 @@ module mips_cpu_harvard(
                     end
                     BEQ: begin
                       if (rs_data == rt_data) begin
-                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump_store <= pc_next + $signed(sixteen_extended * 4);
                           jump <= 1;
                       end
                     end
                     BGTZ: begin
                       if ($signed(rs_data) > 0) begin
-                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump_store <= pc_next + $signed(sixteen_extended * 4);
                           jump <= 1;
                       end
                     end
                     BLEZ: begin
                       if ($signed(rs_data) <= 0) begin
-                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump_store <= pc_next + $signed(sixteen_extended * 4);
                           jump <= 1;
                       end
                     end
@@ -363,26 +365,26 @@ module mips_cpu_harvard(
                       case(rs_data)
                           5'b00001: begin //BGEZ
                               if ($signed(rs_data) >= 0) begin
-                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
                                   jump <= 1;
                               end
                           end
                           5'b10001: begin //BGEZAL
                               if ($signed(rs_data) >= 0) begin
-                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
                                   jump <= 1;
                                   write_back_data <= pc + 8;
                               end
                           end
                           5'b00000: begin // BLTZ
                               if ($signed(rs_data) < 0) begin
-                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
                                   jump <= 1;
                               end
                           end
                           5'b10000: begin //BLTZAL
                               if ($signed(rs_data) < 0) begin
-                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
                                   jump <= 1;
                                   write_back_data <= pc + 8;
                               end
@@ -392,7 +394,7 @@ module mips_cpu_harvard(
                     end
                     BNE: begin
                       if (rs_data != rt_data) begin
-                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump_store <= pc_next + $signed(sixteen_extended * 4);
                           jump <= 1;
                       end
                     end
@@ -411,8 +413,55 @@ module mips_cpu_harvard(
                     LUI: begin
                       write_back_data <= {imm,16'h0000};
                     end
-
-
+                    LW: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    LWL: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    LWR: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    ORI: begin // imm zero extended
+                      write_back_data <= rs_data | {{16'h0000},imm} ;
+                    end
+                    SB: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    SH: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    SW: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    SLTI: begin
+                      if ($signed(rs_data) < $signed(sixteen_extended)) begin
+                        write_back_data <= 1;
+                      end
+                      else begin
+                        write_back_data <= 0;
+                      end
+                    end
+                    SLTIU: begin
+                      if (rs_data < sixteen_extended) begin
+                        write_back_data <= 1;
+                      end
+                      else begin
+                        write_back_data <= 0;
+                      end
+                    end
+                    XORI: begin // imm zero extended
+                      write_back_data <= rs_data ^ {{16'h0000},imm} ;
+                    end
+                    JUMP: begin
+                      jump_store <= {pc_next[31:28],jump_addr,2'b00};
+                      jump <= 1;
+                    end
+                    JAL: begin
+                      jump_store <= {pc_next[31:28],jump_addr,2'b00};
+                      jump <= 1;
+                      write_back_data <= pc + 8;
+                    end
                 endcase
             end
             //should this be moved up?
@@ -453,7 +502,7 @@ module mips_cpu_harvard(
                 endcase
             end
             //I instruction
-            else if(instr_type == I) begin
+            else if((instr_type == I) || (instr_type == J)) begin
                 case(opcode)
                     LB: begin //8_Bit is signed extended
                         write_back_data <= eight_extended;
@@ -483,8 +532,84 @@ module mips_cpu_harvard(
                           $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
-
-
+                    LW: begin //16_Bit is zero extended
+                        if(imm_addr[1:0] == 0) begin
+                          write_back_data <= data_readdata;
+                        end
+                        else begin
+                          $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
+                        end
+                    end
+                    LWL: begin
+                        if(imm_addr[1:0] == 0) begin
+                          write_back_data <= {data_readdata[7:0],rt_data[23:0]};
+                        end
+                        else if(imm_addr[1:0 == 1]) begin
+                          write_back_data <= {data_readdata[15:0],rt_data[15:0]};
+                        end
+                        else if(imm_addr[1:0 == 2]) begin
+                          write_back_data <= {data_readdata[23:0],rt_data[7:0]};
+                        end
+                        else if(imm_addr[1:0 == 3]) begin
+                          write_back_data <= data_readdata;
+                        end
+                        else begin
+                          $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
+                        end
+                    end
+                    LWR: begin
+                        if(imm_addr[1:0] == 0) begin
+                          write_back_data <= data_readdata;
+                        end
+                        else if(imm_addr[1:0 == 1]) begin
+                          write_back_data <= {rt_data[31:24],data_readdata[31:8]};
+                        end
+                        else if(imm_addr[1:0 == 2]) begin
+                          write_back_data <= {rt_data[31:16],data_readdata[31:16]};
+                        end
+                        else if(imm_addr[1:0 == 3]) begin
+                          write_back_data <= {rt_data[31:8],data_readdata[31:24]};
+                        end
+                        else begin
+                          $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
+                        end
+                    end
+                    SB: begin
+                        data_writedata <= rs_data[7:0];
+                        if(imm_addr[1:0] == 0) begin
+                          byteenable <= 4'b0001;
+                        end
+                        else if(imm_addr[1:0 == 1]) begin
+                          byteenable <= 4'b0010;
+                        end
+                        else if(imm_addr[1:0 == 2]) begin
+                          byteenable <= 4'b0100;
+                        end
+                        else if(imm_addr[1:0 == 3]) begin
+                          byteenable <= 4'b1000;
+                        end
+                    end
+                    SH: begin
+                        data_writedata <= rs_data[15:0];
+                        if(imm_addr[1:0] == 0) begin
+                          byteenable <= 4'b0011;
+                        end
+                        else if(imm_addr[1:0 == 2]) begin
+                          byteenable <= 4'b1100;
+                        end
+                        else begin
+                          $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
+                        end
+                    end
+                    SW: begin
+                        data_writedata <= rs_data;
+                        if(imm_addr[1:0] == 0) begin
+                          byteenable <= 4'b1111;
+                        end
+                        else begin
+                          $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
+                        end
+                    end
                 endcase
             end
 

@@ -47,8 +47,10 @@ module mips_cache_data(
 
     logic [31:0] towrite; // Intermediate signal for updating register; explicit wire
 
-    assign cache_index = addr[CACHE_DEPTH_BITS-1:0];
-    assign cache_tag = addr[31:CACHE_DEPTH_BITS];
+    logic [31:0] addr_offset;   // Offset the address bit to 
+    assign addr_offset = addr >> 2;
+    assign cache_index = addr_offset[CACHE_DEPTH_BITS-1:0];
+    assign cache_tag = addr_offset[31:CACHE_DEPTH_BITS];
     assign data_addr = addr;    // When we miss, passthrough address for request to cache controller.
 
     // Do this translation here, as we don't want to do it again elsewhere.
@@ -81,11 +83,11 @@ module mips_cache_data(
     always @ (posedge clk) begin
         // Reset behaviour
         if (rst) begin
-            // $display("CACHE : parameters : size:%d, depth:%d, assoc:%d", CACHE_SIZE, CACHE_DEPTH, CACHE_ASSOC);
+            // $display("DATA_CACHE : parameters : size:%d, depth:%d, assoc:%d", CACHE_SIZE, CACHE_DEPTH, CACHE_ASSOC);
             for (i=0; i<CACHE_DEPTH; i=i+1) begin
                 valid_buf[i] <= 4'b0000;  // Valid is a 1d array actually
                 for (j=0; j<CACHE_ASSOC; j=j+1) begin
-                    // $display("CACHE : resetting index i:%d, j:%d", i, j);
+                    // $display("DATA_CACHE : resetting index i:%d, j:%d", i, j);
                     tags_buf[i][j] <= 0;
                     data_buf[i][j] <= 0;
                     // valid_buf[i][j] <= 0;  // Valid is a 1d array actually
@@ -100,7 +102,7 @@ module mips_cache_data(
 
                 // And in that case is it necessary to have extra byte_en logic?
                 if (data_valid | (|byte_en && write_en)) begin
-                    $display("CACHE : Replacement required: Valid buffer: %4b", valid_buf[cache_index]);
+                    $display("DATA_CACHE : Replacement required: Valid buffer: %4b", valid_buf[cache_index]);
                     // Trivial case - assoc with something not VALID - write into that.
                     // x: dont care. Use casex to include don't cares
                     // if xxx0; write to 0
@@ -108,10 +110,10 @@ module mips_cache_data(
                     // if x011; write to 2
                     // if 0111; write to 3.
                     if (!(&valid_buf[cache_index])) begin
-                        $display("CACHE : Trivial case, current valid buffer is %4b", valid_buf[cache_index]);
+                        $display("DATA_CACHE : Trivial case, current valid buffer is %4b", valid_buf[cache_index]);
                         casex (valid_buf[cache_index])
                             4'bxxx0: begin
-                                $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0], address 0x%h", data_in, cache_index, cache_tag, addr);
                                 tags_buf[cache_index][0] <= cache_tag;
                                 valid_buf[cache_index][0] <= 1;
                                 data_buf[cache_index][0] <= data_in;
@@ -121,7 +123,7 @@ module mips_cache_data(
                                 recent_buf[cache_index][3][1] <= 0;    
                             end
                             4'bxx01: begin
-                                $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1], address 0x%h", data_in, cache_index, cache_tag, addr);
                                 tags_buf[cache_index][1] <= cache_tag;
                                 valid_buf[cache_index][1] <= 1;
                                 data_buf[cache_index][1] <= data_in;
@@ -131,7 +133,7 @@ module mips_cache_data(
                                 recent_buf[cache_index][3][1] <= 0;    
                             end
                             4'bx011: begin
-                                $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2], address 0x%h", data_in, cache_index, cache_tag, addr);
                                 tags_buf[cache_index][2] <= cache_tag;
                                 valid_buf[cache_index][2] <= 1;
                                 data_buf[cache_index][2] <= data_in;
@@ -141,7 +143,7 @@ module mips_cache_data(
                                 recent_buf[cache_index][3] <= 2'b10; 
                             end
                             4'b0111: begin
-                                $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3], address 0x%h", data_in, cache_index, cache_tag, addr);
                                 tags_buf[cache_index][3] <= cache_tag;
                                 valid_buf[cache_index][3] <= 1;
                                 data_buf[cache_index][3] <= data_in;
@@ -153,9 +155,9 @@ module mips_cache_data(
                         endcase
                     end else begin
                         // Nontrivial case - write into assoc with 00 in the recent_buf
-                        $display("CACHE : Non-trivial case, recent buffers are 0:%b 1:%b 2:%b 3:%b", recent_buf[cache_index][0], recent_buf[cache_index][1], recent_buf[cache_index][2], recent_buf[cache_index][3]);
+                        $display("DATA_CACHE : Non-trivial case, recent buffers are 0:%b 1:%b 2:%b 3:%b", recent_buf[cache_index][0], recent_buf[cache_index][1], recent_buf[cache_index][2], recent_buf[cache_index][3]);
                         if (recent_buf[cache_index][0] == 2'b00) begin // 0 is LRU
-                            $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0]", data_in, cache_index, cache_tag);
+                            $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0]", data_in, cache_index, cache_tag);
                             tags_buf[cache_index][0] <= cache_tag;
                             valid_buf[cache_index][0] <= 1;    
                             data_buf[cache_index][0] <= data_in;
@@ -164,7 +166,7 @@ module mips_cache_data(
                             recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
                             recent_buf[cache_index][3][1] <= 0;    
                         end else if (recent_buf[cache_index][1] == 2'b00) begin // 1 is LRU
-                            $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1]", data_in, cache_index, cache_tag);
+                            $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1]", data_in, cache_index, cache_tag);
                             tags_buf[cache_index][1] <= cache_tag;
                             valid_buf[cache_index][1] <= 1;
                             data_buf[cache_index][1] <= data_in;
@@ -173,7 +175,7 @@ module mips_cache_data(
                             recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
                             recent_buf[cache_index][3][1] <= 0;                        
                         end else if (recent_buf[cache_index][2] == 2'b00) begin // 2 is LRU
-                            $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2]", data_in, cache_index, cache_tag);
+                            $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2]", data_in, cache_index, cache_tag);
                             tags_buf[cache_index][2] <= cache_tag;
                             valid_buf[cache_index][2] <= 1;
                             data_buf[cache_index][2] <= data_in;
@@ -182,7 +184,7 @@ module mips_cache_data(
                             recent_buf[cache_index][2] <= 2'b11;   
                             recent_buf[cache_index][3] <= 2'b10; 
                         end else if (recent_buf[cache_index][3] == 2'b00) begin // 3 is LRU
-                            $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3]", data_in, cache_index, cache_tag);
+                            $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3]", data_in, cache_index, cache_tag);
                             tags_buf[cache_index][3] <= cache_tag;
                             valid_buf[cache_index][3] <= 1;
                             data_buf[cache_index][3] <= data_in;
@@ -233,7 +235,7 @@ module mips_cache_data(
                 if (read_en) begin
                     // Assign return vals
                     readdata <= data_buf[cache_index][cache_assoc_index];
-                    // $display("CACHE : Read 0x%h from index 0x%h, assoc 0x%h", data_buf[cache_index][cache_assoc_index], cache_index, cache_index);
+                    // $display("DATA_CACHE : Read 0x%h from index 0x%h, assoc 0x%h", data_buf[cache_index][cache_assoc_index], cache_index, cache_index);
 
                 end else if (write_en) begin
                     // Modify values - Cache miss but byte_en==4'b1111 is handled above.

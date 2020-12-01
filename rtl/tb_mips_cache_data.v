@@ -45,14 +45,14 @@ module tb_mips_cache_data;
     
     // Initialise test vector
     initial begin
-        test_arr[0] = 1*8;
-        test_arr[1] = 2*8;
-        test_arr[2] = 3*8;
-        test_arr[3] = 4*8;
-        test_arr[4] = 5*8;
-        test_arr[5] = 2*8;
-        test_arr[6] = 4*8;
-        test_arr[7] = 6*8;
+        test_arr[0] = 1*8*4;    // Multiply by 4 due to word aligning
+        test_arr[1] = 2*8*4;
+        test_arr[2] = 3*8*4;
+        test_arr[3] = 4*8*4;
+        test_arr[4] = 5*8*4;
+        test_arr[5] = 2*8*4;
+        test_arr[6] = 4*8*4;
+        test_arr[7] = 6*8*4;
     end
 
     // Generate clock
@@ -84,7 +84,7 @@ module tb_mips_cache_data;
         // Check for cache's ability to retain information (read addresses 0-7 twice over)
         // If the values are correct and there are no stalls the second time round, then it should be correct 
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_read <= 1;
             @(posedge clk);
             while(cache_stall) begin
@@ -96,7 +96,7 @@ module tb_mips_cache_data;
         end
         $display("\nTB : %2t : Second round of reading\n", $time);
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_read <= 1;
             @(posedge clk);
             while(cache_stall) begin
@@ -113,7 +113,7 @@ module tb_mips_cache_data;
         @(posedge clk);
 
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_write <= 1;
             cache_byteenable <= 4'b1111;    // yups
             cache_writedata <= $pow(i,2);
@@ -129,7 +129,7 @@ module tb_mips_cache_data;
         @(posedge clk);
         $display("\nTB : %2t : Read check to validate written results\n", $time);
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_read <= 1;
             @(posedge clk);
             while(cache_stall) begin
@@ -145,7 +145,7 @@ module tb_mips_cache_data;
         $display("\nTB : %2t : Associativity Check\n", $time);
         // Check for cache's ability to retain associativity (0,8,16,24)
         for (i=0; i<4; i++) begin
-            cache_addr <= i*8;
+            cache_addr <= i*8*4;
             cache_read <= 1;
             @(posedge clk);
             while(cache_stall) begin
@@ -157,7 +157,7 @@ module tb_mips_cache_data;
         end
         $display("\nTB : %2t : Second round of reading\n", $time);
         for (i=0; i<4; i++) begin
-            cache_addr <= i*8;
+            cache_addr <= i*8*4;
             cache_read <= 1;
             @(posedge clk);
             while(cache_stall) begin
@@ -197,7 +197,7 @@ module tb_mips_cache_data;
         @(posedge clk);
 
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_write <= 1;
             cache_byteenable <= 4'b1111;    // yups
             cache_writedata <= $pow(i,2);
@@ -213,7 +213,7 @@ module tb_mips_cache_data;
         @(posedge clk);
         $display("\nTB : %2t : Read check to validate written results\n", $time);
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_read <= 1;
             @(posedge clk);
             while(cache_stall) begin
@@ -241,7 +241,7 @@ module tb_mips_cache_data;
         @(posedge clk);
 
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_write <= 1;
             cache_byteenable <= 4'b0101;    // yups
             cache_writedata <= $pow(i,2);
@@ -257,7 +257,7 @@ module tb_mips_cache_data;
         @(posedge clk);
         $display("\nTB : %2t : Read check to validate written results\n", $time);
         for (i=0; i<8; i++) begin
-            cache_addr <= i;
+            cache_addr <= i*4;
             cache_read <= 1;
             @(posedge clk);
             while(cache_stall) begin

@@ -8,8 +8,9 @@
 set -eou pipefail
 
 iverilog -g 2012 -Wall \
-   rtl/tb_mips_cache_data.v rtl/mips_cache_data.v \
+   rtl/tb_mips_cache_data.v rtl/mips_cache_data.v rtl/mips_dummy_ram_test.v \
    -s tb_mips_cache_data \
+   -P tb_mips_cache_data.MEM_INIT_FILE=\"test/dummy_data_sample.txt\" \
    -o test/tb_mips_cache_data
 
 # Auto-run 

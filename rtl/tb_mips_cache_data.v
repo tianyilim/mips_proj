@@ -5,7 +5,10 @@ module tb_mips_cache_data;
     // Test parameters
     parameter TEST_DURATION = 16;
     parameter TIMEOUT_CYCLES = 1000;
-    parameter OFFSET = 32'hBFC00000;
+    // parameter OFFSET = 32'hBFC00000;
+    parameter MEM_BITS = 8;
+    parameter DVALID_DELAY = 3;    // Something
+    parameter MEM_INIT_FILE = "";
 
     integer i=0;    // iterator variable
 
@@ -31,6 +34,11 @@ module tb_mips_cache_data;
                                 .readdata(cache_readdata), .stall(cache_stall),
                                 .data_addr(mem_addr), .data_in(mem_readdata),
                                 .data_valid(mem_dvalid));
+    dummy_ram #(.MEM_BITS(MEM_BITS), .DVALID_DELAY(DVALID_DELAY), 
+                                .MEM_INIT_FILE(MEM_INIT_FILE)) 
+                                dummy_ram(.clk(clk), .addr(mem_addr),
+                                .read_en(cache_stall), .data(mem_readdata),
+                                .dvalid(mem_dvalid));
     
     // Generate clock
     initial begin
@@ -43,6 +51,8 @@ module tb_mips_cache_data;
             #5;
             clk = !clk;
         end
+        cache_read = 0;
+        cache_write = 0;
         $fatal(2, "Simulation did not finish within %d cycles.", TIMEOUT_CYCLES);
     end
 
@@ -54,6 +64,61 @@ module tb_mips_cache_data;
         @(posedge clk);
         rst <= 0;
         @(posedge clk);
+
+        $display("\nTB : %2t : Temporal Locality Check\n", $time);
+
+        // Check for cache's ability to retain information (read addresses 0-7 twice over)
+        // If the values are correct and there are no stalls the second time round, then it should be correct 
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
+            end
+            @(posedge clk);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+        end
+        $display("\nTB : %2t : Second round of reading\n", $time);
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
+            end
+            @(posedge clk);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+        end
+
+        $display("\nTB : %2t : Associativity Check\n", $time);
+
+        // Check for cache's ability to retain associativity (0,8,16,24)
+        for (i=0; i<4; i++) begin
+            cache_addr <= i*8;
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
+            end
+            @(posedge clk);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+        end
+        $display("\nTB : %2t : Second round of reading\n", $time);
+        for (i=0; i<4; i++) begin
+            cache_addr <= i*8;
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
+            end
+            @(posedge clk);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+        end
 
         $finish;
     end

@@ -106,30 +106,9 @@ module mips_cpu_harvard(
     logic[31:0] quotient; // storing quotient in DIV and DIVU
     logic[31:0] remainder;// storing remainder in DIV and DIVU
     logic write_enable; //writing to register
+    logic[4:0] return_reg; // hold value of reg31
+    logic[31:0] imm_addr; // hold value of base + imm
 
-    // signed extension logic
-    logic[7:0] eight_bit;
-    logic[15:0] sixteen_bit;
-    logic[31:0] eight_extended;
-    logic[31:0] sixteen_extended;
-
-    assign eight_bit = (opcode == LB) ? data_readdata : 0;
-    assign sixteen_bit = ((state == EXEC1) && (instr_type == I) && ((opcode == ADDIU) ||
-                                                                   (opcode == BEQ) ||
-                                                                   (opcode == BRANCH) ||
-                                                                   (opcode == BGTZ) ||
-                                                                   (opcode == BLEZ) ||
-                                                                   (opcode == BNE) ||
-                                                                   (opcode == LB) ||
-                                                                   (opcode == LBU) ||
-                                                                   (opcode == LH) ||
-                                                                   (opcode == LHU) ||
-                                                                   (opcode == LW) ||
-                                                                   (opcode == SB) ||
-                                                                   (opcode == SH) ||
-                                                                   (opcode == SLTI) ||
-                                                                   (opcode == SLTIU) ||
-                                                                   (opcode == SW))) ? imm :  ;
 
     //Control assignments
     assign pc_next = pc + 4;
@@ -151,12 +130,14 @@ module mips_cpu_harvard(
     assign rs_addr = instr[25:21];
     assign rt_addr = instr[20:16];
     assign rd_addr = instr[15:11];
-    assign write_back_addr = (instr_type == R) ? rd_addr : rt_addr; // write back to register, as the dest reg is different for R type and I type
+    assign return_reg = 5'b11111;
+    assign write_back_addr = (instr_type == R) ? rd_addr : ( (opcode == BRANCH) ? return_reg : rt_addr); // write back to register, as the dest reg is different for R type and I type, and for branch and link, return addr is reg31
     assign shift = instr[10:6];
 
     assign fn_code = instr[5:0];
     assign imm = instr[15:0];
     assign jump_addr = instr[25:0];
+    assign imm_addr = rs_data + sixteen_extended;
 
     assign write_enable =((state == EXEC1) && (instr_type == R) && ((fn_code == ADDU) ||
                                                                     (fn_code == AND) ||
@@ -199,6 +180,32 @@ module mips_cpu_harvard(
                                                                   (opcode == LW)  ||
                                                                   (opcode == LWL) ||
                                                                   (opcode == LWR))) ? 1 : 0;
+    // signed extension logic
+    logic[7:0] eight_bit;
+    logic[15:0] sixteen_bit;
+    logic[31:0] eight_extended;
+    logic[31:0] sixteen_extended;
+
+    assign eight_bit = ((state == EXEC2) && ((opcode == LB) || (opcode == LBU))) ?  ((imm_addr[1:0] == 0) ? data_readdata[7:0] :
+                                                                                   ((imm_addr[1:0] == 1) ? data_readdata[15:8] :
+                                                                                   ((imm_addr[1:0] == 2) ? data_readdata[23:16] : data_readdata[31:24]))) : 0; // masking which part of the data_readdata specified by the address
+    assign sixteen_bit = ((instr_type == I) &&                    ((opcode == ADDIU) ||
+                                                                   (opcode == BEQ) ||
+                                                                   (opcode == BRANCH) ||
+                                                                   (opcode == BGTZ) ||
+                                                                   (opcode == BLEZ) ||
+                                                                   (opcode == BNE) ||
+                                                                   (opcode == LB) || // removed only high for EXEC1 because imm_addr uses extended imm in EXEC2
+                                                                   (opcode == LBU) ||
+                                                                   (opcode == LH) ||
+                                                                   (opcode == LHU) ||
+                                                                   (opcode == LW) ||
+                                                                   (opcode == SB) ||
+                                                                   (opcode == SH) ||
+                                                                   (opcode == SLTI) ||
+                                                                   (opcode == SLTIU) ||
+                                                                   (opcode == SW))) ? imm : 0 ;
+
 
 
     register_file regs(
@@ -219,6 +226,7 @@ module mips_cpu_harvard(
         .x(sixteen_bit),
         .y(sixteen_extended)
     );
+
 
 
     initial begin
@@ -327,8 +335,81 @@ module mips_cpu_harvard(
             //I instruction
             else if(instr_type == I) begin
                 case(opcode)
-                    ADDIU: begin
+                    ADDIU: begin // imm signed extended
+                      write_back_data <= rs_data + sixteen_extended ;
+                    end
+                    ANDI: begin // imm zero extended
+                      write_back_data <= rs_data & {{16'h0000},imm} ;
+                    end
+                    BEQ: begin
+                      if (rs_data == rt_data) begin
+                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump <= 1;
+                      end
+                    end
+                    BGTZ: begin
+                      if ($signed(rs_data) > 0) begin
+                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump <= 1;
+                      end
+                    end
+                    BLEZ: begin
+                      if ($signed(rs_data) <= 0) begin
+                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump <= 1;
+                      end
+                    end
+                    BRANCH: begin
+                      case(rs_data)
+                          5'b00001: begin //BGEZ
+                              if ($signed(rs_data) >= 0) begin
+                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump <= 1;
+                              end
+                          end
+                          5'b10001: begin //BGEZAL
+                              if ($signed(rs_data) >= 0) begin
+                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump <= 1;
+                                  write_back_data <= pc + 8;
+                              end
+                          end
+                          5'b00000: begin // BLTZ
+                              if ($signed(rs_data) < 0) begin
+                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump <= 1;
+                              end
+                          end
+                          5'b10000: begin //BLTZAL
+                              if ($signed(rs_data) < 0) begin
+                                  jump_store <= pc_next + (sixteen_extended * 4);
+                                  jump <= 1;
+                                  write_back_data <= pc + 8;
+                              end
+                          end
 
+                      endcase
+                    end
+                    BNE: begin
+                      if (rs_data != rt_data) begin
+                          jump_store <= pc_next + (sixteen_extended * 4);
+                          jump <= 1;
+                      end
+                    end
+                    LB: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    LBU: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    LH: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    LHU: begin
+                      data_address <= {imm_addr[31:2], 2'b00};
+                    end
+                    LUI: begin
+                      write_back_data <= {imm,16'h0000};
                     end
 
 
@@ -344,7 +425,7 @@ module mips_cpu_harvard(
             end
         end
         //Exec2
-        else if(state == EXEC2) begin
+        else if((state == EXEC2) && (active == 1)) begin
             state <= FETCH;
         //R instruction
             if(instr_type == R) begin
@@ -373,6 +454,38 @@ module mips_cpu_harvard(
             end
             //I instruction
             else if(instr_type == I) begin
+                case(opcode)
+                    LB: begin //8_Bit is signed extended
+                        write_back_data <= eight_extended;
+                    end
+                    LBU: begin // 8_Bit is zero extended
+                        write_back_data <= {{24'h000000},eight_bit};
+                    end
+                    LH: begin //16_Bit is signed extended
+                        if(imm_addr[1:0] == 0) begin
+                          write_back_data <= {{16{data_readdata[15]}},data_readdata[15:0]};
+                        end
+                        else if(imm_addr[1:0 == 2]) begin
+                          write_back_data <= {{16{data_readdata[15]}},data_readdata[31:16]};
+                        end
+                        else begin
+                          $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
+                        end
+                    end
+                    LHU: begin //16_Bit is zero extended
+                        if(imm_addr[1:0] == 0) begin
+                          write_back_data <= {{16'h0000},data_readdata[15:0]};
+                        end
+                        else if(imm_addr[1:0 == 2]) begin
+                          write_back_data <= {{16'h0000},data_readdata[31:16]};
+                        end
+                        else begin
+                          $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
+                        end
+                    end
+
+
+                endcase
             end
 
         end

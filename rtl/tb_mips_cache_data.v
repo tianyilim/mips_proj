@@ -101,9 +101,44 @@ module tb_mips_cache_data;
             @(posedge clk);
             while(cache_stall) begin
                 @(posedge clk);
-                $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
+                $error("TB : %2t : Cache Read stall at address 0x%h on something in cache", $time, cache_addr);
             end
             @(posedge clk);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
+        end
+
+        $display("\nTB : %2t : Regular Write Check\n", $time);
+        // Check for regular writes
+        cache_read <= 0;
+        @(posedge clk);
+
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_write <= 1;
+            cache_byteenable <= 4'b1111;    // yups
+            cache_writedata <= $pow(i,2);
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $error("TB : %2t : Cache Write stall at address 0x%h on something in cache", $time, cache_addr);
+                // This should not happen!
+            end
+            @(posedge clk);
+        end
+        cache_write <= 0;
+        @(posedge clk);
+        $display("\nTB : %2t : Read check to validate written results\n", $time);
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $error("TB : %2t : Cache Read stall at address 0x%h on something in cache", $time, cache_addr);
+                // This should also not happen!
+            end
+            @(posedge clk);
+            assert(cache_readdata == $pow(i,2)) else $error("did not read expected value");
             $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
         end
 
@@ -147,9 +182,93 @@ module tb_mips_cache_data;
             $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
         end
 
-        // Check for regular writes
-        // Check for write miss (byte_en =/= 4'b1111)
+        cache_read <= 0;
+        rst <= 1;
+        @(posedge clk);
+        $display("\nTB : %2t : Checking for write misses; resetting cache\n", $time);
+
+        rst <= 0;
+        @(posedge clk);
+
         // Check for write miss (byte_en == 4'b1111)
+        $display("\nTB : %2t : Overwrite Check\n", $time);
+        // Check for regular writes
+        cache_read <= 0;
+        @(posedge clk);
+
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_write <= 1;
+            cache_byteenable <= 4'b1111;    // yups
+            cache_writedata <= $pow(i,2);
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $display("TB : %2t : Cache Write stall at address 0x%h despite being full overwrite", $time, cache_addr);
+                // This should not happen!
+            end
+            @(posedge clk);
+        end
+        cache_write <= 0;
+        @(posedge clk);
+        $display("\nTB : %2t : Read check to validate written results\n", $time);
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $error("TB : %2t : Cache Read stall at address 0x%h on something in cache", $time, cache_addr);
+                // This should also not happen!
+            end
+            @(posedge clk);
+            assert(cache_readdata == $pow(i,2)) else $error("did not read expected value");
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
+        end
+
+        cache_read <= 0;
+        rst <= 1;
+        @(posedge clk);
+        $display("\nTB : %2t : Checking for write misses; resetting cache\n", $time);
+
+        rst <= 0;
+        @(posedge clk);
+
+        // Check for write miss (byte_en =/= 4'b1111)
+        $display("\nTB : %2t : Partial Overwrite Check\n", $time);
+        // Check for regular writes
+        cache_read <= 0;
+        @(posedge clk);
+
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_write <= 1;
+            cache_byteenable <= 4'b0101;    // yups
+            cache_writedata <= $pow(i,2);
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $display("TB : %2t : Cache Write stall at address 0x%h", $time, cache_addr);
+                // This should not happen!
+            end
+            @(posedge clk);
+        end
+        cache_write <= 0;
+        @(posedge clk);
+        $display("\nTB : %2t : Read check to validate written results\n", $time);
+        for (i=0; i<8; i++) begin
+            cache_addr <= i;
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $error("TB : %2t : Cache Read stall at address 0x%h on something in cache", $time, cache_addr);
+                // This should also not happen!
+            end
+            @(posedge clk);
+            // assert(cache_readdata == $pow(i,2)) else $error("did not read expected value");
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
+        end
 
         $finish;
     end

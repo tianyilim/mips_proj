@@ -1,4 +1,3 @@
-`timescale 1ns/100ps
 module register_file(
     input logic clk,
     input logic reset,

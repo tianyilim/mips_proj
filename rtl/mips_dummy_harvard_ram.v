@@ -22,8 +22,8 @@ module dummy_harvard_ram(
     // Offset these words taking into account byte addressing
     logic [31:0] data_addr_real;
     logic [31:0] instr_addr_real;
-    assign data_addr_real = (data_address-OFFSET) << 2;
-    assign instr_addr_real = (instr_address-OFFSET) << 2;
+    assign data_addr_real = (data_address-OFFSET) >> 2;
+    assign instr_addr_real = (instr_address-OFFSET) >> 2;
     logic [31:0] towrite;   // byte enable implementation
     
     reg[31:0] memory [MEM_SIZE-1:0];    // Memory is contained here

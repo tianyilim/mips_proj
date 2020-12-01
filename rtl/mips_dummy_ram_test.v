@@ -15,6 +15,9 @@ module dummy_ram(
     integer i;  // Iterator
     integer delay_ctr;
 
+    logic [31:0] addr_offset;
+    assign addr_offset = addr >> 2;
+
     reg[31:0] memory [MEM_SIZE-1:0];    // Memory is contained here
 
     initial begin
@@ -41,7 +44,7 @@ module dummy_ram(
             end else if (delay_ctr == 0) begin
                 delay_ctr = -1;
                 dvalid = 1;
-                data = memory[addr];
+                data = memory[addr_offset];
                 $display("MEM : READ : Read 0x%h from address 0x%h", data, addr);
             // Waiting, decrement delay counter
             end else begin

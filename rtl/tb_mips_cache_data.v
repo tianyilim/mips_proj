@@ -28,6 +28,9 @@ module tb_mips_cache_data;
     logic[31:0] mem_readdata;
     logic mem_dvalid;
 
+    // Test vector
+    integer test_arr[7:0];
+
     mips_cache_data data_cache(.clk(clk), .rst(rst), .addr(cache_addr),
                                 .read_en(cache_read), .write_en(cache_write),
                                 .writedata(cache_writedata), .byte_en(cache_byteenable),
@@ -40,6 +43,18 @@ module tb_mips_cache_data;
                                 .read_en(cache_stall), .data(mem_readdata),
                                 .dvalid(mem_dvalid));
     
+    // Initialise test vector
+    initial begin
+        test_arr[0] = 1*8;
+        test_arr[1] = 2*8;
+        test_arr[2] = 3*8;
+        test_arr[3] = 4*8;
+        test_arr[4] = 5*8;
+        test_arr[5] = 2*8;
+        test_arr[6] = 4*8;
+        test_arr[7] = 6*8;
+    end
+
     // Generate clock
     initial begin
         $dumpfile("tb_mips_cache_data.vcd");
@@ -66,7 +81,6 @@ module tb_mips_cache_data;
         @(posedge clk);
 
         $display("\nTB : %2t : Temporal Locality Check\n", $time);
-
         // Check for cache's ability to retain information (read addresses 0-7 twice over)
         // If the values are correct and there are no stalls the second time round, then it should be correct 
         for (i=0; i<8; i++) begin
@@ -78,7 +92,7 @@ module tb_mips_cache_data;
                 $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
             end
             @(posedge clk);
-            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
         end
         $display("\nTB : %2t : Second round of reading\n", $time);
         for (i=0; i<8; i++) begin
@@ -90,11 +104,10 @@ module tb_mips_cache_data;
                 $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
             end
             @(posedge clk);
-            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
         end
 
         $display("\nTB : %2t : Associativity Check\n", $time);
-
         // Check for cache's ability to retain associativity (0,8,16,24)
         for (i=0; i<4; i++) begin
             cache_addr <= i*8;
@@ -105,7 +118,7 @@ module tb_mips_cache_data;
                 $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
             end
             @(posedge clk);
-            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
         end
         $display("\nTB : %2t : Second round of reading\n", $time);
         for (i=0; i<4; i++) begin
@@ -117,8 +130,26 @@ module tb_mips_cache_data;
                 $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
             end
             @(posedge clk);
-            $display("TB : %2t : Cache read value 0x%h at address 0x%h", $time, cache_readdata, cache_addr);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
         end
+
+        $display("\nTB : %2t : LRU Check\n", $time);
+        // Check for cache's replacement policy
+        for (i=0; i<8; i++) begin
+            cache_addr <= test_arr[i];
+            cache_read <= 1;
+            @(posedge clk);
+            while(cache_stall) begin
+                @(posedge clk);
+                $display("TB : %2t : Cache Read stall at address 0x%h", $time, cache_addr);
+            end
+            @(posedge clk);
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
+        end
+
+        // Check for regular writes
+        // Check for write miss (byte_en =/= 4'b1111)
+        // Check for write miss (byte_en == 4'b1111)
 
         $finish;
     end

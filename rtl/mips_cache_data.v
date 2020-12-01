@@ -1,8 +1,5 @@
 /*
-TODO: Pseudo-LRU Replacement logic
-https://www.seas.upenn.edu/~cit595/cit595s10/handouts/LRUreplacementpolicy.pdf
-Read and Write stalls
-Byte enables when writing
+Pseudo-LRU Replacement logic https://www.seas.upenn.edu/~cit595/cit595s10/handouts/LRUreplacementpolicy.pdf
 */
 
 module mips_cache_data(
@@ -120,8 +117,8 @@ module mips_cache_data(
                                 data_buf[cache_index][0] <= data_in;
                                 recent_buf[cache_index][0] <= 2'b11;    // Automatically the most-recent
                                 recent_buf[cache_index][1] <= 2'b10;    // Known state
-                                recent_buf[cache_index][2][0] <= 0;     // Unknown first bit
-                                recent_buf[cache_index][3][0] <= 0;    
+                                recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
+                                recent_buf[cache_index][3][1] <= 0;    
                             end
                             4'bxx01: begin
                                 $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1], address 0x%h", data_in, cache_index, cache_tag, addr);
@@ -130,16 +127,16 @@ module mips_cache_data(
                                 data_buf[cache_index][1] <= data_in;
                                 recent_buf[cache_index][0] <= 2'b10;    // Automatically the most-recent
                                 recent_buf[cache_index][1] <= 2'b11;    // Known state
-                                recent_buf[cache_index][2][0] <= 0;     // Unknown first bit
-                                recent_buf[cache_index][3][0] <= 0;    
+                                recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
+                                recent_buf[cache_index][3][1] <= 0;    
                             end
                             4'bx011: begin
                                 $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2], address 0x%h", data_in, cache_index, cache_tag, addr);
                                 tags_buf[cache_index][2] <= cache_tag;
                                 valid_buf[cache_index][2] <= 1;
                                 data_buf[cache_index][2] <= data_in;
-                                recent_buf[cache_index][0][0] <= 0;     // Unknown first bit
-                                recent_buf[cache_index][1][0] <= 0;   
+                                recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
+                                recent_buf[cache_index][1][1] <= 0;   
                                 recent_buf[cache_index][2] <= 2'b11;   
                                 recent_buf[cache_index][3] <= 2'b10; 
                             end
@@ -148,8 +145,8 @@ module mips_cache_data(
                                 tags_buf[cache_index][3] <= cache_tag;
                                 valid_buf[cache_index][3] <= 1;
                                 data_buf[cache_index][3] <= data_in;
-                                recent_buf[cache_index][0][0] <= 0;     // Unknown first bit
-                                recent_buf[cache_index][1][0] <= 0;   
+                                recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
+                                recent_buf[cache_index][1][1] <= 0;   
                                 recent_buf[cache_index][2] <= 2'b10;
                                 recent_buf[cache_index][3] <= 2'b11;
                             end
@@ -164,8 +161,8 @@ module mips_cache_data(
                             data_buf[cache_index][0] <= data_in;
                             recent_buf[cache_index][0] <= 2'b11;    // Automatically the most-recent
                             recent_buf[cache_index][1] <= 2'b10;    // Known state
-                            recent_buf[cache_index][2][0] <= 0;     // Unknown first bit
-                            recent_buf[cache_index][3][0] <= 0;    
+                            recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
+                            recent_buf[cache_index][3][1] <= 0;    
                         end else if (recent_buf[cache_index][1] == 2'b00) begin // 1 is LRU
                             $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1]", data_in, cache_index, cache_tag);
                             tags_buf[cache_index][1] <= cache_tag;
@@ -173,15 +170,15 @@ module mips_cache_data(
                             data_buf[cache_index][1] <= data_in;
                             recent_buf[cache_index][0] <= 2'b10;    // Automatically the most-recent
                             recent_buf[cache_index][1] <= 2'b11;    // Known state
-                            recent_buf[cache_index][2][0] <= 0;     // Unknown first bit
-                            recent_buf[cache_index][3][0] <= 0;                        
+                            recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
+                            recent_buf[cache_index][3][1] <= 0;                        
                         end else if (recent_buf[cache_index][2] == 2'b00) begin // 2 is LRU
                             $display("CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2]", data_in, cache_index, cache_tag);
                             tags_buf[cache_index][2] <= cache_tag;
                             valid_buf[cache_index][2] <= 1;
                             data_buf[cache_index][2] <= data_in;
-                            recent_buf[cache_index][0][0] <= 0;     // Unknown first bit
-                            recent_buf[cache_index][1][0] <= 0;   
+                            recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
+                            recent_buf[cache_index][1][1] <= 0;   
                             recent_buf[cache_index][2] <= 2'b11;   
                             recent_buf[cache_index][3] <= 2'b10; 
                         end else if (recent_buf[cache_index][3] == 2'b00) begin // 3 is LRU
@@ -189,8 +186,8 @@ module mips_cache_data(
                             tags_buf[cache_index][3] <= cache_tag;
                             valid_buf[cache_index][3] <= 1;
                             data_buf[cache_index][3] <= data_in;
-                            recent_buf[cache_index][0][0] <= 0;     // Unknown first bit
-                            recent_buf[cache_index][1][0] <= 0;   
+                            recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
+                            recent_buf[cache_index][1][1] <= 0;   
                             recent_buf[cache_index][2] <= 2'b10;
                             recent_buf[cache_index][3] <= 2'b11;                   
                         end
@@ -249,8 +246,4 @@ module mips_cache_data(
             end
         end
     end
-
-    // HANDLE STALL HERE!
-    // TODO What happens on write miss?
-
 endmodule

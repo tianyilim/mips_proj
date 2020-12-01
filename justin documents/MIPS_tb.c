@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define reset_vct 0xbcf00000
 
@@ -98,9 +99,9 @@ FOR addu $s1, $s2, $s3 CALL AS rtype(addu, $s1, $s2, $s3, 0)
 FOR sll $s1, $s2, 5 CALL AS rtype(sll, $s1, 0, $s2, 5)
 FOR jr $s0 CALL AS rtype(jr, 0 $s0, 0, 0, 0)
 */
-unsigned int rtype(int fncode, int rd, int rs, int rt,  int shift)
+int rtype(int fncode, int rd, int rs, int rt,  int shift)
 {
-	unsigned int x = 0;
+	int x = 0;
 
 	fncode = (fncode & 0x3f);
 	shift = (shift & 0x1f) << 6;
@@ -125,9 +126,9 @@ FOR beq $s1, $s2, 5 CALL AS itype(beq, $s1, $s2, 5)
 FOR lw $s1, 100($s2) CALL AS itype(lw, $s1, $s2, 100)
 FOR sw $s1, 100($s2) CALL AS itype(sw, $s1, $s2, 100)
 */
-unsigned int itype(int opcode, int rt, int rs, int imm)
+int itype(int opcode, int rt, int rs, int imm)
 {
-	unsigned int x = 0;
+	int x = 0;
 
 	imm = (imm & 0xffff);
 	rt = (rt & 0x1f) << 16;
@@ -142,9 +143,9 @@ unsigned int itype(int opcode, int rt, int rs, int imm)
 	return x;
 }
 
-unsigned int jtype(int opcode, int imm)
+int jtype(int opcode, int imm)
 {
-	unsigned int x = 0;
+	int x = 0;
 
 	imm = (imm & 0x03ffffff);
 	opcode = (opcode & 0x3f) << 26;
@@ -158,7 +159,7 @@ unsigned int jtype(int opcode, int imm)
 void test_jr(FILE* fp)
 {
 	/*
-		addiu $v0, $zero, $zero
+		addiu $v0, $zero, 0
 		jr $zero
 	*/
 	int memloc, data;
@@ -167,7 +168,7 @@ void test_jr(FILE* fp)
 
 	memloc = reset_vct;
 	data = itype(addiu, $v0, $zero, 0);
-	fprintf(fp, "# %08x %08x ; addiu $v0, $zero, $zero\n", memloc, data);
+	fprintf(fp, "# %08x %08x ; addiu $v0, $zero, 0\n", memloc, data);
 
 	memloc += 4;
 	data = rtype(jr, 0, $zero, 0, 0);
@@ -212,7 +213,7 @@ void test_lw(FILE* fp)
 	int randloc = reset_vct + 0x200 + (rand() & 0x3f) * 4;
 	int temp = (rand() << 18) ^ (rand() << 10) ^ (rand());
 
-	fprintf(fp, "` 2 testing lw\n");
+	fprintf(fp, "` 4 testing lw\n");
 
 	memloc = randloc;
 	data = temp;
@@ -243,6 +244,70 @@ void test_lw(FILE* fp)
 	fprintf(fp,"@ %08x\n", temp);
 }
 
+void test_sw(FILE* fp)
+{
+	/*
+		1. CPU points to a random location using $s0
+		2. CPU has a random number in $s1
+		3. CPU stores the random number into the random location
+		4. CPU reads the random number from the location back into $v0
+
+		addu $s0, $zero, $zero						1
+		lui $s0, ((randloc - 8) >> 16)				1
+		addiu $s0, $s0, (randloc - 8) & 0xffff		1
+		lui $s1, (rand() >> 16)						2
+		addiu $s1, $s1, rand() & 0xffff				2
+		sw $s1, 8($s0)								3
+		addiu $s0, $s0, 8							4
+		lw $v0, 0($s0)								4
+	*/
+	int memloc, data;
+
+	int randloc = reset_vct + 0x200 + (rand() & 0x3f) * 4;
+	int temp = (rand() << 18) ^ (rand() << 10) ^ (rand());
+
+	fprintf(fp, "` 8 testing sw\n");
+
+	memloc = reset_vct;
+	data = rtype(addu, $s0, $zero, $zero, 0);
+	fprintf(fp, "# %08x %08x ; addu $s0, $zero, $zero\n", memloc, data);
+
+	memloc += 4;
+	data = itype(lui, $s0, 0, (randloc - 8) >> 16);
+	fprintf(fp, "# %08x %08x ; lui $s0, ((randloc - 8) >> 16)\n", memloc, data);
+
+	memloc += 4;
+	data = itype(addiu, $s0, $s0, (randloc - 8) & 0xffff);
+	fprintf(fp, "# %08x %08x ; addiu $s0, $s0, (randloc - 8) & 0xffff\n", memloc, data);
+
+	memloc += 4;
+	data = itype(lui, $s1, 0, (temp) >> 16);
+	fprintf(fp, "# %08x %08x ; lui $s1, (rand() >> 16)\n", memloc, data);
+
+	memloc += 4;
+	data = itype(addiu, $s1, $s1, (temp) & 0xffff);
+	fprintf(fp, "# %08x %08x ; addiu $s1, $s1, (rand()) & 0xffff\n", memloc, data);
+
+	memloc += 4;
+	data = itype(sw, $s1, $s0, 8);
+	fprintf(fp, "# %08x %08x ; sw $v0, 8($s0)\n", memloc, data);
+
+	memloc += 4;
+	data = itype(addiu, $s0, $s0, 8);
+	fprintf(fp, "# %08x %08x ; addiu $s0, $s0, 8", memloc, data);
+
+	memloc += 4;
+	data = itype(lw, $v0, $s0, 8);
+	fprintf(fp, "# %08x %08x ; lw $v0, 8($s0)\n", memloc, data);
+
+	memloc += 4;
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp, "# %08x %08x ; jr $zero\n", memloc, data);
+
+
+	fprintf(fp, "@ %08x\n", temp);
+}
+
 
 int main(int argc, char** argv)
 {
@@ -250,18 +315,28 @@ int main(int argc, char** argv)
 	FILE* fp = fopen("test_prog_list.txt", "w");
 	printf("argc = %d\n", argc);
 
+	char* ptr;
+
 	if (argc > 1)
 	{
 		while (--argc)
 		{
-			puts(*++argv);
+			ptr = *++argv;
+
+			if (strcmp(ptr, "jr") == 0)
+				for (int i = 0; i < 10; i++) test_jr(fp);
+			else if (strcmp(ptr, "addiu") == 0)
+				for (int i = 0; i < 10; i++) test_addiu(fp);
+			else if (strcmp(ptr, "lw") == 0)
+				for (int i = 0; i < 10; i++) test_lw(fp);
+
 		}
 	}
 	else
 	{
-		test_jr(fp);
-		test_addiu(fp);
-		test_lw(fp);
+		for (int i = 0; i < 10; i++) test_jr(fp);
+		for (int i = 0; i < 10; i++) test_addiu(fp);
+		for (int i = 0; i < 10; i++) test_lw(fp);
 
 	}
 

@@ -1,0 +1,2 @@
+lw $t1, 4($gp)
+ori $t2, $zero, 3

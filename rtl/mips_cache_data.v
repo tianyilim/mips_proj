@@ -17,7 +17,6 @@ module mips_cache_data(
     output logic stall, // Also goes to the cache controller
 
     // To cache controller
-    output logic[31:0] data_addr,
     input logic[31:0] data_in,
     input logic data_valid
 );
@@ -51,7 +50,6 @@ module mips_cache_data(
     assign addr_offset = addr >> 2;
     assign cache_index = addr_offset[CACHE_DEPTH_BITS-1:0];
     assign cache_tag = addr_offset[31:CACHE_DEPTH_BITS];
-    assign data_addr = addr;    // When we miss, passthrough address for request to cache controller.
 
     // Do this translation here, as we don't want to do it again elsewhere.
     // CHECK - default value when cache_hit_bus=4'b0000: can't use this in STALL.

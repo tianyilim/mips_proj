@@ -1,3 +1,4 @@
+`timescale 1ns / 1ns
 module mips_cache_writebuffer(
     input logic clk,
     input logic rst,

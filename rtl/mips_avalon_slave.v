@@ -1,5 +1,5 @@
 // Simple, parameterized implementation of an Avalon memory-mapped slave.
-
+`timescale 1ns / 1ns
 module mips_avalon_slave(
     input logic clk,
     input logic rst,

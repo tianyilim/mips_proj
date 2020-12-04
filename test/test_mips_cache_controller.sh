@@ -13,7 +13,12 @@ iverilog -g 2012 -Wall \
    -o test/tb_mips_cache_controller
 
 # Auto-run 
-./test/tb_mips_cache_controller
+set +e
+./test/tb_mips_cache_controller |& tee test/tb_mips_cache_controller.txt
+
+grep -wn --color=always "ERROR" test/tb_mips_cache_controller.txt;   # Look for errors, whole word; count cases; show lines
+
+set -e
 # Opens with savefiles, Cleanup
 gtkwave tb_mips_cache_controller.vcd tb_mips_cache_controller.gtkw -a tb_mips_cache_controller.gtkw; \
 rm test/tb_mips_cache_controller

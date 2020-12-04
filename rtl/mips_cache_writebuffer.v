@@ -69,6 +69,7 @@ module mips_cache_writebuffer(
             // $display("WB : Unreset");
             // writing always happens when not empty unless active low
             if (active) begin
+                $display("WB : Active");
                 if (full_buf[write_ptr]) begin
                     // write_writeenable <= 1;
                     write_addr <= addr_buf[write_ptr];

@@ -51,6 +51,31 @@ module mips_cache_data(
     assign cache_index = addr_offset[CACHE_DEPTH_BITS-1:0];
     assign cache_tag = addr_offset[31:CACHE_DEPTH_BITS];
 
+    // // Implementing byte_enable as we write
+    // wire [31:0] reg_in_tmp [CACHE_ASSOC-1:0];    // Byte_enable implementation
+    // wire [31:0] reg_input [CACHE_ASSOC-1:0]; // Implements the Byte_enable case when writing
+
+    // genvar i2;
+    // generate
+    //     for(i2=0; i2<CACHE_ASSOC; i2=i2+1) begin
+    //             assign reg_in_tmp[i2][31:24] = (byte_en[3]) ? writedata[31:24] : data_buf[cache_index][i2][31:24];
+    //             assign reg_in_tmp[i2][23:16] = (byte_en[2]) ? writedata[23:16] : data_buf[cache_index][i2][23:16];
+    //             assign reg_in_tmp[i2][15:8] =  (byte_en[1]) ? writedata[15:8] : data_buf[cache_index][i2][15:8];
+    //             assign reg_in_tmp[i2][7:0]  =  (byte_en[0]) ? writedata[7:0] : data_buf[cache_index][i2][7:0];
+
+    //             assign reg_input[i2] = (read_en) ? data_in : reg_in_tmp[i2];    
+    //     end
+    // endgenerate
+
+    wire [31:0] reg_in_tmp;    // Byte_enable implementation
+    wire [31:0] reg_input; // Implements the Byte_enable case when writing
+
+    assign reg_in_tmp[31:24] = (byte_en[3]) ? writedata[31:24] : data_in[31:24];
+    assign reg_in_tmp[23:16] = (byte_en[2]) ? writedata[23:16] : data_in[23:16];
+    assign reg_in_tmp[15:8] =  (byte_en[1]) ? writedata[15:8] : data_in[15:8];
+    assign reg_in_tmp[7:0]  =  (byte_en[0]) ? writedata[7:0] : data_in[7:0];
+    assign reg_input = (read_en) ? data_in : reg_in_tmp;
+
     // Do this translation here, as we don't want to do it again elsewhere.
     // CHECK - default value when cache_hit_bus=4'b0000: can't use this in STALL.
     always @ (cache_hit_bus) begin
@@ -65,7 +90,7 @@ module mips_cache_data(
     // DEBUG
     wire[CACHE_ASSOC-1:0] curr_valid = valid_buf[cache_index];
     wire write_cond;
-    assign write_cond = data_valid || (|byte_en && write_en);
+    assign write_cond = data_valid || (&byte_en && write_en);
 
 
     // no choice, can't do this in a loop with continous assignment
@@ -76,7 +101,11 @@ module mips_cache_data(
     assign cache_hit_bus[3] = valid_buf[cache_index][3] & tags_buf[cache_index][3] == cache_tag;
 
     assign cache_hit = |cache_hit_bus;  // Takes a bitwise OR of the whole bus
-    assign stall = !cache_hit & (read_en | write_en);   // Prone to error CHECK!
+    // assign stall = !cache_hit && (read_en || ( write_en && |byte_en ));   // Prone to error CHECK!
+    assign stall = !cache_hit && ( (read_en) || (write_en && !(&byte_en)) );
+
+    // No stall if write_en and byte_en are both asserted
+
     // Each time our cache doesn't hit we must stall cycle.
     // Exception is when writing an address that has byte_en 1111; the whole register will
     // Be modified anyway so it doesn't matter.
@@ -117,40 +146,40 @@ module mips_cache_data(
                             $display("DATA_CACHE : Trivial case, current valid buffer is %4b", valid_buf[cache_index]);
                             casex (valid_buf[cache_index])
                                 4'bxxx0: begin
-                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0], address 0x%h", reg_input, cache_index, cache_tag, addr);
                                     tags_buf[cache_index][0] <= cache_tag;
                                     valid_buf[cache_index][0] <= 1;
-                                    data_buf[cache_index][0] <= data_in;
+                                    data_buf[cache_index][0] <= reg_input;
                                     recent_buf[cache_index][0] <= 2'b11;    // Automatically the most-recent
                                     recent_buf[cache_index][1] <= 2'b10;    // Known state
                                     recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
                                     recent_buf[cache_index][3][1] <= 0;    
                                 end
                                 4'bxx01: begin
-                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1], address 0x%h", reg_input, cache_index, cache_tag, addr);
                                     tags_buf[cache_index][1] <= cache_tag;
                                     valid_buf[cache_index][1] <= 1;
-                                    data_buf[cache_index][1] <= data_in;
+                                    data_buf[cache_index][1] <= reg_input;
                                     recent_buf[cache_index][0] <= 2'b10;    // Automatically the most-recent
                                     recent_buf[cache_index][1] <= 2'b11;    // Known state
                                     recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
                                     recent_buf[cache_index][3][1] <= 0;    
                                 end
                                 4'bx011: begin
-                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2], address 0x%h", reg_input, cache_index, cache_tag, addr);
                                     tags_buf[cache_index][2] <= cache_tag;
                                     valid_buf[cache_index][2] <= 1;
-                                    data_buf[cache_index][2] <= data_in;
+                                    data_buf[cache_index][2] <= reg_input;
                                     recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
                                     recent_buf[cache_index][1][1] <= 0;   
                                     recent_buf[cache_index][2] <= 2'b11;   
                                     recent_buf[cache_index][3] <= 2'b10; 
                                 end
                                 4'b0111: begin
-                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3], address 0x%h", data_in, cache_index, cache_tag, addr);
+                                    $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3], address 0x%h", reg_input, cache_index, cache_tag, addr);
                                     tags_buf[cache_index][3] <= cache_tag;
                                     valid_buf[cache_index][3] <= 1;
-                                    data_buf[cache_index][3] <= data_in;
+                                    data_buf[cache_index][3] <= reg_input;
                                     recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
                                     recent_buf[cache_index][1][1] <= 0;   
                                     recent_buf[cache_index][2] <= 2'b10;
@@ -161,41 +190,41 @@ module mips_cache_data(
                             // Nontrivial case - write into assoc with 00 in the recent_buf
                             $display("DATA_CACHE : Non-trivial case, recent buffers are 0:%b 1:%b 2:%b 3:%b", recent_buf[cache_index][0], recent_buf[cache_index][1], recent_buf[cache_index][2], recent_buf[cache_index][3]);
                             if (recent_buf[cache_index][0] == 2'b00) begin // 0 is LRU
-                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0]", data_in, cache_index, cache_tag);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[0]", reg_input, cache_index, cache_tag);
                                 tags_buf[cache_index][0] <= cache_tag;
                                 valid_buf[cache_index][0] <= 1;    
-                                data_buf[cache_index][0] <= data_in;
+                                data_buf[cache_index][0] <= reg_input;
                                 recent_buf[cache_index][0] <= 2'b11;    // Automatically the most-recent
                                 recent_buf[cache_index][1] <= 2'b10;    // Known state
                                 recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
                                 recent_buf[cache_index][3][1] <= 0;    
                             end else if (recent_buf[cache_index][1] == 2'b00) begin // 1 is LRU
-                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1]", data_in, cache_index, cache_tag);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[1]", reg_input, cache_index, cache_tag);
                                 tags_buf[cache_index][1] <= cache_tag;
                                 valid_buf[cache_index][1] <= 1;
-                                data_buf[cache_index][1] <= data_in;
+                                data_buf[cache_index][1] <= reg_input;
                                 recent_buf[cache_index][0] <= 2'b10;    // Automatically the most-recent
                                 recent_buf[cache_index][1] <= 2'b11;    // Known state
                                 recent_buf[cache_index][2][1] <= 0;     // Unknown first bit
                                 recent_buf[cache_index][3][1] <= 0;                        
                             end else if (recent_buf[cache_index][2] == 2'b00) begin // 2 is LRU
-                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2]", data_in, cache_index, cache_tag);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[2]", reg_input, cache_index, cache_tag);
                                 tags_buf[cache_index][2] <= cache_tag;
                                 valid_buf[cache_index][2] <= 1;
-                                data_buf[cache_index][2] <= data_in;
+                                data_buf[cache_index][2] <= reg_input;
                                 recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
                                 recent_buf[cache_index][1][1] <= 0;   
                                 recent_buf[cache_index][2] <= 2'b11;   
                                 recent_buf[cache_index][3] <= 2'b10; 
                             end else if (recent_buf[cache_index][3] == 2'b00) begin // 3 is LRU
-                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3]", data_in, cache_index, cache_tag);
+                                $display("DATA_CACHE : Loading 0x%h into index 0x%h, tag 0x%h assoc[3]", reg_input, cache_index, cache_tag);
                                 tags_buf[cache_index][3] <= cache_tag;
                                 valid_buf[cache_index][3] <= 1;
-                                data_buf[cache_index][3] <= data_in;
+                                data_buf[cache_index][3] <= reg_input;
                                 recent_buf[cache_index][0][1] <= 0;     // Unknown first bit
-                                recent_buf[cache_index][1][1] <= 0;   
+                                recent_buf[cache_index][1][1] <= 0;
                                 recent_buf[cache_index][2] <= 2'b10;
-                                recent_buf[cache_index][3] <= 2'b11;                   
+                                recent_buf[cache_index][3] <= 2'b11;
                             end
                         end
                     end else begin

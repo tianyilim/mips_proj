@@ -32,7 +32,7 @@ module tb_mips_cache_controller;
 
     parameter RAM_INIT_FILE = "test/avalon_slave_sample.txt";
     parameter TEST_MEM_SIZE = 1024;
-    parameter TEST_READ_DELAY = 2;
+    parameter TEST_READ_DELAY = 4;
     parameter TEST_WRITE_DELAY = TEST_READ_DELAY;
     parameter TIMEOUT_CYCLES = 1000;
     parameter OFFSET = 32'hBFC00000;
@@ -178,6 +178,89 @@ module tb_mips_cache_controller;
         end
         data_read <= 0;
         @(posedge clk);
+
+        // DATA WRITE TEST
+        $display("\nTB : %2t : Regular Write Check\n", $time);
+        for (i=16; i<16+8; i++) begin
+            data_address <= OFFSET + i*4;
+            data_write <= 1;
+            data_byteenable <= 4'b1111;    // yups
+            data_writedata <= $pow(i,2);
+            @(posedge clk);
+            $display("TB : %2t : Write requested to address 0x%h with value 0x%h", $time, data_address, data_writedata);
+            while (~clk_enable) begin
+                @(posedge clk);
+                $display("TB : %2t : Wait as clk_enable is low", $time);
+                // Write state
+            end
+            @(posedge clk);
+        end
+        data_write <= 0;
+        @(posedge clk);
+
+        $display("\nTB : %2t : Read check to validate written results\n", $time);
+        for (i=16; i<16+8; i++) begin
+            data_address <= OFFSET + i*4;
+            data_read <= 1;
+            @(posedge clk);
+            $display("TB : %2t : Read requested from address 0x%h", $time, data_address);
+            // The system *SHOULD* be in write mode! it is still emptying out the buffer
+            @(posedge clk);
+            // Of course, proper data only comes out the next clock cycle.
+            assert(data_readdata == $pow(i,2)) else $error("TB : %2t : Read 0x%h but expected 0x%h", $time, data_readdata, $pow(i,2));
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, data_readdata, data_address);
+        end
+
+        data_read <= 0;
+        @(posedge clk);
+
+        $display("\nTB : %2t : WB Emptying\n", $time);
+        while (cc_state!=2'b00) begin
+            @(posedge clk);
+            // $display("TB : %2t : Waiting for Write buffer to empty out", $time);
+        end
+
+        // Partial DATA WRITE TEST
+        $display("\nTB : %2t : Partial Write Check\n", $time);
+        for (i=32; i<32+8; i++) begin
+            data_address <= OFFSET + i*4;
+            data_write <= 1;
+            data_byteenable <= 4'b0101;    // Take the MSB's
+            data_writedata <= i*2;
+            @(posedge clk);
+            $display("TB : %2t : Write requested to address 0x%h with value 0x%h", $time, data_address, data_writedata);
+            while (~clk_enable) begin
+                @(posedge clk);
+                $display("TB : %2t : Wait as clk_enable is low", $time);
+                // Write state
+            end
+            @(posedge clk);
+        end
+        data_write <= 0;
+        @(posedge clk);
+
+        $display("\nTB : %2t : Read check to validate written results\n", $time);
+        for (i=32; i<32+8; i++) begin
+            data_address <= OFFSET + i*4;
+            data_read <= 1;
+            @(posedge clk);
+            $display("TB : %2t : Read requested from address 0x%h", $time, data_address);
+            // The system *SHOULD* be in write mode! it is still emptying out the buffer
+            @(posedge clk);
+            // Of course, proper data only comes out the next clock cycle.
+            assert(data_readdata == 32'hFF00FF00 | i*2) else $error("TB : %2t : Read 0x%h but expected 0x%h", $time, data_readdata, 32'hFF00FF00 | i*2);
+            // assert(data_readdata == $pow(i,2)) else $error("TB : %2t : Read 0x%h but expected 0x%h", $time, data_readdata, $pow(i,2));
+            $display("TB : %2t : Cache read value 0x%h at address 0x%h, expected 0x%h\n", $time, data_readdata, data_address, 32'hFF00FF00 | i*2);
+        end
+
+        data_read <= 0;
+        @(posedge clk);
+        $display("\nTB : %2t : WB Emptying\n", $time);
+        while (cc_state!=2'b00) begin
+            @(posedge clk);
+            // $display("TB : %2t : Waiting for Write buffer to empty out", $time);
+        end
+
 
         $finish;
     end 

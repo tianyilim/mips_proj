@@ -88,16 +88,12 @@ module mips_cache_controller(
     assign clk_enable = !(instr_stall || data_stall || wb_full);
     assign mem_address = (state==STATE_WRITE) ? addr_wbtomem : (instr_stall) ? instr_address : data_address;
 
-    logic waiting; // State flag to determine whether we are at the start or end of a waitrequest transaction
-
     always @ (posedge clk) begin
         if (rst) begin
             state <= STATE_IDLE;
             data_data_valid <= 0;
             instr_data_valid <= 0;
             wb_active <= 0;
-
-            waiting <= 0;
 
             mem_read <= 0;  // Known state at start
 
@@ -112,23 +108,22 @@ module mips_cache_controller(
                     // State transitions
                     if (instr_stall || data_stall) begin
                         state <= STATE_FETCH;
-                        waiting <= 1;
                         mem_read <= 1;
                     end else if (!wb_empty) begin
                         state <= STATE_WRITE;
+                        // wb_active <= 1;
                     end
                 end
                 STATE_WRITE : begin
                     $display("CACHE_CTRL : STATE : WRITE");
                     // waitrequest already connected directly?
-                    wb_active <= 1;
                     // mem_address <= addr_wbtomem;
+                    wb_active <= 1;
 
                     // State transitions
                     if (!waitrequest) begin
                         if (instr_stall || data_stall) begin
                             state <= STATE_FETCH;
-                            waiting <= 1;
                             mem_read <= 1;
                             wb_active <= 0;
                         end else if (wb_empty) begin
@@ -138,16 +133,12 @@ module mips_cache_controller(
                     end
                 end
                 STATE_FETCH : begin
-                    // `waiting` should be 1 on any transition to STATE_FETCH
                     $display("CACHE_CTRL : STATE : FETCH");
                     
                     if (instr_stall || data_stall) begin
                         $display("CACHE_CTRL : STATUS : instr_stall: %b, data_stall: %b", instr_stall, data_stall);
                         // mem_address <= (instr_stall) ? instr_address : data_address;
 
-                        // waiting <= 0;   // Purely wait one cycle for mem_read to be asserted?
-                        // Waiting
-                        // if (!waitrequest && !waiting) begin
                         if (!waitrequest) begin
                             $display("CACHE_CTRL : STATUS : waitrequest complete");
                             mem_read <= 0;
@@ -163,14 +154,16 @@ module mips_cache_controller(
                         end else begin
                             instr_data_valid <= 0;
                             data_data_valid <= 0;
-                            // mem_read <= 1;
                         end
                     end
 
                     // State transitions
                     if (!waitrequest & !(instr_stall || data_stall) ) begin
                         state <= (wb_empty) ? STATE_IDLE : STATE_WRITE;
-                        // waiting <= (wb_empty) ? 0 : 1;  // waiting
+                        // Ensure that state transitions are obeyed
+                        instr_data_valid <= 0;
+                        data_data_valid <= 0;
+                        // wb_active <= (wb_empty) ? 0 : 1;
                     end
                 end
             endcase

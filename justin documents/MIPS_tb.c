@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define reset_vct 0xbcf00000
+#define reset_vct 0xbfc00000
 
 // registers
 #define $zero 0

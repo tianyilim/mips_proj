@@ -1,6 +1,6 @@
 module mips_cpu_harvard_tb;
 
-    parameter RAM_INIT_FILE = "testcase.hex.txt";
+    parameter RAM_INIT_FILE = "test_prog_list.txt";
     parameter TIMEOUT_CYCLES = 30;
 
     logic clk;

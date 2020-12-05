@@ -39,122 +39,122 @@
 # bcf00004 00000008 ; jr $zero
 @ 00000000
 ` 2 testing addiu
-# bcf00000 24022265 ; addiu $v0, $zero, rand()
+# bcf00000 24020648 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 00002265
+@ 00000648
 ` 2 testing addiu
-# bcf00000 24026324 ; addiu $v0, $zero, rand()
+# bcf00000 24029c50 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 00006324
+@ 00009c50
 ` 2 testing addiu
-# bcf00000 2402b6cd ; addiu $v0, $zero, rand()
+# bcf00000 2402c5cb ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 0000b6cd
+@ 0000c5cb
 ` 2 testing addiu
-# bcf00000 240212d8 ; addiu $v0, $zero, rand()
+# bcf00000 24022f21 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 000012d8
+@ 00002f21
 ` 2 testing addiu
-# bcf00000 24022092 ; addiu $v0, $zero, rand()
+# bcf00000 2402fcd1 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 00002092
+@ 0000fcd1
 ` 2 testing addiu
-# bcf00000 2402f2dc ; addiu $v0, $zero, rand()
+# bcf00000 2402022b ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 0000f2dc
+@ 0000022b
 ` 2 testing addiu
-# bcf00000 2402e059 ; addiu $v0, $zero, rand()
+# bcf00000 24023401 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 0000e059
+@ 00003401
 ` 2 testing addiu
-# bcf00000 240297bd ; addiu $v0, $zero, rand()
+# bcf00000 2402e7e2 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 000097bd
+@ 0000e7e2
 ` 2 testing addiu
-# bcf00000 2402c7eb ; addiu $v0, $zero, rand()
+# bcf00000 24026f46 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 0000c7eb
+@ 00006f46
 ` 2 testing addiu
-# bcf00000 240257e4 ; addiu $v0, $zero, rand()
+# bcf00000 24020a52 ; addiu $v0, $zero, rand()
 # bcf00004 00000008 ; jr $zero
-@ 000057e4
+@ 00000a52
 ` 4 testing lw
-# bcf00290 e9f10443 ; load data into data memory
+# bcf002d4 46974cc5 ; load data into data memory
 # bcf00000 00008021 ; addu $s0, $zero, $zero
 # bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 26100288 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf00008 261002cc ; addiu $s0, $s0, (randloc - 8) & 0xffff
 # bcf0000c 8e020008 ; lw $v0, 8($s0)
 # bcf00010 00000008 ; jr $zero
-@ e9f10443
+@ 46974cc5
 ` 4 testing lw
-# bcf002b8 5c85b5fe ; load data into data memory
-# bcf00000 00008021 ; addu $s0, $zero, $zero
-# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 261002b0 ; addiu $s0, $s0, (randloc - 8) & 0xffff
-# bcf0000c 8e020008 ; lw $v0, 8($s0)
-# bcf00010 00000008 ; jr $zero
-@ 5c85b5fe
-` 4 testing lw
-# bcf002d8 b8cb0018 ; load data into data memory
-# bcf00000 00008021 ; addu $s0, $zero, $zero
-# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 261002d0 ; addiu $s0, $s0, (randloc - 8) & 0xffff
-# bcf0000c 8e020008 ; lw $v0, 8($s0)
-# bcf00010 00000008 ; jr $zero
-@ b8cb0018
-` 4 testing lw
-# bcf002e8 62e1747f ; load data into data memory
-# bcf00000 00008021 ; addu $s0, $zero, $zero
-# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 261002e0 ; addiu $s0, $s0, (randloc - 8) & 0xffff
-# bcf0000c 8e020008 ; lw $v0, 8($s0)
-# bcf00010 00000008 ; jr $zero
-@ 62e1747f
-` 4 testing lw
-# bcf0022c 279172b2 ; load data into data memory
-# bcf00000 00008021 ; addu $s0, $zero, $zero
-# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 26100224 ; addiu $s0, $s0, (randloc - 8) & 0xffff
-# bcf0000c 8e020008 ; lw $v0, 8($s0)
-# bcf00010 00000008 ; jr $zero
-@ 279172b2
-` 4 testing lw
-# bcf00200 051b3b4d ; load data into data memory
-# bcf00000 00008021 ; addu $s0, $zero, $zero
-# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 261001f8 ; addiu $s0, $s0, (randloc - 8) & 0xffff
-# bcf0000c 8e020008 ; lw $v0, 8($s0)
-# bcf00010 00000008 ; jr $zero
-@ 051b3b4d
-` 4 testing lw
-# bcf00280 373eb039 ; load data into data memory
-# bcf00000 00008021 ; addu $s0, $zero, $zero
-# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 26100278 ; addiu $s0, $s0, (randloc - 8) & 0xffff
-# bcf0000c 8e020008 ; lw $v0, 8($s0)
-# bcf00010 00000008 ; jr $zero
-@ 373eb039
-` 4 testing lw
-# bcf0029c 56baec0b ; load data into data memory
-# bcf00000 00008021 ; addu $s0, $zero, $zero
-# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 26100294 ; addiu $s0, $s0, (randloc - 8) & 0xffff
-# bcf0000c 8e020008 ; lw $v0, 8($s0)
-# bcf00010 00000008 ; jr $zero
-@ 56baec0b
-` 4 testing lw
-# bcf002a0 f812bb56 ; load data into data memory
+# bcf002a0 a9f027fe ; load data into data memory
 # bcf00000 00008021 ; addu $s0, $zero, $zero
 # bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
 # bcf00008 26100298 ; addiu $s0, $s0, (randloc - 8) & 0xffff
 # bcf0000c 8e020008 ; lw $v0, 8($s0)
 # bcf00010 00000008 ; jr $zero
-@ f812bb56
+@ a9f027fe
 ` 4 testing lw
-# bcf002c4 046b81a7 ; load data into data memory
+# bcf00274 01307327 ; load data into data memory
 # bcf00000 00008021 ; addu $s0, $zero, $zero
 # bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
-# bcf00008 261002bc ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf00008 2610026c ; addiu $s0, $s0, (randloc - 8) & 0xffff
 # bcf0000c 8e020008 ; lw $v0, 8($s0)
 # bcf00010 00000008 ; jr $zero
-@ 046b81a7
+@ 01307327
+` 4 testing lw
+# bcf0027c b4f4170c ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 26100274 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ b4f4170c
+` 4 testing lw
+# bcf00220 3589c298 ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 26100218 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ 3589c298
+` 4 testing lw
+# bcf0027c c55f14ea ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 26100274 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ c55f14ea
+` 4 testing lw
+# bcf00210 db1b2785 ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 26100208 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ db1b2785
+` 4 testing lw
+# bcf00270 1ac5ff11 ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 26100268 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ 1ac5ff11
+` 4 testing lw
+# bcf0025c 8a4e783f ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 26100254 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ 8a4e783f
+` 4 testing lw
+# bcf002b0 64735cc9 ; load data into data memory
+# bcf00000 00008021 ; addu $s0, $zero, $zero
+# bcf00004 3c10bcf0 ; lui $s0, ((randloc - 8) >> 16)
+# bcf00008 261002a8 ; addiu $s0, $s0, (randloc - 8) & 0xffff
+# bcf0000c 8e020008 ; lw $v0, 8($s0)
+# bcf00010 00000008 ; jr $zero
+@ 64735cc9

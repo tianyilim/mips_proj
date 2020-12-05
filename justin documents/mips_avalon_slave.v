@@ -1,5 +1,5 @@
 // Simple, parameterized implementation of an Avalon memory-mapped slave.
-`timescale 1ns / 1ns
+
 module mips_avalon_slave(
     input logic clk,
     input logic rst,
@@ -19,10 +19,7 @@ module mips_avalon_slave(
 
     parameter ADDR_START = 32'hBFC00000;    // By default, aligned to the start of the memory space
     parameter MEM_SIZE = 1024;
-    localparam ADDR_END = MEM_SIZE + ADDR_START;
-    localparam ADDR_START_SHIFT = ADDR_START >> 2;
-    localparam ADDR_END_SHIFT = ADDR_END >> 2;
-    
+    integer ADDR_END = MEM_SIZE + ADDR_START;
     parameter READ_DELAY = 2;               // How long will waitrequest be asserted on read?
     parameter WRITE_DELAY = READ_DELAY;     // How long will waitrequest be asserted on write?
     parameter RAM_INIT_FILE = "";           // Initialise RAM from elsewhere
@@ -31,9 +28,6 @@ module mips_avalon_slave(
     reg[31:0] memory [MEM_SIZE-1:0];    // Memory is contained here
     integer wait_ctr = -1;                   // Waits implemented here
     integer waiting = 0;
-
-    logic[31:0] addr_shift;
-    assign addr_shift = address >> 2; // Byte addressing
 
     initial begin
         integer i;
@@ -63,7 +57,7 @@ module mips_avalon_slave(
                         towrite[23:16] = (byteenable[2]) ? writedata[23:16] : towrite[23:16];
                         towrite[15:8] =  (byteenable[1]) ? writedata[15:8] : towrite[15:8];
                         towrite[7:0] =   (byteenable[0]) ? writedata[7:0] : towrite[7:0];
-                        memory[addr_shift-ADDR_START_SHIFT] = towrite;    // Offset the addressing space
+                        memory[address-ADDR_START] = towrite;    // Offset the addressing space
                         wait_ctr = -1;
                         $display("RAM : WRITE : Wrote 0x%h data at address 0x%h", writedata, address);
                     end else begin
@@ -73,7 +67,7 @@ module mips_avalon_slave(
                 end else begin
                     wait_ctr = WRITE_DELAY-1; // Offset for timing requirements
                     waiting = 1;
-                    towrite = memory[addr_shift-ADDR_START_SHIFT];   // Just fetch this first
+                    towrite = memory[address-ADDR_START];   // Just fetch this first
                     $display("RAM : STATUS : Write 0x%h data request at address 0x%h, wait for %1d cycles", writedata, address, wait_ctr);
                 end
             end else if (read) begin
@@ -84,7 +78,7 @@ module mips_avalon_slave(
                         wait_ctr = -1;
                         $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
                     end else if (wait_ctr==1) begin
-                        readdata = memory[addr_shift-ADDR_START_SHIFT];    // Offset the addressing space (and also in time)
+                        readdata = memory[address-ADDR_START];    // Offset the addressing space (and also in time)
                         wait_ctr = 0;
                     end else begin
                         wait_ctr = wait_ctr-1;  // Decrement wait counter

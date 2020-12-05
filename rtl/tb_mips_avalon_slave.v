@@ -1,14 +1,16 @@
 // Testbench for the Avalon Memory-mapped slave (RAM unit?)
 
-module mips_avalon_slave_tb;
+module tb_mips_avalon_slave;
     timeunit 1ns / 1ns;
 
     parameter RAM_INIT_FILE = "test/avalon_slave_sample.txt";
-    parameter TEST_MEM_SIZE = 8;
-    parameter TEST_READ_DELAY = 2;
+    parameter TEST_MEM_SIZE = 1024;
+    parameter TEST_READ_DELAY = 3;
     parameter TEST_WRITE_DELAY = TEST_READ_DELAY;
-    parameter TIMEOUT_CYCLES = 10000;
+    parameter TIMEOUT_CYCLES = 100;
     parameter OFFSET = 32'hBFC00000;
+
+    localparam TEST_DURATION = 16;
 
     integer i=0;    // iterator variable
 
@@ -33,8 +35,9 @@ module mips_avalon_slave_tb;
     
     // Generate clock
     initial begin
+        assert(TEST_MEM_SIZE > 1023) else $fatal(2, "Mem size too small, must be >1024"); // check memory size
         $dumpfile("test_mips_avalon_slave_tb.vcd");
-        $dumpvars(0, mips_avalon_slave_tb);
+        $dumpvars(0, tb_mips_avalon_slave);
         clk=0;
 
         address <= 0;
@@ -73,7 +76,7 @@ module mips_avalon_slave_tb;
             @(posedge clk);
         end
 
-        address <= 1+OFFSET;
+        address <= 1*4+OFFSET;
         write <= 1;
         writedata <= 32'h11111111;
         byteenable <= 4'b0111;
@@ -84,7 +87,7 @@ module mips_avalon_slave_tb;
             @(posedge clk);
         end
 
-        address <= 2+OFFSET;
+        address <= 2*4+OFFSET;
         write <= 1;
         writedata <= 32'h11111111;
         byteenable <= 4'b1001;
@@ -95,7 +98,7 @@ module mips_avalon_slave_tb;
             @(posedge clk);
         end
 
-        address <= 3+OFFSET;
+        address <= 3*4+OFFSET;
         write <= 1;
         writedata <= 32'h11111111;
         byteenable <= 4'b0110;
@@ -109,9 +112,9 @@ module mips_avalon_slave_tb;
         write <= 0;
         @(posedge clk);
 
-        for(i=0; i<TEST_MEM_SIZE; i++) begin
+        for(i=0; i<TEST_DURATION; i++) begin
             read <= 1;
-            address <= i+OFFSET;
+            address <= i*4+OFFSET;
             @(posedge clk);
             $display("TB : %t : Reading from address %h", $time, address);
             

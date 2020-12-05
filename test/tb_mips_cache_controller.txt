@@ -1,0 +1,1587 @@
+RAM : INIT : Loading RAM contents from test/dummy_data_sample.txt
+WARNING: rtl/mips_avalon_slave.v:47: $readmemh: Standard inconsistency, following 1364-2005.
+WARNING: rtl/mips_avalon_slave.v:47: $readmemh(test/dummy_data_sample.txt): Not enough words in the file for the requested range [0:1023].
+VCD info: dumpfile tb_mips_cache_controller.vcd opened for output.
+
+TB : 25 : Checking for instruction read misses
+
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : IDLE
+TB : 35 : Read requested from address 0xbfc00000
+TB : 45 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc00000, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 55 : Wait as clk_enable is low
+TB : 65 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 75 : Wait as clk_enable is low
+TB : 85 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff00 data at address 0xbfc00000
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff00 into index 0x0, tag 0x05fe0000 assoc[0], address 0xbfc00000
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 95 : Wait as clk_enable is low
+TB : 105 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 115 : Read 0xffffff00 from address 0xbfc00000
+TB : 125 : Read requested from address 0xbfc00004
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+RAM : STATUS : Read requested at address 0xbfc00004, wait for 3 cycles
+TB : 135 : Wait as clk_enable is low
+TB : 145 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 155 : Wait as clk_enable is low
+TB : 165 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff01 data at address 0xbfc00004
+TB : 175 : Wait as clk_enable is low
+TB : 185 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff01 into index 0x1, tag 0x05fe0000 assoc[0], address 0xbfc00004
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : FETCH
+TB : 195 : Wait as clk_enable is low
+TB : 205 : Read 0xffffff01 from address 0xbfc00004
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 215 : Read requested from address 0xbfc00008
+TB : 225 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc00008, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 235 : Wait as clk_enable is low
+TB : 245 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 255 : Wait as clk_enable is low
+TB : 265 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff02 data at address 0xbfc00008
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff02 into index 0x2, tag 0x05fe0000 assoc[0], address 0xbfc00008
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 275 : Wait as clk_enable is low
+TB : 285 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 295 : Read 0xffffff02 from address 0xbfc00008
+TB : 305 : Read requested from address 0xbfc0000c
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+RAM : STATUS : Read requested at address 0xbfc0000c, wait for 3 cycles
+TB : 315 : Wait as clk_enable is low
+TB : 325 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 335 : Wait as clk_enable is low
+TB : 345 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff03 data at address 0xbfc0000c
+TB : 355 : Wait as clk_enable is low
+TB : 365 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff03 into index 0x3, tag 0x05fe0000 assoc[0], address 0xbfc0000c
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : FETCH
+TB : 375 : Wait as clk_enable is low
+TB : 385 : Read 0xffffff03 from address 0xbfc0000c
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 395 : Read requested from address 0xbfc00010
+TB : 405 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc00010, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 415 : Wait as clk_enable is low
+TB : 425 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 435 : Wait as clk_enable is low
+TB : 445 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff04 data at address 0xbfc00010
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff04 into index 0x4, tag 0x05fe0000 assoc[0], address 0xbfc00010
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 455 : Wait as clk_enable is low
+TB : 465 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 475 : Read 0xffffff04 from address 0xbfc00010
+TB : 485 : Read requested from address 0xbfc00014
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+RAM : STATUS : Read requested at address 0xbfc00014, wait for 3 cycles
+TB : 495 : Wait as clk_enable is low
+TB : 505 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 515 : Wait as clk_enable is low
+TB : 525 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff05 data at address 0xbfc00014
+TB : 535 : Wait as clk_enable is low
+TB : 545 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff05 into index 0x5, tag 0x05fe0000 assoc[0], address 0xbfc00014
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : FETCH
+TB : 555 : Wait as clk_enable is low
+TB : 565 : Read 0xffffff05 from address 0xbfc00014
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 575 : Read requested from address 0xbfc00018
+TB : 585 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc00018, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 595 : Wait as clk_enable is low
+TB : 605 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 615 : Wait as clk_enable is low
+TB : 625 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff06 data at address 0xbfc00018
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff06 into index 0x6, tag 0x05fe0000 assoc[0], address 0xbfc00018
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 635 : Wait as clk_enable is low
+TB : 645 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 655 : Read 0xffffff06 from address 0xbfc00018
+TB : 665 : Read requested from address 0xbfc0001c
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+RAM : STATUS : Read requested at address 0xbfc0001c, wait for 3 cycles
+TB : 675 : Wait as clk_enable is low
+TB : 685 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : 695 : Wait as clk_enable is low
+TB : 705 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff07 data at address 0xbfc0001c
+TB : 715 : Wait as clk_enable is low
+TB : 725 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+CACHE_CTRL : STATUS : waitrequest complete
+INSTR_CACHE : Replacement required: Valid buffer: 0000
+INSTR_CACHE : Trivial case, current valid buffer is 0000
+INSTR_CACHE : Loading 0xffffff07 into index 0x7, tag 0x05fe0000 assoc[0], address 0xbfc0001c
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : FETCH
+TB : 735 : Wait as clk_enable is low
+TB : 745 : Read 0xffffff07 from address 0xbfc0001c
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+
+TB : 765 : Reading addresses again to check that they do not miss
+
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 775 : Read requested from address 0xbfc00000
+TB : 785 : Read 0xffffff00 from address 0xbfc00000
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 795 : Read requested from address 0xbfc00004
+TB : 805 : Read 0xffffff01 from address 0xbfc00004
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 815 : Read requested from address 0xbfc00008
+TB : 825 : Read 0xffffff02 from address 0xbfc00008
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 835 : Read requested from address 0xbfc0000c
+TB : 845 : Read 0xffffff03 from address 0xbfc0000c
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 855 : Read requested from address 0xbfc00010
+TB : 865 : Read 0xffffff04 from address 0xbfc00010
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 875 : Read requested from address 0xbfc00014
+TB : 885 : Read 0xffffff05 from address 0xbfc00014
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 895 : Read requested from address 0xbfc00018
+TB : 905 : Read 0xffffff06 from address 0xbfc00018
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+TB : 915 : Read requested from address 0xbfc0001c
+TB : 925 : Read 0xffffff07 from address 0xbfc0001c
+CACHE_CTRL : STATE : IDLE
+INSTR_CACHE : READ HIT
+CACHE_CTRL : STATE : IDLE
+
+TB : 935 : Checking for data read misses
+
+TB : 945 : Read requested from address 0xbfc00100
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00100, wait for 3 cycles
+TB : 955 : Wait as clk_enable is low
+TB : 965 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 975 : Wait as clk_enable is low
+TB : 985 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff40 data at address 0xbfc00100
+TB : 995 : Wait as clk_enable is low
+TB : 1005 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff40 into index 0x0, tag 0x05fe0008 assoc[0], address 0xbfc00100
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 1015 : Wait as clk_enable is low
+TB : 1025 : Read 0xffffff40 from address 0xbfc00100
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1035 : Read requested from address 0xbfc00104
+TB : 1045 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc00104, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1055 : Wait as clk_enable is low
+TB : 1065 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1075 : Wait as clk_enable is low
+TB : 1085 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff41 data at address 0xbfc00104
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff41 into index 0x1, tag 0x05fe0008 assoc[0], address 0xbfc00104
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 1095 : Wait as clk_enable is low
+TB : 1105 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1115 : Read 0xffffff41 from address 0xbfc00104
+TB : 1125 : Read requested from address 0xbfc00108
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00108, wait for 3 cycles
+TB : 1135 : Wait as clk_enable is low
+TB : 1145 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1155 : Wait as clk_enable is low
+TB : 1165 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff42 data at address 0xbfc00108
+TB : 1175 : Wait as clk_enable is low
+TB : 1185 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff42 into index 0x2, tag 0x05fe0008 assoc[0], address 0xbfc00108
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 1195 : Wait as clk_enable is low
+TB : 1205 : Read 0xffffff42 from address 0xbfc00108
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1215 : Read requested from address 0xbfc0010c
+TB : 1225 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc0010c, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1235 : Wait as clk_enable is low
+TB : 1245 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1255 : Wait as clk_enable is low
+TB : 1265 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff43 data at address 0xbfc0010c
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff43 into index 0x3, tag 0x05fe0008 assoc[0], address 0xbfc0010c
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 1275 : Wait as clk_enable is low
+TB : 1285 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1295 : Read 0xffffff43 from address 0xbfc0010c
+TB : 1305 : Read requested from address 0xbfc00110
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00110, wait for 3 cycles
+TB : 1315 : Wait as clk_enable is low
+TB : 1325 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1335 : Wait as clk_enable is low
+TB : 1345 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff44 data at address 0xbfc00110
+TB : 1355 : Wait as clk_enable is low
+TB : 1365 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff44 into index 0x4, tag 0x05fe0008 assoc[0], address 0xbfc00110
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 1375 : Wait as clk_enable is low
+TB : 1385 : Read 0xffffff44 from address 0xbfc00110
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1395 : Read requested from address 0xbfc00114
+TB : 1405 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc00114, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1415 : Wait as clk_enable is low
+TB : 1425 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1435 : Wait as clk_enable is low
+TB : 1445 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff45 data at address 0xbfc00114
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff45 into index 0x5, tag 0x05fe0008 assoc[0], address 0xbfc00114
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 1455 : Wait as clk_enable is low
+TB : 1465 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1475 : Read 0xffffff45 from address 0xbfc00114
+TB : 1485 : Read requested from address 0xbfc00118
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00118, wait for 3 cycles
+TB : 1495 : Wait as clk_enable is low
+TB : 1505 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1515 : Wait as clk_enable is low
+TB : 1525 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff46 data at address 0xbfc00118
+TB : 1535 : Wait as clk_enable is low
+TB : 1545 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff46 into index 0x6, tag 0x05fe0008 assoc[0], address 0xbfc00118
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 1555 : Wait as clk_enable is low
+TB : 1565 : Read 0xffffff46 from address 0xbfc00118
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1575 : Read requested from address 0xbfc0011c
+TB : 1585 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc0011c, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1595 : Wait as clk_enable is low
+TB : 1605 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 1615 : Wait as clk_enable is low
+TB : 1625 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff47 data at address 0xbfc0011c
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xffffff47 into index 0x7, tag 0x05fe0008 assoc[0], address 0xbfc0011c
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 1635 : Wait as clk_enable is low
+TB : 1645 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1655 : Read 0xffffff47 from address 0xbfc0011c
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : IDLE
+
+TB : 1675 : Reading addresses again to check that they do not miss
+
+TB : 1685 : Read requested from address 0xbfc00100
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1695 : Read 0xffffff40 from address 0xbfc00100
+TB : 1705 : Read requested from address 0xbfc00104
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1715 : Read 0xffffff41 from address 0xbfc00104
+TB : 1725 : Read requested from address 0xbfc00108
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1735 : Read 0xffffff42 from address 0xbfc00108
+TB : 1745 : Read requested from address 0xbfc0010c
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1755 : Read 0xffffff43 from address 0xbfc0010c
+TB : 1765 : Read requested from address 0xbfc00110
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1775 : Read 0xffffff44 from address 0xbfc00110
+TB : 1785 : Read requested from address 0xbfc00114
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1795 : Read 0xffffff45 from address 0xbfc00114
+TB : 1805 : Read requested from address 0xbfc00118
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1815 : Read 0xffffff46 from address 0xbfc00118
+TB : 1825 : Read requested from address 0xbfc0011c
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : IDLE
+TB : 1835 : Read 0xffffff47 from address 0xbfc0011c
+
+TB : 1845 : Regular Write Check
+
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x00000100 into index 0x0, tag 0x05fe0002 assoc[1], address 0xbfc00040
+CACHE_CTRL : STATE : IDLE
+TB : 1855 : Write requested to address 0xbfc00040 with value 0x00000100
+CACHE_CTRL : STATE : IDLE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x00000121 into index 0x1, tag 0x05fe0002 assoc[1], address 0xbfc00044
+CACHE_CTRL : STATE : WRITE
+TB : 1875 : Write requested to address 0xbfc00044 with value 0x00000121
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x00000144 into index 0x2, tag 0x05fe0002 assoc[1], address 0xbfc00048
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000100 data request at address 0xbfc00040, wait for 3 cycles
+TB : 1895 : Write requested to address 0xbfc00048 with value 0x00000144
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x00000169 into index 0x3, tag 0x05fe0002 assoc[1], address 0xbfc0004c
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 1915 : Write requested to address 0xbfc0004c with value 0x00000169
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x00000190 into index 0x4, tag 0x05fe0002 assoc[1], address 0xbfc00050
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000100 data at address 0xbfc00040
+TB : 1935 : Write requested to address 0xbfc00050 with value 0x00000190
+TB : 1945 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000100 data request at address 0xbfc00040, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 1965 : Write requested to address 0xbfc00054 with value 0x000001b9
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x000001b9 into index 0x5, tag 0x05fe0002 assoc[1], address 0xbfc00054
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 1975 : Wait as clk_enable is low
+TB : 1985 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000100 data at address 0xbfc00040
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000100 data request at address 0xbfc00040, wait for 3 cycles
+TB : 1995 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x000001e4 into index 0x6, tag 0x05fe0002 assoc[1], address 0xbfc00058
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2015 : Write requested to address 0xbfc00058 with value 0x000001e4
+TB : 2025 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000121 data at address 0xbfc00044
+TB : 2035 : Wait as clk_enable is low
+TB : 2045 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000121 data request at address 0xbfc00044, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2065 : Write requested to address 0xbfc0005c with value 0x00000211
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : Replacement required: Valid buffer: 0001
+DATA_CACHE : Trivial case, current valid buffer is 0001
+DATA_CACHE : Loading 0x00000211 into index 0x7, tag 0x05fe0002 assoc[1], address 0xbfc0005c
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2075 : Wait as clk_enable is low
+TB : 2085 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000121 data at address 0xbfc00044
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000121 data request at address 0xbfc00044, wait for 3 cycles
+TB : 2095 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+
+TB : 2115 : Read check to validate written results
+
+TB : 2125 : Read requested from address 0xbfc00040
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000144 data at address 0xbfc00048
+TB : 2135 : Cache read value 0x00000100 at address 0xbfc00040
+
+TB : 2145 : Read requested from address 0xbfc00044
+RAM : STATUS : Write 0x00000144 data request at address 0xbfc00048, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2155 : Cache read value 0x00000121 at address 0xbfc00044
+
+TB : 2165 : Read requested from address 0xbfc00048
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2175 : Cache read value 0x00000144 at address 0xbfc00048
+
+TB : 2185 : Read requested from address 0xbfc0004c
+RAM : WRITE : Wrote 0x00000144 data at address 0xbfc00048
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000144 data request at address 0xbfc00048, wait for 3 cycles
+TB : 2195 : Cache read value 0x00000169 at address 0xbfc0004c
+
+TB : 2205 : Read requested from address 0xbfc00050
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2215 : Cache read value 0x00000190 at address 0xbfc00050
+
+TB : 2225 : Read requested from address 0xbfc00054
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000169 data at address 0xbfc0004c
+TB : 2235 : Cache read value 0x000001b9 at address 0xbfc00054
+
+TB : 2245 : Read requested from address 0xbfc00058
+RAM : STATUS : Write 0x00000169 data request at address 0xbfc0004c, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2255 : Cache read value 0x000001e4 at address 0xbfc00058
+
+TB : 2265 : Read requested from address 0xbfc0005c
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2275 : Cache read value 0x00000211 at address 0xbfc0005c
+
+
+TB : 2285 : WB Emptying
+
+RAM : WRITE : Wrote 0x00000169 data at address 0xbfc0004c
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000169 data request at address 0xbfc0004c, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000190 data at address 0xbfc00050
+RAM : STATUS : Write 0x00000190 data request at address 0xbfc00050, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x000001b9 data at address 0xbfc00054
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x000001b9 data request at address 0xbfc00054, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x000001e4 data at address 0xbfc00058
+RAM : STATUS : Write 0x000001e4 data request at address 0xbfc00058, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000211 data at address 0xbfc0005c
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+
+TB : 2505 : Partial Write Check
+
+CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : IDLE
+TB : 2515 : Write requested to address 0xbfc00080 with value 0x00000040
+TB : 2525 : Wait as clk_enable is low
+RAM : STATUS : Read requested at address 0xbfc00080, wait for 3 cycles
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 2535 : Wait as clk_enable is low
+TB : 2545 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 2555 : Wait as clk_enable is low
+TB : 2565 : Wait as clk_enable is low
+RAM : READ : Read 0xffffff20 data at address 0xbfc00080
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff40 into index 0x0, tag 0x05fe0004 assoc[2], address 0xbfc00080
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+TB : 2575 : Wait as clk_enable is low
+TB : 2585 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : WRITE
+TB : 2605 : Write requested to address 0xbfc00084 with value 0x00000042
+RAM : STATUS : Write 0x00000211 data request at address 0xbfc0005c, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2615 : Wait as clk_enable is low
+TB : 2625 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2635 : Wait as clk_enable is low
+TB : 2645 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00084, wait for 3 cycles
+TB : 2655 : Wait as clk_enable is low
+TB : 2665 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 2675 : Wait as clk_enable is low
+TB : 2685 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff21 data at address 0xbfc00084
+TB : 2695 : Wait as clk_enable is low
+TB : 2705 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff42 into index 0x1, tag 0x05fe0004 assoc[2], address 0xbfc00084
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 2715 : Wait as clk_enable is low
+TB : 2725 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+TB : 2735 : Wait as clk_enable is low
+TB : 2745 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2755 : Wait as clk_enable is low
+TB : 2765 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+TB : 2775 : Wait as clk_enable is low
+TB : 2785 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2805 : Write requested to address 0xbfc00088 with value 0x00000044
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2815 : Wait as clk_enable is low
+TB : 2825 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00088, wait for 3 cycles
+TB : 2835 : Wait as clk_enable is low
+TB : 2845 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 2855 : Wait as clk_enable is low
+TB : 2865 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff22 data at address 0xbfc00088
+TB : 2875 : Wait as clk_enable is low
+TB : 2885 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff44 into index 0x2, tag 0x05fe0004 assoc[2], address 0xbfc00088
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 2895 : Wait as clk_enable is low
+TB : 2905 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+TB : 2915 : Wait as clk_enable is low
+TB : 2925 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2935 : Wait as clk_enable is low
+TB : 2945 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+TB : 2955 : Wait as clk_enable is low
+TB : 2965 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2985 : Write requested to address 0xbfc0008c with value 0x00000046
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 2995 : Wait as clk_enable is low
+TB : 3005 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc0008c, wait for 3 cycles
+TB : 3015 : Wait as clk_enable is low
+TB : 3025 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 3035 : Wait as clk_enable is low
+TB : 3045 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff23 data at address 0xbfc0008c
+TB : 3055 : Wait as clk_enable is low
+TB : 3065 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff46 into index 0x3, tag 0x05fe0004 assoc[2], address 0xbfc0008c
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 3075 : Wait as clk_enable is low
+TB : 3085 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+TB : 3095 : Wait as clk_enable is low
+TB : 3105 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3115 : Wait as clk_enable is low
+TB : 3125 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+TB : 3135 : Wait as clk_enable is low
+TB : 3145 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3165 : Write requested to address 0xbfc00090 with value 0x00000048
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3175 : Wait as clk_enable is low
+TB : 3185 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00090, wait for 3 cycles
+TB : 3195 : Wait as clk_enable is low
+TB : 3205 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 3215 : Wait as clk_enable is low
+TB : 3225 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff24 data at address 0xbfc00090
+TB : 3235 : Wait as clk_enable is low
+TB : 3245 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff48 into index 0x4, tag 0x05fe0004 assoc[2], address 0xbfc00090
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 3255 : Wait as clk_enable is low
+TB : 3265 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+TB : 3275 : Wait as clk_enable is low
+TB : 3285 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3295 : Wait as clk_enable is low
+TB : 3305 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000040 data at address 0xbfc00080
+TB : 3315 : Wait as clk_enable is low
+TB : 3325 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000040 data request at address 0xbfc00080, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3345 : Write requested to address 0xbfc00094 with value 0x0000004a
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3355 : Wait as clk_enable is low
+TB : 3365 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000042 data at address 0xbfc00084
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00094, wait for 3 cycles
+TB : 3375 : Wait as clk_enable is low
+TB : 3385 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 3395 : Wait as clk_enable is low
+TB : 3405 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff25 data at address 0xbfc00094
+TB : 3415 : Wait as clk_enable is low
+TB : 3425 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff4a into index 0x5, tag 0x05fe0004 assoc[2], address 0xbfc00094
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 3435 : Wait as clk_enable is low
+TB : 3445 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000042 data request at address 0xbfc00084, wait for 3 cycles
+TB : 3455 : Wait as clk_enable is low
+TB : 3465 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3475 : Wait as clk_enable is low
+TB : 3485 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000042 data at address 0xbfc00084
+TB : 3495 : Wait as clk_enable is low
+TB : 3505 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000042 data request at address 0xbfc00084, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3525 : Write requested to address 0xbfc00098 with value 0x0000004c
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3535 : Wait as clk_enable is low
+TB : 3545 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000044 data at address 0xbfc00088
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc00098, wait for 3 cycles
+TB : 3555 : Wait as clk_enable is low
+TB : 3565 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 3575 : Wait as clk_enable is low
+TB : 3585 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff26 data at address 0xbfc00098
+TB : 3595 : Wait as clk_enable is low
+TB : 3605 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff4c into index 0x6, tag 0x05fe0004 assoc[2], address 0xbfc00098
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 3615 : Wait as clk_enable is low
+TB : 3625 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000044 data request at address 0xbfc00088, wait for 3 cycles
+TB : 3635 : Wait as clk_enable is low
+TB : 3645 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3655 : Wait as clk_enable is low
+TB : 3665 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000044 data at address 0xbfc00088
+TB : 3675 : Wait as clk_enable is low
+TB : 3685 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000044 data request at address 0xbfc00088, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3705 : Write requested to address 0xbfc0009c with value 0x0000004e
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3715 : Wait as clk_enable is low
+TB : 3725 : Wait as clk_enable is low
+RAM : WRITE : Wrote 0x00000046 data at address 0xbfc0008c
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+RAM : STATUS : Read requested at address 0xbfc0009c, wait for 3 cycles
+TB : 3735 : Wait as clk_enable is low
+TB : 3745 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+TB : 3755 : Wait as clk_enable is low
+TB : 3765 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+RAM : READ : Read 0xffffff27 data at address 0xbfc0009c
+TB : 3775 : Wait as clk_enable is low
+TB : 3785 : Wait as clk_enable is low
+CACHE_CTRL : STATE : FETCH
+CACHE_CTRL : STATUS : instr_stall: 0, data_stall: 1
+CACHE_CTRL : STATUS : waitrequest complete
+DATA_CACHE : Replacement required: Valid buffer: 0011
+DATA_CACHE : Trivial case, current valid buffer is 0011
+DATA_CACHE : Loading 0xff00ff4e into index 0x7, tag 0x05fe0004 assoc[2], address 0xbfc0009c
+DATA_CACHE : READ/WRITE HIT
+CACHE_CTRL : STATE : FETCH
+TB : 3795 : Wait as clk_enable is low
+TB : 3805 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000046 data request at address 0xbfc0008c, wait for 3 cycles
+TB : 3815 : Wait as clk_enable is low
+TB : 3825 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3835 : Wait as clk_enable is low
+TB : 3845 : Wait as clk_enable is low
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000046 data at address 0xbfc0008c
+TB : 3855 : Wait as clk_enable is low
+TB : 3865 : Wait as clk_enable is low
+RAM : STATUS : Write 0x00000046 data request at address 0xbfc0008c, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+
+TB : 3885 : Read check to validate written results
+
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3895 : Read requested from address 0xbfc00080
+TB : 3905 : Cache read value 0xff00ff40 at address 0xbfc00080, expected 0xff00ff40
+
+RAM : WRITE : Wrote 0x00000048 data at address 0xbfc00090
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x00000048 data request at address 0xbfc00090, wait for 3 cycles
+TB : 3915 : Read requested from address 0xbfc00084
+TB : 3925 : Cache read value 0xff00ff42 at address 0xbfc00084, expected 0xff00ff42
+
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3935 : Read requested from address 0xbfc00088
+TB : 3945 : Cache read value 0xff00ff44 at address 0xbfc00088, expected 0xff00ff44
+
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x00000048 data at address 0xbfc00090
+TB : 3955 : Read requested from address 0xbfc0008c
+TB : 3965 : Cache read value 0xff00ff46 at address 0xbfc0008c, expected 0xff00ff46
+
+RAM : STATUS : Write 0x00000048 data request at address 0xbfc00090, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3975 : Read requested from address 0xbfc00090
+TB : 3985 : Cache read value 0xff00ff48 at address 0xbfc00090, expected 0xff00ff48
+
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 3995 : Read requested from address 0xbfc00094
+TB : 4005 : Cache read value 0xff00ff4a at address 0xbfc00094, expected 0xff00ff4a
+
+RAM : WRITE : Wrote 0x0000004a data at address 0xbfc00094
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x0000004a data request at address 0xbfc00094, wait for 3 cycles
+TB : 4015 : Read requested from address 0xbfc00098
+TB : 4025 : Cache read value 0xff00ff4c at address 0xbfc00098, expected 0xff00ff4c
+
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+TB : 4035 : Read requested from address 0xbfc0009c
+TB : 4045 : Cache read value 0xff00ff4e at address 0xbfc0009c, expected 0xff00ff4e
+
+CACHE_CTRL : STATE : WRITE
+WB : Active
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x0000004a data at address 0xbfc00094
+
+TB : 4055 : WB Emptying
+
+RAM : STATUS : Write 0x0000004a data request at address 0xbfc00094, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x0000004c data at address 0xbfc00098
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x0000004c data request at address 0xbfc00098, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x0000004c data at address 0xbfc00098
+RAM : STATUS : Write 0x0000004c data request at address 0xbfc00098, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x0000004e data at address 0xbfc0009c
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : STATUS : Write 0x0000004e data request at address 0xbfc0009c, wait for 3 cycles
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+WB : Active
+CACHE_CTRL : STATE : WRITE
+RAM : WRITE : Wrote 0x0000004e data at address 0xbfc0009c
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CACHE_CTRL : STATE : IDLE

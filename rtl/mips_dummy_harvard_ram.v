@@ -5,6 +5,7 @@ module dummy_harvard_ram(
     input logic[31:0]  instr_address,
     output logic[31:0] instr_readdata,
 
+
     input logic[3:0] byteenable,
     input logic[31:0] data_address,
     input logic data_write,
@@ -25,7 +26,7 @@ module dummy_harvard_ram(
     assign data_addr_real = (data_address-OFFSET) >> 2;
     assign instr_addr_real = (instr_address-OFFSET) >> 2;
     logic [31:0] towrite;   // byte enable implementation
-    
+
     reg[31:0] memory [MEM_SIZE-1:0];    // Memory is contained here
 
     initial begin

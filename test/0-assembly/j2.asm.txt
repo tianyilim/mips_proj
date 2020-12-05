@@ -1,0 +1,23 @@
+j 5                #26 bit
+addiu $v0, 10
+jr $v0
+noop
+
+j 10
+addiu $v0, 10
+jr $v0
+noop
+noop
+
+j 13
+addiu $v0, 10
+jr $v0
+noop
+
+jr $zero  #halt
+
+
+
+comment: normal jumps
+
+#j cant only jump to mem instr

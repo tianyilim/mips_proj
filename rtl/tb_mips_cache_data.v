@@ -35,13 +35,14 @@ module tb_mips_cache_data;
                                 .read_en(cache_read), .write_en(cache_write),
                                 .writedata(cache_writedata), .byte_en(cache_byteenable),
                                 .readdata(cache_readdata), .stall(cache_stall),
-                                .data_addr(mem_addr), .data_in(mem_readdata),
-                                .data_valid(mem_dvalid));
+                                .data_in(mem_readdata), .data_valid(mem_dvalid)
+                                );
     dummy_ram #(.MEM_BITS(MEM_BITS), .DVALID_DELAY(DVALID_DELAY), 
                                 .MEM_INIT_FILE(MEM_INIT_FILE)) 
-                                dummy_ram(.clk(clk), .addr(mem_addr),
+                                dummy_ram(.clk(clk), .addr(cache_addr),
                                 .read_en(cache_stall), .data(mem_readdata),
-                                .dvalid(mem_dvalid));
+                                .dvalid(mem_dvalid)
+                                );
     
     // Initialise test vector
     initial begin
@@ -66,18 +67,25 @@ module tb_mips_cache_data;
             #5;
             clk = !clk;
         end
-        cache_read = 0;
-        cache_write = 0;
         $fatal(2, "Simulation did not finish within %d cycles.", TIMEOUT_CYCLES);
     end
 
     initial begin
         $display("TB : %2t : Started testbench", $time);
         rst <= 0;
+        cache_read = 0;
+        cache_addr = 0;
+        cache_write = 0;
         @(posedge clk);
         rst <= 1;
         @(posedge clk);
         rst <= 0;
+        @(posedge clk);
+
+        // Do nothing (idling)
+        $display("\nTB : %2t : Idling Test (for stall assertion)\n", $time);
+        @(posedge clk);
+        @(posedge clk);
         @(posedge clk);
 
         $display("\nTB : %2t : Temporal Locality Check\n", $time);
@@ -94,6 +102,7 @@ module tb_mips_cache_data;
             @(posedge clk);
             $display("TB : %2t : Cache read value 0x%h at address 0x%h\n", $time, cache_readdata, cache_addr);
         end
+        
         $display("\nTB : %2t : Second round of reading\n", $time);
         for (i=0; i<8; i++) begin
             cache_addr <= i*4;

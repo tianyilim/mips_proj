@@ -1,0 +1,15 @@
+lw $t2, (mem)   #largest 32 bit?
+jr $t2
+
+beq $zero, $zero (26bit number)  #jump until wrap around
+
+
+#have a preset lw $v0 instr in data mem
+
+jr $zero
+
+
+
+
+
+comment: wrap around

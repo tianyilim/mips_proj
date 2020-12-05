@@ -1,0 +1,10 @@
+lw $t2, $zero, 0003 #0s
+lw $t3, $zero, 0004 #1s
+lw $t4, $zero, 0005 #random
+lw $t5, $zero, 0007 #random
+
+
+xor $v0, $t4, $t2
+xor $v0, $t4, $t3
+xor $v0, $t4, $t5
+jr $zero

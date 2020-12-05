@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # Tests the Write Buffer module
 # Note, start your X-server or related display driver before running

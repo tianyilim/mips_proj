@@ -1,3 +1,4 @@
+`timescale 1ns / 1ns
 module mips_cache_writebuffer(
     input logic clk,
     input logic rst,
@@ -6,6 +7,10 @@ module mips_cache_writebuffer(
     input write_en,
     input logic[31:0] writedata,
     input logic[3:0] byteenable,
+
+    input logic active,             // Enable this when the module is to be active
+                                    // Sometimes we need to temporarily stop writing
+                                    // and 'hijack' the process for a read miss.
     
     input logic waitrequest,        // When to write the next byte?
     output logic[31:0] write_addr,  // Address to write to avalon bus
@@ -43,7 +48,7 @@ module mips_cache_writebuffer(
     assign full = full_buf==$pow(2,BUFSIZE)-1;
     assign empty = full_buf==0;
     assign state_out = state;   // Debug
-    assign write_writeenable = ~empty; // Write when there are things to write!
+    assign write_writeenable = !empty & active; // Write when there are things to write!
 
     always @(posedge clk) begin
         if (rst) begin
@@ -62,22 +67,25 @@ module mips_cache_writebuffer(
             end
         end else begin  // unreset behaviour
             // $display("WB : Unreset");
-            // writing always happens when not empty
-            if (full_buf[write_ptr]) begin
-                // write_writeenable <= 1;
-                write_addr <= addr_buf[write_ptr];
-                write_data <= data_buf[write_ptr];
-                write_byteenable <= byte_en_buf[write_ptr];
-                if (~waitrequest) begin
-                    // Only do this after waitrequest not asserted
-                    // write_writeenable <= 0;
-                    full_buf[write_ptr] <= 0;
-                    write_ptr <= write_ptr + 1;
+            // writing always happens when not empty unless active low
+            if (active) begin
+                $display("WB : Active");
+                if (full_buf[write_ptr]) begin
+                    // write_writeenable <= 1;
+                    write_addr <= addr_buf[write_ptr];
+                    write_data <= data_buf[write_ptr];
+                    write_byteenable <= byte_en_buf[write_ptr];
+                    if (~waitrequest) begin
+                        // Only do this after waitrequest not asserted
+                        // write_writeenable <= 0;
+                        full_buf[write_ptr] <= 0;
+                        write_ptr <= write_ptr + 1;
+                    end
+                end else begin
+                    // Keep on incrementing the write pointer encounters empty
+                    // If not empty
+                    write_ptr <= write_ptr + (state!=STATE_IDLE);
                 end
-            end else begin
-                // Keep on incrementing the write pointer encounters empty
-                // If not empty
-                write_ptr <= write_ptr + (state!=STATE_IDLE);
             end
 
             case (state)

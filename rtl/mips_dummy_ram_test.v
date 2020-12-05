@@ -1,4 +1,5 @@
 // Simulates a dummy Read-Only memory
+`timescale 1ns / 1ns
 module dummy_ram(
     input logic clk,
 

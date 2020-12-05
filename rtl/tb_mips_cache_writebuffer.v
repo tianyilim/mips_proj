@@ -43,6 +43,8 @@ module tb_mips_cache_writebuffer;
     logic[31:0] read_addr;  // Read address for RAM
     logic write_read; // 0: ram_address from writebuffer, 1: ram_adress from read source
 
+    logic wb_active;
+
     mips_avalon_slave #(.RAM_INIT_FILE(RAM_INIT_FILE), .MEM_SIZE(TEST_MEM_SIZE),
                         .READ_DELAY(TEST_READ_DELAY), .WRITE_DELAY(TEST_WRITE_DELAY)) 
                         ramInst(.clk(clk), .rst(rst), .address(ram_address),
@@ -53,7 +55,7 @@ module tb_mips_cache_writebuffer;
     mips_cache_writebuffer #(.BUF_BITS(WB_BUF_BITS)) wbuf(.clk(clk), .rst(rst),
                         .addr(wb_addr), .write_en(wb_write_en), .writedata(wb_writedata),
                         .byteenable(wb_byteenable), .write_addr(wb_write_addr),
-                        .waitrequest(waitrequest),
+                        .waitrequest(waitrequest), .active(wb_active),
                         .write_data(ram_writedata), .write_byteenable(ram_byteenable),
                         .write_writeenable(ram_write), .full(wb_full), .empty(wb_empty));
     
@@ -86,6 +88,8 @@ module tb_mips_cache_writebuffer;
         $dumpvars(0, tb_mips_cache_writebuffer);
         clk=0;
         write_read <= 0;
+        wb_active <= 1;
+
         repeat (TIMEOUT_CYCLES) begin
             #5;
             clk = !clk;
@@ -178,6 +182,17 @@ module tb_mips_cache_writebuffer;
             @(posedge clk);
             $display("TB : %2t : Waiting for WB to empty out", $time);
             $display("TB : %2t : Current ram_address 0x%h, write addr 0x%h, writing=%b", $time, ram_address, wb_write_addr, write_read);
+            // Test active here
+            if (~waitrequest) begin
+                wb_active <= 0;
+                $display("TB : %2t : Set Active to 0 to see if writing stops", $time);
+                repeat (5) begin
+                    @(posedge clk);
+                    $display("TB : %2t : Waiting cycles, writing should not be happening", $time);
+                end
+                wb_active <= 1;
+                $display("TB : %2t : Reset Active to 1 to see if writing starts", $time);
+            end
         end
 
         for(i=0; i<2*TEST_DURATION; i++) begin

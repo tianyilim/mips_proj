@@ -1,0 +1,10 @@
+lw $t2, $zero, 0004
+ori $v0, $t2, 0000
+ori $v0, $t2, AAAA   #do we need this?
+ori $v0, $t2, FFFF    
+jr $zero
+
+
+
+
+comment: test ori

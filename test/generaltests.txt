@@ -1,0 +1,52 @@
+check main functionality
+- use largest positive/largest negative/0s
+
+edge cases
+j type - j to itself
+       - j to reset vector
+       - j to branch delay slot
+       - j in branch delay slot of another j
+
+arithmetic operations (immediate)
+-check sign extension/0 extended
+-overflow
+-rd = $zero
+
+branches(pcnext+immediate)
+-wrap around
+-immediate=0
+-reset in branch delay slot? (store a branch instr in BCE000000)
+
+lw
+-load into $zero
+-load from reset vector
+-load from halt
+-for load <32 bit check sign extension
+
+sw(check little endian)
+-change instr memory
+-change reset vector
+-change halt 
+-invalid address (not BCF000 + 8x)
+
+jalr
+- rd=$zero
+
+r-type arithetic
+- rd=$zero
+- overflow
+
+and link
+- addiu $v0 $r31 0
+
+
+no edge case?
+mthi
+mtlo
+shifts - just check correct bits shifted in? (negative & positive number shifted)
+slt
+
+not pipelined - no data hazards
+
+mem[imm+base] negative immediate
+- would any cpu be designed such that the immediate gets sign extended?

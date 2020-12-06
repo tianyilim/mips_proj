@@ -236,12 +236,12 @@ module mips_CPU_bus_tb;
 				$display("Pass... (so far) :p\n");
 			end
 			else begin
-				$fatal(2, "FAIL! $v0 does not agree with expected result!\n");
+				$display(2, "FAIL! $v0 does not agree with expected result!\n");
 			end
 
 		end
 		
-		$finish("End of testbench. Congratulations, your CPU passed all the tests run.\n");
+		$finish("End of testbench. \n");
 	end
 
 endmodule

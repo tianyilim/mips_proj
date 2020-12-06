@@ -18,8 +18,14 @@
 6. The file test_prog_list.txt contains many programs to test the MIPS instructions. When a testt program successfully generates the expected
    result in register_v0, a message saying "Pass...(so far) :p" will appear and the next test program will run.
 
-7. Once the CPU passes all test programs, the message "End of testbench. Congratulations, your CPU passed all the tests run." will appear, and 
-   the testbench exits.
+7. If the CPU successfully finishes execution of one program, but the result in register_v0 is not the expected result, a message saying 
+   "FAIL! $v0 does not agree with expected result!" will appear, and the next test program will be run.
+
+8. Once the CPU finishes all test programs without the "fatal", the message "End of testbench." will appear, and the testbench exits.
+
+9. If at any point the CPU runs into a "fatal" error like being active while reseeet is asserted or failing to start when reset is deasserted, or 
+   trying to access invalid memory locations, the testbench immediately displays the relevant error message and exits.
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 

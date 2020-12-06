@@ -12,8 +12,14 @@
 4. Compile the CPU testbench with:
    iverilog -Wall -g 2012 -s mips_CPU_bus_tb -o mips_CPU__tb mips_CPU__tb.v mips_avalon_slave.v mips_CPU_bus.v
 
-5. Ensure that the compiled testbench is in the same directory as the file test_prog_list.txt, and run the testbench.
+5. Ensure that the compiled testbench is in the same directory as the file test_prog_list.txt, and run the testbench:
+   ./mips_CPU_bus_tb
 
+6. The file test_prog_list.txt contains many programs to test the MIPS instructions. When a testt program successfully generates the expected
+   result in register_v0, a message saying "Pass...(so far) :p" will appear and the next test program will run.
+
+7. Once the CPU passes all test programs, the message "End of testbench. Congratulations, your CPU passed all the tests run." will appear, and 
+   the testbench exits.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 

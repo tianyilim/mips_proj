@@ -1,8 +1,0 @@
-j 1
-addiu $v0, 0001
-
-
-comment: jump to itself
-
-
-# repeats until testbench times out?

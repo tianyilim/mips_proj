@@ -8,14 +8,14 @@ TESTNAME="$2"
 INSTRUCTION="$3"
 
 #extract comment 
-comment=$(grep -w comment /test/0-assembly/${TESTNAME}.asm.txt)  
-comment=${comment:8}     #maybe 9 instead for space?
+comment=$(grep -w comment ./test/0-assembly/${TESTNAME}.asm.txt)  
+comment=${comment:8}    
 
 
 
 
 #assembly                    #directory?
-./Assembler/src/assembler.cpp <test/0-assembly/${TESTNAME}.asm.txt >test/1-binary/${TESTNAME}.hex.txt
+./Assembler/src/assembler <test/0-assembly/${TESTNAME}.asm.txt >test/1-binary/${TESTNAME}.hex.txt
 
 
 

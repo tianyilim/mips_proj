@@ -1,9 +1,0 @@
-lw $t2, $zero, 0004
-andi $v0, $t2, 0000
-andi $v0, $t2, AAAA   #do we need this?
-andi $v0, $t2, FFFF    #put this after jr? 
-jr $zero
-   
-
-
-comment: tests andi  #does assembler ignore this?

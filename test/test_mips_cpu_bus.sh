@@ -4,7 +4,7 @@ set -eou pipefail
 
 #arguments
 SOURCE="$1"     #source directory   
-INSTRUCTION="$2"
+INSTRUCTION=${2:-}
 
 TESTCASES="test/0-assembly/${INSTRUCTION}*.asm.txt"    
 

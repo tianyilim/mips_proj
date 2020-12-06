@@ -1,0 +1,16 @@
+lw $t2, $zero, 0004  #neg number
+lw $t3, $zero, 0005  #pos number
+
+
+beq $t2, $zero, 0003
+addiu $v0, 10
+jr $zero
+
+beq $v0, $zero, 0003
+addiu $v0, 10
+jr $zero
+
+beq $v0, $zero, 0003 #pcnext+3
+addiu $v0, 10
+jr $zero
+

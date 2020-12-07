@@ -1,0 +1,92 @@
+ASSEMBLER: ARYAN GHOBADI:
+
+What is this assembler for?
+___________________________
+
+This assembler is one of the main support software systems used to test the main project, this software has been programmed as a C++ solution which converts MIPS assembly 
+language variant files, and converts them into the required machine code, in the form of binary, that is comprehensible for our MIPS processor.
+
+
+Why do we need an assembler?
+____________________________
+
+While the design of an explicit assembler isn't strictly necessary, and isn't part of the mandatory deliverables, the design and use of our own group assembler greatly improves
+our understanding for the way the MIPS architecture handles unique varying instructions, and also allows us to vary and scale the type of test programs we can implement and test
+our processor with.
+
+By designing an assembler, we will be able to take advantage of the gcc c MIPS cross-compiler, which allows us to take basic C (high-level) programs, and their associated
+statements, for instance:
+
+i = i + 1, would be cross compiled as:
+addiu $s0, $s0, 1 (This is presuming that the value of i has been preloading into a register beforehand, in the alternating case we would have an lw to instantiate s0).
+Taking this cross-compiled assembly code, our assembler would return the following result. 
+00100110000100000000000000000001
+Which can be directly read as a 32-bit instruction by our MIPS CPU, which will derive the required control signals and operation from these bits.
+
+Justin has also made an equivalent C-assembler for use on the test-benches, these assemblers will both be used in order to test the CPU itself and then also to find its limits
+and test it with corner and edge-cases, as well as more sophisticated programs. 
+
+
+How do you use it?
+__________________
+
+The general functionality of the program goes as follows:
+    1- Compile and Execute assembler.cpp (within the src folder), with a .txt file with MIPS assembly code written on it. 
+    
+    (NOTE: While I have included an example test file, in the src folder, to use at your leisure. If you wish to add an extra file to test, make sure that it is in the same 
+    folder as assembler.cpp, and named to test.txt, ideally if you would like to try different instructions, make amendments to the existing test.txt file).
+    
+    2- Upon execution, the software will parse the input file (test.txt) and produce an output file (output.txt) within the same directory as the executable and test file. This
+    file will contain the converted and assembled assembly code.
+    
+    
+How does it work?
+_________________
+
+Explaining from top to bottom in a TL;DR fashion:
+
+    -The method of parsing and storing registers is in the form of a map<string, uint32_t>, this will take a register like "$s0" and key that into the map to produce the value 
+    16 out. 
+    
+    -We utilise the bitset library, using the <bitset<32> > data format in order to efficiently store and operate the binary instructions, the main transportation of the assembled
+    intructions is the 'instructions' vector, which stores the assembled instructions produced from each line-parse, this vector is printed line for line on the output file.
+    
+    -3 similar functions to produce a general form of an R, I or J-type instruction: Due to the more rigid nature of the MIPS architecture with regards to register fields, we can
+    quickly and easily generate every type of instruction, by just having general parameters passed in and superposing those values on a binary template. These instructions were 
+    based dedicated on the MIPS ISA, with a specific set of supported instructions included on the Excel file, kindly written by Chern. When we execute an instruction, we 
+    ideally want to parse the specific pieces of data we need, and then simply convert that to binary and add them to an R, I or J template.
+    
+    -Number of helper functions: Assists us with converting char based registers from the .txt and turning them into the form we need to use them as keys for our register map.
+    Converting immediate constant used in I and J instructions from string into the int form we need. (This supports both Hex or Decimal constants).
+    
+    -Parsing: Using if/ofstreams to read and post respective input and output. Our ideal parse creates four temporary char* variables that turn the following string:
+    addiu $s0, $s0, 1
+    Into:
+    'addiu' = t0
+    '$s0' = t1
+    '$s0' = t2
+    '1' = t3
+    By taking into account the types of delimiters that exist on MIPS instructions (spaces, commas and brackets for LW, SW instructions). We can use the strtok C function
+    that takes into account those delimiters and splits the string into four tokens accordingly. This returns 4 parameters which we can use for any instruction.
+    
+    The software then diverges into a series of if statements, depending on the value of the first token, if the token is 'addiu' say, then we will push into the instruction
+    vector the output of an I-Type instruction, with the opcode pre-filled, and with the register and immediate parameters being the integer converted forms of the other tokens.
+    
+    Continuing the addiu example from earlier, we have:
+    addiu $s0, $s0, 1 --> Construct_I_Type(9, RegisterToInteger(t2), RegisterToInteger(t1), ConvertImmediate(t3)). 
+    operation RD, RS, I.
+    
+    This principle is repeated for the rest of the instructions, which are varied depending on instruction operation and instruction type, but with the same fundemental operation.
+    
+    -Output: We simply instantiate an auto which is used to print the contents of the array line by line on our ofstream output file.
+    
+ 
+ FURTHER COMMENTS
+ ________________
+ 
+ 1) Support for labels has not yet been added, that is to be done. However this works for all other instructions when ran without .data, .text etc labels, strictly the
+ instructions on their own.
+ 
+ 2) Instructions are in the binary file as I have assembled them directly, but for tidiness this may be changed to a Hex-based format if needed.
+ 
+ 

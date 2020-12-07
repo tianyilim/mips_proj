@@ -1,3 +1,4 @@
+`timescale 1ns / 1ns
 module mips_cpu_harvard(
     /* Standard signals */
     input logic clk,
@@ -186,6 +187,8 @@ module mips_cpu_harvard(
                                                                   (opcode == LWL) ||
                                                                   (opcode == LWR))) ? 1 : 0;
     assign data_address = (data_write == 1 || data_read == 1) ? {imm_addr[31:2], 2'b00} : 0; //Only needed for load and store instructions
+    
+    
     // signed extension logic
     logic[7:0] eight_bit;
     logic[15:0] sixteen_bit;
@@ -667,7 +670,7 @@ module mips_cpu_harvard(
             end
 
         end
-        else if((state == EXEC3) && (active == 1)) begin
+        else if((state == EXEC3) && (active == 1)) begin //One more cycle for Load instructions to store the data to register file. Register file takes 2 cycles to load
             $display("EXEC3: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             state <= FETCH;
         end

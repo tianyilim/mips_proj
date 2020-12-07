@@ -71,7 +71,7 @@ module mips_CPU_bus_tb;
 	);
 	
 	// instantiate the CPU
-	mips_CPU_bus CPU(
+	mips_cpu_bus CPU(
 		.clk(cpu_clk),
 		.reset(cpu_reset),
 		.active(cpu_active),

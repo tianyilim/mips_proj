@@ -32,17 +32,17 @@ module mips_cpu_bus(
     logic[1:0] cc_state;        // DEBUG
 
     mips_cpu_harvard cpu(.clk(clk), .rst(reset), .clk_enable(clk_enable_cpu_cc), .register_v0(register_v0),
-                        .active(active), .byteenable(byte_en_cpu_cc), 
-                        .instr_address(instr_address_cpu_cc), .instr_readdata(instr_readdata_cpu_cc), .instr_read(instr_read_cpu_cc), 
+                        .active(active), .byteenable(byte_en_cpu_cc),
+                        .instr_address(instr_address_cpu_cc), .instr_readdata(instr_readdata_cpu_cc), .instr_read(instr_read_cpu_cc),
                         .data_address(data_address_cpu_cc), .data_write(data_write_cpu_cc), .data_read(data_read_cpu_cc),
                         .data_writedata(data_writedata_cpu_cc), .data_readdata(data_readdata_cpu_cc)
                         );
-                        
-    mips_cache_controller cc(.clk(), .rst(), .clk_enable(clk_enable_cpu_cc),
-                        .instr_address(instr_address_cpu_cc), .instr_readdata(instr_readdata_cpu_cc), .instr_read(instr_read_cpu_cc), 
+
+    mips_cache_controller cc(.clk(clk), .rst(reset), .clk_enable(clk_enable_cpu_cc),
+                        .instr_address(instr_address_cpu_cc), .instr_readdata(instr_readdata_cpu_cc), .instr_read(instr_read_cpu_cc),
                         .data_address(data_address_cpu_cc), .data_write(data_write_cpu_cc), .data_read(data_read_cpu_cc),
-                        .data_writedata(data_writedata_cpu_cc), .data_readdata(data_readdata_cpu_cc), 
-                        .data_byteenable(byte_en_cpu_cc), 
+                        .data_writedata(data_writedata_cpu_cc), .data_readdata(data_readdata_cpu_cc),
+                        .data_byteenable(byte_en_cpu_cc),
                         .mem_address(address), .mem_write(write), .mem_read(read),
                         .mem_writedata(writedata), .mem_byteenable(byteenable), .mem_readdata(readdata),
                         .waitrequest(waitrequest),

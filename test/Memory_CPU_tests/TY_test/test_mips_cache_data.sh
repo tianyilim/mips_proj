@@ -7,13 +7,13 @@
 set -eou pipefail
 
 iverilog -g 2012 -Wall \
-   rtl/tb_mips_cache_data.v rtl/mips_cache_data.v rtl/mips_dummy_ram_test.v \
+   test/Memory_CPU_tests/TY_test/tb_mips_cache_data.v rtl/mips_cache_data.v test/Memory_CPU_tests/TY_test/mips_dummy_ram_test.v \
    -s tb_mips_cache_data \
-   -P tb_mips_cache_data.MEM_INIT_FILE=\"test/dummy_data_sample.txt\" \
-   -o test/tb_mips_cache_data
+   -P tb_mips_cache_data.MEM_INIT_FILE=\"test/Memory_CPU_tests/TY_test/dummy_data_sample.txt\" \
+   -o test/Memory_CPU_tests/TY_test/tb_mips_cache_data.out
 
 # Auto-run 
-./test/tb_mips_cache_data
+./test/Memory_CPU_tests/TY_test/tb_mips_cache_data.out
 # Opens with savefiles, Cleanup
 gtkwave tb_mips_cache_data.vcd tb_mips_cache_data.gtkw -a tb_mips_cache_data.gtkw; \
-rm test/tb_mips_cache_data
+rm test/Memory_CPU_tests/TY_test/tb_mips_cache_data.out

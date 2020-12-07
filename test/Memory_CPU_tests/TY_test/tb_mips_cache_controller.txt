@@ -1,6 +1,6 @@
-RAM : INIT : Loading RAM contents from test/dummy_data_sample.txt
-WARNING: rtl/mips_avalon_slave.v:47: $readmemh: Standard inconsistency, following 1364-2005.
-WARNING: rtl/mips_avalon_slave.v:47: $readmemh(test/dummy_data_sample.txt): Not enough words in the file for the requested range [0:1023].
+RAM : INIT : Loading RAM contents from test/Memory_CPU_tests/TY_test/dummy_data_sample.txt
+WARNING: test/mips_avalon_slave.v:47: $readmemh: Standard inconsistency, following 1364-2005.
+WARNING: test/mips_avalon_slave.v:47: $readmemh(test/Memory_CPU_tests/TY_test/dummy_data_sample.txt): Not enough words in the file for the requested range [0:1023].
 VCD info: dumpfile tb_mips_cache_controller.vcd opened for output.
 
 TB : 25 : Checking for instruction read misses

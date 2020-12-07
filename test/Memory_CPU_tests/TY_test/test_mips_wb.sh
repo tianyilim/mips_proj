@@ -7,13 +7,16 @@
 set -eou pipefail
 
 iverilog -g 2012 -Wall \
-   rtl/tb_mips_cache_writebuffer.v rtl/mips_cache_writebuffer.v rtl/mips_avalon_slave.v \
+   test/Memory_CPU_tests/TY_test/tb_mips_cache_writebuffer.v rtl/mips_cache_writebuffer.v test/mips_avalon_slave.v \
    -s tb_mips_cache_writebuffer \
    -P tb_mips_cache_writebuffer.RAM_INIT_FILE=\"test/avalon_slave_sample.txt\" \
-   -o test/tb_mips_cache_writebuffer
+   -o test/Memory_CPU_tests/TY_test/tb_mips_cache_writebuffer.out
 
+set +e
 # Auto-run 
-./test/tb_mips_cache_writebuffer
+./test/Memory_CPU_tests/TY_test/tb_mips_cache_writebuffer.out
+
+set -e
 # Opens with savefiles, Cleanup
 gtkwave tb_mips_cache_writebuffer.vcd tb_mips_cache_writebuffer.gtkw -a tb_mips_cache_writebuffer.gtkw; \
-rm test/tb_mips_cache_writebuffer
+rm test/Memory_CPU_tests/TY_test/tb_mips_cache_writebuffer.out

@@ -1,11 +1,3 @@
-test.mips.asm assembly text dump
-########## DATA SECTION ##########
-
-test.mips.elf:     file format elf32-tradlittlemips
-
-Contents of section .data:
- 0000 09cb0400 18000000 00000000 00000000  ................
-########## TEXT SECTION ##########
 
 test.mips.elf:     file format elf32-tradlittlemips
 

@@ -1,2 +1,5 @@
-lw $t1, 4($gp)
-ori $t2, $zero, 3
+lw $v0 0($0)
+addi $v0 1
+sw $v0 0($0)
+addi $v0 1
+lw $v0 0($0)

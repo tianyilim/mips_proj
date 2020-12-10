@@ -441,7 +441,7 @@ module mips_cpu_harvard(
                     end
                     SB: begin
                         // state <= FETCH;
-                        data_writedata <= rs_data[7:0];
+                        data_writedata <= rt_data[7:0];
                         if(imm_addr[1:0] == 0) begin
                           byteenable <= 4'b0001;
                         end
@@ -457,7 +457,7 @@ module mips_cpu_harvard(
                     end
                     SH: begin
                         // state <= FETCH;
-                        data_writedata <= rs_data[15:0];
+                        data_writedata <= rt_data[15:0];
                         if(imm_addr[1:0] == 0) begin
                           byteenable <= 4'b0011;
                         end
@@ -470,7 +470,7 @@ module mips_cpu_harvard(
                     end
                     SW: begin
                         // state <= FETCH;
-                        data_writedata <= rs_data;
+                        data_writedata <= rt_data;
                         if(imm_addr[1:0] == 0) begin
                           byteenable <= 4'b1111;
                         end

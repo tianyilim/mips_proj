@@ -14,19 +14,19 @@ CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
-RAM : READ : Read 0x00008021 data at address 0xbfc00000
+RAM : READ : Read 0x3c10bfc0 data at address 0xbfc00000
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
 INSTR_CACHE : Replacement required: Valid buffer: 0000
 INSTR_CACHE : Trivial case, current valid buffer is 0000
-INSTR_CACHE : Loading 0x00008021 into index 0x0, tag 0x05fe0000 assoc[0], address 0xbfc00000
+INSTR_CACHE : Loading 0x3c10bfc0 into index 0x0, tag 0x05fe0000 assoc[0], address 0xbfc00000
 CPU : FETCH : write_en = 0, instr = xxxxxxxx, instr_type =xx, pc = bfc00000, register_v0 = 00000000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATE : IDLE
-CPU : EXEC1 : write_en = 0, instr = 00008021, instr_type =00, pc = bfc00000, register_v0 = 00000000
-CPU : EXEC2 : write_en = 1, instr = 00008021, instr_type =00, pc = bfc00004, register_v0 = 00000000
+CPU : EXEC1 : write_en = 0, instr = 3c10bfc0, instr_type =01, pc = bfc00000, register_v0 = 00000000
+CPU : EXEC2 : write_en = 1, instr = 3c10bfc0, instr_type =01, pc = bfc00004, register_v0 = 00000000
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
@@ -37,19 +37,22 @@ CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
-RAM : READ : Read 0x3c10bfc0 data at address 0xbfc00004
+RAM : READ : Read 0xac100000 data at address 0xbfc00004
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
 INSTR_CACHE : Replacement required: Valid buffer: 0000
 INSTR_CACHE : Trivial case, current valid buffer is 0000
-INSTR_CACHE : Loading 0x3c10bfc0 into index 0x1, tag 0x05fe0000 assoc[0], address 0xbfc00004
-CPU : FETCH : write_en = 0, instr = 00008021, instr_type =00, pc = bfc00004, register_v0 = 00000000
+INSTR_CACHE : Loading 0xac100000 into index 0x1, tag 0x05fe0000 assoc[0], address 0xbfc00004
+CPU : FETCH : write_en = 0, instr = 3c10bfc0, instr_type =01, pc = bfc00004, register_v0 = 00000000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATE : IDLE
-CPU : EXEC1 : write_en = 0, instr = 3c10bfc0, instr_type =01, pc = bfc00004, register_v0 = 00000000
-CPU : EXEC2 : write_en = 1, instr = 3c10bfc0, instr_type =01, pc = bfc00008, register_v0 = 00000000
+CPU : EXEC1 : write_en = 0, instr = ac100000, instr_type =01, pc = bfc00004, register_v0 = 00000000
+CPU : EXEC2 : write_en = 0, instr = ac100000, instr_type =01, pc = bfc00008, register_v0 = 00000000
+DATA_CACHE : Replacement required: Valid buffer: 0000
+DATA_CACHE : Trivial case, current valid buffer is 0000
+DATA_CACHE : Loading 0xbfc00000 into index 0x0, tag 0x00000000 assoc[0], address 0x00000000
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
@@ -60,21 +63,32 @@ CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
-RAM : READ : Read 0x261002ec data at address 0xbfc00008
+RAM : READ : Read 0x8c020000 data at address 0xbfc00008
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
 INSTR_CACHE : Replacement required: Valid buffer: 0000
 INSTR_CACHE : Trivial case, current valid buffer is 0000
-INSTR_CACHE : Loading 0x261002ec into index 0x2, tag 0x05fe0000 assoc[0], address 0xbfc00008
-CPU : FETCH : write_en = 0, instr = 3c10bfc0, instr_type =01, pc = bfc00008, register_v0 = 00000000
+INSTR_CACHE : Loading 0x8c020000 into index 0x2, tag 0x05fe0000 assoc[0], address 0xbfc00008
+CPU : FETCH : write_en = 0, instr = ac100000, instr_type =01, pc = bfc00008, register_v0 = 00000000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
-CACHE_CTRL : STATE : IDLE
-CPU : EXEC1 : write_en = 0, instr = 261002ec, instr_type =01, pc = bfc00008, register_v0 = 00000000
-CPU : EXEC2 : write_en = 1, instr = 261002ec, instr_type =01, pc = bfc0000c, register_v0 = 00000000
-CACHE_CTRL : STATE : IDLE
-CACHE_CTRL : STATE : IDLE
+CACHE_CTRL : STATE : WRITE
+DATA_CACHE : READ/WRITE HIT
+CPU : EXEC1 : write_en = 0, instr = 8c020000, instr_type =01, pc = bfc00008, register_v0 = 00000000
+CPU : EXEC2 : write_en = 0, instr = 8c020000, instr_type =01, pc = bfc0000c, register_v0 = 00000000
+DATA_CACHE : READ/WRITE HIT
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+CPU : EXEC3 : write_en = 1, instr = 8c020000, instr_type =01, pc = bfc0000c, register_v0 = 00000000
+RAM : STATUS : Write 0xbfc00000 data request at address 0x00000000, wait for 1 cycles
+WB : Active
+CACHE_CTRL : STATE : WRITE
+CACHE_CTRL : STATE : WRITE
+WB : Active
+RAM : WRITE : Wrote 0xbfc00000 data at address 0x00000000
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 RAM : STATUS : Read requested at address 0xbfc0000c, wait for 1 cycles
@@ -83,19 +97,19 @@ CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
-RAM : READ : Read 0x3c1106ee data at address 0xbfc0000c
+RAM : READ : Read 0x00000008 data at address 0xbfc0000c
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
 INSTR_CACHE : Replacement required: Valid buffer: 0000
 INSTR_CACHE : Trivial case, current valid buffer is 0000
-INSTR_CACHE : Loading 0x3c1106ee into index 0x3, tag 0x05fe0000 assoc[0], address 0xbfc0000c
-CPU : FETCH : write_en = 0, instr = 261002ec, instr_type =01, pc = bfc0000c, register_v0 = 00000000
+INSTR_CACHE : Loading 0x00000008 into index 0x3, tag 0x05fe0000 assoc[0], address 0xbfc0000c
+CPU : FETCH : write_en = 0, instr = 8c020000, instr_type =01, pc = bfc0000c, register_v0 = bfc00000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATE : IDLE
-CPU : EXEC1 : write_en = 0, instr = 3c1106ee, instr_type =01, pc = bfc0000c, register_v0 = 00000000
-CPU : EXEC2 : write_en = 1, instr = 3c1106ee, instr_type =01, pc = bfc00010, register_v0 = 00000000
+CPU : EXEC1 : write_en = 0, instr = 00000008, instr_type =00, pc = bfc0000c, register_v0 = bfc00000
+CPU : EXEC2 : write_en = 0, instr = 00000008, instr_type =00, pc = bfc00010, register_v0 = bfc00000
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
@@ -106,71 +120,41 @@ CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
-RAM : READ : Read 0x263138f1 data at address 0xbfc00010
+RAM : READ : Read 0x00000000 data at address 0xbfc00010
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
 INSTR_CACHE : Replacement required: Valid buffer: 0000
 INSTR_CACHE : Trivial case, current valid buffer is 0000
-INSTR_CACHE : Loading 0x263138f1 into index 0x4, tag 0x05fe0000 assoc[0], address 0xbfc00010
-CPU : FETCH : write_en = 0, instr = 3c1106ee, instr_type =01, pc = bfc00010, register_v0 = 00000000
+INSTR_CACHE : Loading 0x00000000 into index 0x4, tag 0x05fe0000 assoc[0], address 0xbfc00010
+CPU : FETCH : write_en = 0, instr = 00000008, instr_type =00, pc = bfc00010, register_v0 = bfc00000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATE : IDLE
-CPU : EXEC1 : write_en = 0, instr = 263138f1, instr_type =01, pc = bfc00010, register_v0 = 00000000
-CPU : EXEC2 : write_en = 1, instr = 263138f1, instr_type =01, pc = bfc00014, register_v0 = 00000000
+CPU : EXEC1 : write_en = 0, instr = 00000000, instr_type =00, pc = bfc00010, register_v0 = bfc00000
+ERROR: Writing to r0
+CPU : EXEC2 : write_en = 1, instr = 00000000, instr_type =00, pc = 00000000, register_v0 = bfc00000
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
-RAM : STATUS : Read requested at address 0xbfc00014, wait for 1 cycles
+RAM : STATUS : Read requested at address 0x00000000, wait for 1 cycles
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
-RAM : READ : Read 0xae110008 data at address 0xbfc00014
+RAM : READ : Read 0xbfc00000 data at address 0x00000000
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
-INSTR_CACHE : Replacement required: Valid buffer: 0000
-INSTR_CACHE : Trivial case, current valid buffer is 0000
-INSTR_CACHE : Loading 0xae110008 into index 0x5, tag 0x05fe0000 assoc[0], address 0xbfc00014
-CPU : FETCH : write_en = 0, instr = 263138f1, instr_type =01, pc = bfc00014, register_v0 = 00000000
+INSTR_CACHE : Replacement required: Valid buffer: 0001
+INSTR_CACHE : Trivial case, current valid buffer is 0001
+INSTR_CACHE : Loading 0xbfc00000 into index 0x0, tag 0x00000000 assoc[1], address 0x00000000
+CPU : FETCH : write_en = 0, instr = 00000000, instr_type =00, pc = 00000000, register_v0 = bfc00000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
+TB : CYCLES : 0048
+TB : V0 : bfc00000
+TB : FINISH : 505 : CPU finished execution.
 CACHE_CTRL : STATE : IDLE
-CPU : EXEC1 : write_en = 0, instr = ae110008, instr_type =01, pc = bfc00014, register_v0 = 00000000
-CPU : EXEC2 : write_en = 0, instr = ae110008, instr_type =01, pc = bfc00018, register_v0 = 00000000
-DATA_CACHE : Replacement required: Valid buffer: 0000
-DATA_CACHE : Trivial case, current valid buffer is 0000
-DATA_CACHE : Loading 0xbfc002ec into index 0x5, tag 0x05fe0017 assoc[0], address 0xbfc002f4
-CACHE_CTRL : STATE : IDLE
-CACHE_CTRL : STATE : IDLE
-CACHE_CTRL : STATE : FETCH
-CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
-RAM : STATUS : Read requested at address 0xbfc00018, wait for 1 cycles
-CACHE_CTRL : STATE : FETCH
-CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
-CACHE_CTRL : STATE : FETCH
-CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
-CACHE_CTRL : STATUS : waitrequest complete
-RAM : READ : Read 0x26100008 data at address 0xbfc00018
-CACHE_CTRL : STATE : FETCH
-CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
-CACHE_CTRL : STATUS : waitrequest complete
-INSTR_CACHE : Replacement required: Valid buffer: 0000
-INSTR_CACHE : Trivial case, current valid buffer is 0000
-INSTR_CACHE : Loading 0x26100008 into index 0x6, tag 0x05fe0000 assoc[0], address 0xbfc00018
-CPU : FETCH : write_en = 0, instr = ae110008, instr_type =01, pc = bfc00018, register_v0 = 00000000
-INSTR_CACHE : READ HIT
-CACHE_CTRL : STATE : FETCH
-CACHE_CTRL : STATE : WRITE
-CPU : EXEC1 : write_en = 0, instr = 26100008, instr_type =01, pc = bfc00018, register_v0 = 00000000
-CPU : EXEC2 : write_en = 1, instr = 26100008, instr_type =01, pc = bfc0001c, register_v0 = 00000000
-WB : Active
-CACHE_CTRL : STATE : WRITE
-CACHE_CTRL : STATE : WRITE
-WB : Active
-FATAL: test/mips_avalon_slave.v:63: RAM : FATAL : Tried to write to instruction area of memory with address 0xbfc002f4
-       Time: 585 Scope: mips_CPU_bus_tb.MEM

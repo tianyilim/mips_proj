@@ -1,0 +1,10 @@
+.data
+asdf
+i am a cow
+.instr
+qwer
+you are a donkey
+.output
+jkl;
+.debug
+hello world

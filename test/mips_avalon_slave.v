@@ -2,7 +2,6 @@
 `timescale 1ns / 1ns
 module mips_avalon_slave(
     input logic clk,
-    input logic rst,
 
     input logic[31:0] address,
     input logic write,
@@ -46,10 +45,14 @@ module mips_avalon_slave(
         end
         /* Load contents from file if specified */
         if (RAM_INIT_FILE != "") begin
-            $display("RAM : INIT : Loading RAM contents from %s", RAM_INIT_FILE);
+            $display("RAM : INIT : Loading Instr contents from %s", RAM_INIT_FILE);
             $readmemh(RAM_INIT_FILE, memory_instr);
+        end
+        if (DATA_INIT_FILE != "") begin
+            $display("RAM : INIT : Loading Data contents from %s", RAM_INIT_FILE);
             $readmemh(DATA_INIT_FILE, memory_data);
         end
+
     end
 
     assign waitrequest = (read | write) & (wait_ctr != 0);
@@ -57,7 +60,7 @@ module mips_avalon_slave(
     always@(posedge clk) begin
         // Only respond if address is within address space
         if (address >= ADDR_START & address < ADDR_END) begin
-            assert (!write) else $error("RAM : ERROR : Tried to write to instruction area of memory!");
+            assert (!write) else $fatal(1,"RAM : FATAL : Tried to write to instruction area of memory with address 0x%h", address);
             if (read) begin
                 if (waiting) begin
                     if (wait_ctr==0) begin

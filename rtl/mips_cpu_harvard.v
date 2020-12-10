@@ -104,7 +104,7 @@ module mips_cpu_harvard(
     logic[31:0] Hi, Lo;
     logic[31:0] rs_data, rt_data, write_back_data;
     logic[63:0] mult_output; // multiplier output
-    logic jump; // check whether the previous instruction was a jump
+    logic branch_delay_slot; // check whether the previous instruction was a jump
     logic[31:0] jump_store; // storing the address of a branch/jump for the next instr
     logic[31:0] quotient; // storing quotient in DIV and DIVU
     logic[31:0] remainder;// storing remainder in DIV and DIVU
@@ -137,7 +137,7 @@ module mips_cpu_harvard(
     assign rt_addr = instr[20:16];
     assign rd_addr = instr[15:11];
     assign return_reg = 5'b11111;
-    assign write_back_addr = (instr_type == R) ? rd_addr : ( ((opcode == BRANCH) || (opcode == JAL)) ? return_reg : rt_addr); // write back to register, as the dest reg is different for R type and I type, and for branch and link, return addr is reg31
+    assign write_back_addr = (instr_type == R) ? rd_addr : ( ((opcode == BRANCH) ||  (opcode == JAL)) ? return_reg : rt_addr); // write back to register, as the dest reg is different for R type and I type, and for branch and link, return addr is reg31
     assign shift = instr[10:6];
 
     assign fn_code = instr[5:0];
@@ -176,10 +176,10 @@ module mips_cpu_harvard(
                                                                                                                                                                                                                (opcode == LWR))) ? 1 : 0));
 
     //Mem access assignmemts
-    assign data_write = ((state == EXEC3 || state == EXEC2) && (instr_type == I) && ((opcode == SB) || // EXEC1 used to update data_writedata and byteenable
+    assign data_write = ((state == EXEC2) && (instr_type == I) && ((opcode == SB) || // EXEC1 used to update data_writedata and byteenable
                                                                    (opcode == SH) ||
                                                                    (opcode == SW))) ? 1 : 0;
-    assign data_read = ((state == EXEC1 || state == EXEC2) && (instr_type == I) && ((opcode == LB)  || // Loading of registers happens at EXEC3
+    assign data_read = ((state == EXEC1) && (instr_type == I) && ((opcode == LB)  || // Loading of registers happens at EXEC3
                                                                   (opcode == LBU) ||
                                                                   (opcode == LH)  ||
                                                                   (opcode == LHU) ||
@@ -245,16 +245,16 @@ module mips_cpu_harvard(
     end
 
     always @(posedge clk) begin
-        if (!clk_enable) begin // do nothing
-        end
-        else if (rst) begin
-            $display("CPU is resetting");
+        if (rst) begin
+            $display("CPU : Resetting");
             state <= FETCH;
             pc <= 32'hBFC00000; // need to reset to bfc00000
             active <= 1;
         end
+        else if (!clk_enable) begin // do nothing
+        end
         else if((state == FETCH) && (active == 1)) begin
-            $display("FETCH: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : FETCH : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             if(pc == 0) begin
               state <= HALTED;
               active <= 0;
@@ -265,7 +265,7 @@ module mips_cpu_harvard(
         end
         //EXEC1
         else if((state == EXEC1) && (active == 1)) begin
-            $display("EXEC1: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : EXEC1 : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             state <= EXEC2;
             instr_reg <= instr_readdata;
             //R instruction
@@ -288,11 +288,11 @@ module mips_cpu_harvard(
                     JALR: begin
                       write_back_data <= pc + 8;
                       jump_store <= rs_data;
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                     end
                     JR: begin
                       jump_store <= rs_data;
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                     end
                     MTHI: begin
                       Hi <= rs_data;
@@ -359,19 +359,19 @@ module mips_cpu_harvard(
                     BEQ: begin
                       if (rs_data == rt_data) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     BGTZ: begin
                       if ($signed(rs_data) > 0) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     BLEZ: begin
                       if ($signed(rs_data) <= 0) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     BRANCH: begin
@@ -379,26 +379,26 @@ module mips_cpu_harvard(
                           5'b00001: begin //BGEZ
                               if ($signed(rs_data) >= 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                               end
                           end
                           5'b10001: begin //BGEZAL
                               if ($signed(rs_data) >= 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                                   write_back_data <= pc + 8;
                               end
                           end
                           5'b00000: begin // BLTZ
                               if ($signed(rs_data) < 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                               end
                           end
                           5'b10000: begin //BLTZAL
                               if ($signed(rs_data) < 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                                   write_back_data <= pc + 8;
                               end
                           end
@@ -408,7 +408,7 @@ module mips_cpu_harvard(
                     BNE: begin
                       if (rs_data != rt_data) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     // Load instructions handled by data_address and data_read combinatorial logic
@@ -441,7 +441,7 @@ module mips_cpu_harvard(
                     end
                     SB: begin
                         // state <= FETCH;
-                        data_writedata <= rs_data[7:0];
+                        data_writedata <= rt_data[7:0];
                         if(imm_addr[1:0] == 0) begin
                           byteenable <= 4'b0001;
                         end
@@ -457,7 +457,7 @@ module mips_cpu_harvard(
                     end
                     SH: begin
                         // state <= FETCH;
-                        data_writedata <= rs_data[15:0];
+                        data_writedata <= rt_data[15:0];
                         if(imm_addr[1:0] == 0) begin
                           byteenable <= 4'b0011;
                         end
@@ -465,17 +465,17 @@ module mips_cpu_harvard(
                           byteenable <= 4'b1100;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm = %b, imm_addr");
+                          $display("CPU : Accessing non-aligned address, base + imm = %b, imm_addr");
                         end
                     end
                     SW: begin
                         // state <= FETCH;
-                        data_writedata <= rs_data;
+                        data_writedata <= rt_data;
                         if(imm_addr[1:0] == 0) begin
                           byteenable <= 4'b1111;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     SLTI: begin
@@ -499,19 +499,19 @@ module mips_cpu_harvard(
                     end
                     JUMP: begin
                       jump_store <= {pc_next[31:28],jump_addr,2'b00};
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                     end
                     JAL: begin
                       jump_store <= {pc_next[31:28],jump_addr,2'b00};
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                       write_back_data <= pc + 8;
                     end
                 endcase
             end
             //should this be moved up?
-            if(jump == 1) begin
+            if(branch_delay_slot == 1) begin
                 pc <= jump_store;
-                jump <= 0;
+                branch_delay_slot <= 0;
             end
             else begin
                 pc <= pc_next;
@@ -519,7 +519,7 @@ module mips_cpu_harvard(
         end
         //Exec2
         else if((state == EXEC2) && (active == 1)) begin
-            $display("EXEC2: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : EXEC2 : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             state <= FETCH;
         //R instruction
             if(instr_type == R) begin
@@ -531,10 +531,6 @@ module mips_cpu_harvard(
                     DIVU: begin
                       Lo <= quotient;
                       Hi <= remainder;
-                    end
-                    ADDU: begin
-                      write_back_data <= rs_data + rt_data;
-                      pc <= pc_next;
                     end
                     MULT: begin
                       Hi <= mult_output[63:32];
@@ -566,7 +562,7 @@ module mips_cpu_harvard(
                           write_back_data <= {{16{data_readdata[15]}},data_readdata[31:16]};
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LHU: begin //16_Bit is zero extended
@@ -578,7 +574,7 @@ module mips_cpu_harvard(
                           write_back_data <= {{16'h0000},data_readdata[31:16]};
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LW: begin //16_Bit is zero extended
@@ -587,7 +583,7 @@ module mips_cpu_harvard(
                           write_back_data <= data_readdata;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LWL: begin
@@ -605,7 +601,7 @@ module mips_cpu_harvard(
                           write_back_data <= data_readdata;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LWR: begin
@@ -623,55 +619,15 @@ module mips_cpu_harvard(
                           write_back_data <= {rt_data[31:8],data_readdata[31:24]};
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
-                    // Shifted to EXEC1
-                    // SB: begin
-                    //     // state <= FETCH;
-                    //     data_writedata <= rs_data[7:0];
-                    //     if(imm_addr[1:0] == 0) begin
-                    //       byteenable <= 4'b0001;
-                    //     end
-                    //     else if(imm_addr[1:0 == 1]) begin
-                    //       byteenable <= 4'b0010;
-                    //     end
-                    //     else if(imm_addr[1:0 == 2]) begin
-                    //       byteenable <= 4'b0100;
-                    //     end
-                    //     else if(imm_addr[1:0 == 3]) begin
-                    //       byteenable <= 4'b1000;
-                    //     end
-                    // end
-                    // SH: begin
-                    //     // state <= FETCH;
-                    //     data_writedata <= rs_data[15:0];
-                    //     if(imm_addr[1:0] == 0) begin
-                    //       byteenable <= 4'b0011;
-                    //     end
-                    //     else if(imm_addr[1:0 == 2]) begin
-                    //       byteenable <= 4'b1100;
-                    //     end
-                    //     else begin
-                    //       // $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
-                    //     end
-                    // end
-                    // SW: begin
-                    //     // state <= FETCH;
-                    //     data_writedata <= rs_data;
-                    //     if(imm_addr[1:0] == 0) begin
-                    //       byteenable <= 4'b1111;
-                    //     end
-                    //     else begin
-                    //       // $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
-                    //     end
-                    // end
                 endcase
             end
 
         end
         else if((state == EXEC3) && (active == 1)) begin //One more cycle for Load instructions to store the data to register file. Register file takes 2 cycles to load
-            $display("EXEC3: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : EXEC3 : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             state <= FETCH;
         end
         else if (state == HALTED) begin

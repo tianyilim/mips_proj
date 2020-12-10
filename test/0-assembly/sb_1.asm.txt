@@ -1,0 +1,4 @@
+addiu $s0 $s0 15
+sb $s0 5($zero)
+lw $v0 4($zero)
+jr $zero

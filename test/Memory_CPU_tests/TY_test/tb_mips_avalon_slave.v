@@ -4,10 +4,11 @@ module tb_mips_avalon_slave;
     timeunit 1ns / 1ns;
 
     parameter RAM_INIT_FILE = "test/avalon_slave_sample.txt";
+    parameter DATA_INIT_FILE = "test/avalon_slave_sample.txt";  // Just use the same one
     parameter TEST_MEM_SIZE = 1024;
     parameter TEST_READ_DELAY = 3;
     parameter TEST_WRITE_DELAY = TEST_READ_DELAY;
-    parameter TIMEOUT_CYCLES = 100;
+    parameter TIMEOUT_CYCLES = 200;
     parameter OFFSET = 32'hBFC00000;
 
     localparam TEST_DURATION = 16;
@@ -26,8 +27,9 @@ module tb_mips_avalon_slave;
     logic waitrequest;
     logic[31:0] readdata;
 
-    mips_avalon_slave #(.RAM_INIT_FILE(RAM_INIT_FILE), .MEM_SIZE(TEST_MEM_SIZE),
-                        .READ_DELAY(TEST_READ_DELAY), .WRITE_DELAY(TEST_WRITE_DELAY)) 
+    mips_avalon_slave #(.RAM_INIT_FILE(RAM_INIT_FILE), .DATA_INIT_FILE(DATA_INIT_FILE),
+                        .MEM_SIZE(TEST_MEM_SIZE), .READ_DELAY(TEST_READ_DELAY), 
+                        .WRITE_DELAY(TEST_WRITE_DELAY)) 
                         ramInst(.clk(clk), .rst(rst), .address(address),
                             .write(write), .read(read), .writedata(writedata),
                             .byteenable(byteenable), .waitrequest(waitrequest),
@@ -65,7 +67,7 @@ module tb_mips_avalon_slave;
         @(posedge clk);
         rst <= 0;
 
-        address <= 0+OFFSET;
+        address <= 0;
         write <= 1;
         writedata <= 32'h11111111;
         byteenable <= 4'b1111;
@@ -76,7 +78,7 @@ module tb_mips_avalon_slave;
             @(posedge clk);
         end
 
-        address <= 1*4+OFFSET;
+        address <= 1*4;
         write <= 1;
         writedata <= 32'h11111111;
         byteenable <= 4'b0111;
@@ -87,7 +89,7 @@ module tb_mips_avalon_slave;
             @(posedge clk);
         end
 
-        address <= 2*4+OFFSET;
+        address <= 2*4;
         write <= 1;
         writedata <= 32'h11111111;
         byteenable <= 4'b1001;
@@ -98,7 +100,7 @@ module tb_mips_avalon_slave;
             @(posedge clk);
         end
 
-        address <= 3*4+OFFSET;
+        address <= 3*4;
         write <= 1;
         writedata <= 32'h11111111;
         byteenable <= 4'b0110;
@@ -112,6 +114,23 @@ module tb_mips_avalon_slave;
         write <= 0;
         @(posedge clk);
 
+        $display("\nTB : %t : Reading from data memory %h\n", $time, address);  
+        for(i=0; i<TEST_DURATION; i++) begin
+            read <= 1;
+            address <= i*4;
+            @(posedge clk);
+            $display("TB : %t : Reading from address %h", $time, address);
+            
+            while(waitrequest) begin
+                @(posedge clk);
+            end
+
+            read <= 0;
+            @(posedge clk);
+            $display("TB : %t : Read %h from address %h", $time, readdata, address);
+        end
+
+        $display("\nTB : %t : Reading from instruction memory %h\n", $time, address);  
         for(i=0; i<TEST_DURATION; i++) begin
             read <= 1;
             address <= i*4+OFFSET;

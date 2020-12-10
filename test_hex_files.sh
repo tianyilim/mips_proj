@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Tests all hex instruction files within test/1-binary/
+./parse_intermediate_files.sh
 
 for FILENAME in test/1-binary/*.instr.hex; do
     [ -e "$FILENAME" ] || continue # Avoid case where there are no matches

@@ -13,7 +13,7 @@ for FILENAME in test/1-binary/*.instr.hex; do
     if [ -f ${NAME}.data.hex ]; then
         DATANAME=${NAME}.data.hex
     else
-        DATANAME=""
+        DATANAME="test/datamem.txt"
     fi
 
     iverilog -Wall -g 2012 \

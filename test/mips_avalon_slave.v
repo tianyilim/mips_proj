@@ -60,7 +60,7 @@ module mips_avalon_slave(
     always@(posedge clk) begin
         // Only respond if address is within address space
         if (address >= ADDR_START & address < ADDR_END) begin
-            assert (!write) else $error("RAM : ERROR : Tried to write to instruction area of memory!");
+            assert (!write) else $fatal(1,"RAM : FATAL : Tried to write to instruction area of memory with address 0x%h", address);
             if (read) begin
                 if (waiting) begin
                     if (wait_ctr==0) begin

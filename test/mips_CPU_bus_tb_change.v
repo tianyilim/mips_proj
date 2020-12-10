@@ -150,7 +150,7 @@ module mips_CPU_bus_tb;
 		end
 		
 		$display("TB : CYCLES : %04d", current_cpu_cycles_ran);
-		$display("TB : V0 : 0x%h", cpu_register_v0);
+		$display("TB : V0 : %h", cpu_register_v0);
 		$display("TB : FINISH : %02t : CPU finished execution.", $time);
 		$finish;
 	end

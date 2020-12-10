@@ -246,7 +246,7 @@ module mips_cpu_harvard(
 
     always @(posedge clk) begin
         if (rst) begin
-            $display("CPU is resetting");
+            $display("CPU : Resetting");
             state <= FETCH;
             pc <= 32'hBFC00000; // need to reset to bfc00000
             active <= 1;
@@ -254,7 +254,7 @@ module mips_cpu_harvard(
         else if (!clk_enable) begin // do nothing
         end
         else if((state == FETCH) && (active == 1)) begin
-            $display("FETCH: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : FETCH : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             if(pc == 0) begin
               state <= HALTED;
               active <= 0;
@@ -265,7 +265,7 @@ module mips_cpu_harvard(
         end
         //EXEC1
         else if((state == EXEC1) && (active == 1)) begin
-            $display("EXEC1: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : EXEC1 : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             state <= EXEC2;
             instr_reg <= instr_readdata;
             //R instruction
@@ -465,7 +465,7 @@ module mips_cpu_harvard(
                           byteenable <= 4'b1100;
                         end
                         else begin
-                          $display("Accessing non-aligned address, base + imm = %b, imm_addr");
+                          $display("CPU : Accessing non-aligned address, base + imm = %b, imm_addr");
                         end
                     end
                     SW: begin
@@ -475,7 +475,7 @@ module mips_cpu_harvard(
                           byteenable <= 4'b1111;
                         end
                         else begin
-                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     SLTI: begin
@@ -519,7 +519,7 @@ module mips_cpu_harvard(
         end
         //Exec2
         else if((state == EXEC2) && (active == 1)) begin
-            $display("EXEC2: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : EXEC2 : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             state <= FETCH;
         //R instruction
             if(instr_type == R) begin
@@ -531,10 +531,6 @@ module mips_cpu_harvard(
                     DIVU: begin
                       Lo <= quotient;
                       Hi <= remainder;
-                    end
-                    ADDU: begin
-                      write_back_data <= rs_data + rt_data;
-                      pc <= pc_next;
                     end
                     MULT: begin
                       Hi <= mult_output[63:32];
@@ -566,7 +562,7 @@ module mips_cpu_harvard(
                           write_back_data <= {{16{data_readdata[15]}},data_readdata[31:16]};
                         end
                         else begin
-                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LHU: begin //16_Bit is zero extended
@@ -578,7 +574,7 @@ module mips_cpu_harvard(
                           write_back_data <= {{16'h0000},data_readdata[31:16]};
                         end
                         else begin
-                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LW: begin //16_Bit is zero extended
@@ -587,7 +583,7 @@ module mips_cpu_harvard(
                           write_back_data <= data_readdata;
                         end
                         else begin
-                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LWL: begin
@@ -605,7 +601,7 @@ module mips_cpu_harvard(
                           write_back_data <= data_readdata;
                         end
                         else begin
-                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LWR: begin
@@ -623,7 +619,7 @@ module mips_cpu_harvard(
                           write_back_data <= {rt_data[31:8],data_readdata[31:24]};
                         end
                         else begin
-                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     // Shifted to EXEC1
@@ -671,7 +667,7 @@ module mips_cpu_harvard(
 
         end
         else if((state == EXEC3) && (active == 1)) begin //One more cycle for Load instructions to store the data to register file. Register file takes 2 cycles to load
-            $display("EXEC3: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
+            $display("CPU : EXEC3 : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
             state <= FETCH;
         end
         else if (state == HALTED) begin

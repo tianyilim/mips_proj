@@ -49,4 +49,60 @@ slt
 not pipelined - no data hazards
 
 mem[imm+base] negative immediate
-- would any cpu be designed such that the immediate gets sign extended?
+- would any cpu be designed such that the immediate gets sign extended? All immediates are signed extended so 
+
+
+
+Testcases for each instruction:
+R type:
+       ADDU:
+       - Both treated as unsigned, choose big numbers >0x80000000
+       - Check for overflow
+       AND:
+       - Check if it ANDs in bitwise fashion
+       DIV
+       - Both is signed, use signed values for both, for the first value and for the 2nd value
+       - Use 0 div by something, but not div by 0 as that is undefined
+       - Divide small number by bigger number
+       DIVU
+       - Use 0 div by something, but not div by 0 as that is undefined
+       - Divide small number by bigger number
+       JALR
+       - Return address always stored to $ra or r31
+       - Jump to 0x0, should halt
+       - Use JR to link back and make sure it continues from the 2nd instruction after JALR
+       - check that instruction in branch delay slot is executed
+       JR
+       - Jump to 0x0, should halt
+       - check that instruction in branch delay slot is executed
+       MTHI
+       - Use MFHI and MFLO to check the registers
+       MTLO
+       - Use MFHI and MFLO to check the registers
+       MFHI
+       - The following 2 instructions after MFHI should not edit the Hi, Lo registers, or result is undefined
+       - Just use to test other instructions
+       MFLO
+       - The following 2 instructions after MFLO should not edit the Hi, Lo registers, or result is undefined
+       - Just use to test other instructions
+       MULT (signed)
+       - Use 1 neg 1 pos, 2 neg, 2 pos numbers
+       - Check for proper signed extension if result is negative number
+       - Multiply by 0
+       - Multiply by -1 
+       MULTU
+       - Multiply 2 largest number
+       - Multiply by 0
+       - Multipl
+       OR
+       SLL
+       SLLV
+       SLT
+       SLTU
+       SRA
+       SRAV
+       SRL
+       SRLV
+       SUBU
+       XOR
+       

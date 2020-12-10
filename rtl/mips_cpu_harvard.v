@@ -137,7 +137,7 @@ module mips_cpu_harvard(
     assign rt_addr = instr[20:16];
     assign rd_addr = instr[15:11];
     assign return_reg = 5'b11111;
-    assign write_back_addr = (instr_type == R) ? rd_addr : ( ((opcode == BRANCH) || (opcode == JAL)) ? return_reg : rt_addr); // write back to register, as the dest reg is different for R type and I type, and for branch and link, return addr is reg31
+    assign write_back_addr = (instr_type == R) ? rd_addr : ( ((opcode == BRANCH) ||  (opcode == JAL)) ? return_reg : rt_addr); // write back to register, as the dest reg is different for R type and I type, and for branch and link, return addr is reg31
     assign shift = instr[10:6];
 
     assign fn_code = instr[5:0];
@@ -176,10 +176,10 @@ module mips_cpu_harvard(
                                                                                                                                                                                                                (opcode == LWR))) ? 1 : 0));
 
     //Mem access assignmemts
-    assign data_write = ((state == EXEC3 || state == EXEC2) && (instr_type == I) && ((opcode == SB) || // EXEC1 used to update data_writedata and byteenable
+    assign data_write = ((state == EXEC2) && (instr_type == I) && ((opcode == SB) || // EXEC1 used to update data_writedata and byteenable
                                                                    (opcode == SH) ||
                                                                    (opcode == SW))) ? 1 : 0;
-    assign data_read = ((state == EXEC1 || state == EXEC2) && (instr_type == I) && ((opcode == LB)  || // Loading of registers happens at EXEC3
+    assign data_read = ((state == EXEC1) && (instr_type == I) && ((opcode == LB)  || // Loading of registers happens at EXEC3
                                                                   (opcode == LBU) ||
                                                                   (opcode == LH)  ||
                                                                   (opcode == LHU) ||
@@ -622,46 +622,6 @@ module mips_cpu_harvard(
                           $display("CPU : Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
-                    // Shifted to EXEC1
-                    // SB: begin
-                    //     // state <= FETCH;
-                    //     data_writedata <= rs_data[7:0];
-                    //     if(imm_addr[1:0] == 0) begin
-                    //       byteenable <= 4'b0001;
-                    //     end
-                    //     else if(imm_addr[1:0 == 1]) begin
-                    //       byteenable <= 4'b0010;
-                    //     end
-                    //     else if(imm_addr[1:0 == 2]) begin
-                    //       byteenable <= 4'b0100;
-                    //     end
-                    //     else if(imm_addr[1:0 == 3]) begin
-                    //       byteenable <= 4'b1000;
-                    //     end
-                    // end
-                    // SH: begin
-                    //     // state <= FETCH;
-                    //     data_writedata <= rs_data[15:0];
-                    //     if(imm_addr[1:0] == 0) begin
-                    //       byteenable <= 4'b0011;
-                    //     end
-                    //     else if(imm_addr[1:0 == 2]) begin
-                    //       byteenable <= 4'b1100;
-                    //     end
-                    //     else begin
-                    //       // $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
-                    //     end
-                    // end
-                    // SW: begin
-                    //     // state <= FETCH;
-                    //     data_writedata <= rs_data;
-                    //     if(imm_addr[1:0] == 0) begin
-                    //       byteenable <= 4'b1111;
-                    //     end
-                    //     else begin
-                    //       // $fatal("Accessing non-aligned address, base + imm =%b", imm_addr);
-                    //     end
-                    // end
                 endcase
             end
 

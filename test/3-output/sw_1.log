@@ -77,7 +77,6 @@ CACHE_CTRL : STATE : WRITE
 DATA_CACHE : READ/WRITE HIT
 CPU : EXEC1 : write_en = 0, instr = 8c020000, instr_type =01, pc = bfc00008, register_v0 = 00000000
 CPU : EXEC2 : write_en = 0, instr = 8c020000, instr_type =01, pc = bfc0000c, register_v0 = 00000000
-DATA_CACHE : READ/WRITE HIT
 WB : Active
 CACHE_CTRL : STATE : WRITE
 CACHE_CTRL : STATE : WRITE

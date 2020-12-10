@@ -26,11 +26,11 @@ for FILENAME in test/1-binary/*.instr.hex; do
         -o joe.out
 
     # Save the waveforms
-    cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}.vcd
 
     set +e
     # Auto-run and log into the a log file into 3-output
     ./joe.out > test/3-output/${BASENAME}.log
+    cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}.vcd
     # cat test/3-output/${BASENAME}.log  # Display debug output directly
 
     V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}.log)

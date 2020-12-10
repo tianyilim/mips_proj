@@ -104,7 +104,7 @@ module mips_cpu_harvard(
     logic[31:0] Hi, Lo;
     logic[31:0] rs_data, rt_data, write_back_data;
     logic[63:0] mult_output; // multiplier output
-    logic jump; // check whether the previous instruction was a jump
+    logic branch_delay_slot; // check whether the previous instruction was a jump
     logic[31:0] jump_store; // storing the address of a branch/jump for the next instr
     logic[31:0] quotient; // storing quotient in DIV and DIVU
     logic[31:0] remainder;// storing remainder in DIV and DIVU
@@ -245,13 +245,13 @@ module mips_cpu_harvard(
     end
 
     always @(posedge clk) begin
-        if (!clk_enable) begin // do nothing
-        end
-        else if (rst) begin
+        if (rst) begin
             $display("CPU is resetting");
             state <= FETCH;
             pc <= 32'hBFC00000; // need to reset to bfc00000
             active <= 1;
+        end
+        else if (!clk_enable) begin // do nothing
         end
         else if((state == FETCH) && (active == 1)) begin
             $display("FETCH: write_en = %d, instr = %b, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
@@ -288,11 +288,11 @@ module mips_cpu_harvard(
                     JALR: begin
                       write_back_data <= pc + 8;
                       jump_store <= rs_data;
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                     end
                     JR: begin
                       jump_store <= rs_data;
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                     end
                     MTHI: begin
                       Hi <= rs_data;
@@ -359,19 +359,19 @@ module mips_cpu_harvard(
                     BEQ: begin
                       if (rs_data == rt_data) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     BGTZ: begin
                       if ($signed(rs_data) > 0) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     BLEZ: begin
                       if ($signed(rs_data) <= 0) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     BRANCH: begin
@@ -379,26 +379,26 @@ module mips_cpu_harvard(
                           5'b00001: begin //BGEZ
                               if ($signed(rs_data) >= 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                               end
                           end
                           5'b10001: begin //BGEZAL
                               if ($signed(rs_data) >= 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                                   write_back_data <= pc + 8;
                               end
                           end
                           5'b00000: begin // BLTZ
                               if ($signed(rs_data) < 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                               end
                           end
                           5'b10000: begin //BLTZAL
                               if ($signed(rs_data) < 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  jump <= 1;
+                                  branch_delay_slot <= 1;
                                   write_back_data <= pc + 8;
                               end
                           end
@@ -408,7 +408,7 @@ module mips_cpu_harvard(
                     BNE: begin
                       if (rs_data != rt_data) begin
                           jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          jump <= 1;
+                          branch_delay_slot <= 1;
                       end
                     end
                     // Load instructions handled by data_address and data_read combinatorial logic
@@ -465,7 +465,7 @@ module mips_cpu_harvard(
                           byteenable <= 4'b1100;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm = %b, imm_addr");
+                          $display("Accessing non-aligned address, base + imm = %b, imm_addr");
                         end
                     end
                     SW: begin
@@ -475,7 +475,7 @@ module mips_cpu_harvard(
                           byteenable <= 4'b1111;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     SLTI: begin
@@ -499,19 +499,19 @@ module mips_cpu_harvard(
                     end
                     JUMP: begin
                       jump_store <= {pc_next[31:28],jump_addr,2'b00};
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                     end
                     JAL: begin
                       jump_store <= {pc_next[31:28],jump_addr,2'b00};
-                      jump <= 1;
+                      branch_delay_slot <= 1;
                       write_back_data <= pc + 8;
                     end
                 endcase
             end
             //should this be moved up?
-            if(jump == 1) begin
+            if(branch_delay_slot == 1) begin
                 pc <= jump_store;
-                jump <= 0;
+                branch_delay_slot <= 0;
             end
             else begin
                 pc <= pc_next;
@@ -566,7 +566,7 @@ module mips_cpu_harvard(
                           write_back_data <= {{16{data_readdata[15]}},data_readdata[31:16]};
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LHU: begin //16_Bit is zero extended
@@ -578,7 +578,7 @@ module mips_cpu_harvard(
                           write_back_data <= {{16'h0000},data_readdata[31:16]};
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LW: begin //16_Bit is zero extended
@@ -587,7 +587,7 @@ module mips_cpu_harvard(
                           write_back_data <= data_readdata;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LWL: begin
@@ -605,7 +605,7 @@ module mips_cpu_harvard(
                           write_back_data <= data_readdata;
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     LWR: begin
@@ -623,7 +623,7 @@ module mips_cpu_harvard(
                           write_back_data <= {rt_data[31:8],data_readdata[31:24]};
                         end
                         else begin
-                          $fatal(2, "Accessing non-aligned address, base + imm =%b", imm_addr);
+                          $display("Accessing non-aligned address, base + imm =%b", imm_addr);
                         end
                     end
                     // Shifted to EXEC1

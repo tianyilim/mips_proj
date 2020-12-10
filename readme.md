@@ -16,6 +16,13 @@ mips_cpu_bus
     └───mips_cache_writebuffer
 ```
 
+## Testbench Update:
+Updated the testing chain utilising the current resources we have.
+1. Refactored the Verilog testbench, currently labelled as `mips_CPU_bus_tb_change.v`. Instead of being able to test multiple testcases from a given input file, it currently takes in RAM (data) and ROM (instruction) initialization HEX files for each given testcase.
+They are meant to be found in `test/1-binary`.
+1. Updated a shell script for looping through test-cases. It is labelled as `test_hex_files.sh`. It finds all HEX files corresponding to testcases in `test/1-binary` and compares their expected results (final value of `v0`) in the `test/2-simulator` folder. It also outputs log files to `test/3-output`.
+2. TODO: we need to merge in the assembler to this testing tool-chain, as well as find ways to auto-generate expected `v0` results given arbitrary MIPS assembly code.
+
 ## Tianyi
 Implemented a memory control unit that sits between a Harvard implementation of the CPU and acts a Avalon Master, converting the Harvard CPU to a Bus CPU, along with their respective testbenches for validation.
 

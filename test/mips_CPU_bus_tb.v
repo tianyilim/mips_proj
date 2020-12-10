@@ -130,7 +130,8 @@ module mips_CPU_bus_tb;
 	// end
 
 	// if we are loading program data from file into memory, then memory is driven by testbench. Else, memory is driven by the CPU
-	always begin
+	// kiv
+	always @(posedge clk) begin
 		if (loading_memory == 1) begin
 			mem_address = loader_address;		// master(tb) -> slave(MEM)
 			mem_byteenable = loader_byteenable;	// master(tb) -> slave(MEM)
@@ -149,7 +150,7 @@ module mips_CPU_bus_tb;
 		end
 	end
 
-	always begin
+	always @(negedge clk) begin
 		if (loading_memory == 1 && cpu_active == 1) begin
 			$fatal(2, "FAIL! CPU somehow started on its own when programs are being loaded into memory!\n");
 		end

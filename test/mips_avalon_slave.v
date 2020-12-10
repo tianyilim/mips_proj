@@ -2,7 +2,6 @@
 `timescale 1ns / 1ns
 module mips_avalon_slave(
     input logic clk,
-    input logic rst,
 
     input logic[31:0] address,
     input logic write,

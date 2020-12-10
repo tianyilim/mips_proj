@@ -1,0 +1,8 @@
+lw $t2, $zero, 3  #FFFFFFFF
+lw $t3, $zero, 3   
+xor $v0, $t2, $t3
+jr $zero
+
+
+
+comment: FFFFFFFF xor FFFFFFFF

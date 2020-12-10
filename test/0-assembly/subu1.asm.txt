@@ -1,0 +1,7 @@
+lw $t3, $zero, 3
+subu $v0, $t3, $zero
+jr $zero
+
+
+
+comment: FFFFFFFF subu 00000000

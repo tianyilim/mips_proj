@@ -1,0 +1,8 @@
+lw $t3, $zero, 3
+or $v0, $t3, $zero
+jr $zero
+
+
+
+comment: FFFFFFFF or 00000000
+

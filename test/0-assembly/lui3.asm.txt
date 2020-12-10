@@ -1,0 +1,5 @@
+lui $t2, 23
+addiu $v0, $t2, 10
+jr $zero
+
+comment: lui different register

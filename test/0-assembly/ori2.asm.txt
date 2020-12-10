@@ -1,0 +1,7 @@
+lw $t2, $zero, 4
+ori $v0, $t2, FFFF    
+jr $zero
+   
+
+
+comment: ori imm=FFFF

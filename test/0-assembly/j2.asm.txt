@@ -1,20 +1,8 @@
-j 5               
-addiu $v0, 10
-jr $v0
-addiu $t2, 0
-j 10
-addiu $v0, 10
-jr $v0
-addiu $t2, 0
-addiu $t2, 0
-j 13
-addiu $v0, 10
-jr $v0
-addiu $t2, 0
-jr $zero  
+j 1
+addiu $v0 10
+j 3
+addiu $v0 2
+jr $zero
 
-
-
-comment: normal jumps
-
+comment : j to branch delay slot
 

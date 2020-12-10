@@ -1,0 +1,4 @@
+lui $t2, 23
+jr $zero
+
+comment: normal lui

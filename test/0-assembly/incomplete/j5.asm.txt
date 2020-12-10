@@ -1,7 +1,0 @@
-j 2
-addiu $v0 0001
-j 4
-addiu $v0 0002   #uneeded??
-
-comment : j to branch delay slot
-

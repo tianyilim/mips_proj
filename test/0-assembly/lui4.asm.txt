@@ -1,0 +1,5 @@
+lui $zero, FFFF
+addiu $v0, $zero, 10
+jr $zero
+
+comment: lui rd=$zero

@@ -1,0 +1,19 @@
+j 4               
+addiu $v0, $v0, 10
+jr $v0
+nop
+j 8
+addiu $v0, $v0, 12
+jr $v0
+nop
+nop
+j 12
+nop
+jr $v0
+addiu $v0, $v0, 11
+jr $zero  
+
+
+
+comment: normal jumps
+

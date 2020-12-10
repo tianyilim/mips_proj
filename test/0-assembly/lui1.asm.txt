@@ -1,0 +1,4 @@
+lui $v0, 65535
+jr $zero
+
+comment: normal lui

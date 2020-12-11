@@ -1,0 +1,8 @@
+lw $t3, 4($zero)
+xori $t3, $t3, 0   
+lw $v0, $t3, 0  
+jr $zero
+   
+
+
+comment: rd same as rs

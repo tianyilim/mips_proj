@@ -1,5 +1,5 @@
-lw $t6, $zero, 5  #0000ec5b
-lw $t7, $zero, 6   #7f5785de
+lw $t6, 5($zero)  #0000ec5b
+lw $t7, 6($zero)   #7f5785de
 xor $t6, $t6, $t7
 addiu $v0, $t7, 0
 jr $zero

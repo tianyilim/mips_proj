@@ -1,8 +1,9 @@
 lw $t3, 4($zero)
+lw $t4, 3($zero)
 xori $t4, $t3, 0   
 lw $v0, $t4, 0  
 jr $zero
    
 
 
-comment: different registers
+comment: rd not empty

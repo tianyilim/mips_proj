@@ -1,5 +1,5 @@
-lw $t6, $zero, 5
-lw $t7, $zero, 5   #0000ec5b
+lw $t6, 5($zero)
+lw $t7, 5($zero)  #0000ec5b
 and $zero, $t6, $t7
 addiu $v0, $zero, 0
 jr $zero

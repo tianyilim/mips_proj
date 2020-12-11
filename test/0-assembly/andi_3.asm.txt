@@ -1,7 +1,7 @@
-lw $t2, $zero, 4
+lw $t2, 4($zero)
 andi $v0, $t2, 43690     
 jr $zero
    
 
 
-comment: andi random imm
+comment: imm=AAAA

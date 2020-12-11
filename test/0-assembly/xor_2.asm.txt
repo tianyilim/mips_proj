@@ -1,5 +1,5 @@
-lw $t2, $zero, 3  #FFFFFFFF
-lw $t3, $zero, 3   
+lw $t2, 3($zero)  #FFFFFFFF
+lw $t3, 3($zero)   
 xor $v0, $t2, $t3
 jr $zero
 

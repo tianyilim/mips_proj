@@ -1,0 +1,8 @@
+lw $t3, 4($zero)
+xori $t4, $t3, 2   
+lw $v0, $t3, 0  
+jr $zero
+   
+
+
+comment: check rs still the same

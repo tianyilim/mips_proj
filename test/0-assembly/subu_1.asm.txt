@@ -1,4 +1,4 @@
-lw $t3, $zero, 3
+lw $t3, 3($zero)
 subu $v0, $t3, $zero
 jr $zero
 

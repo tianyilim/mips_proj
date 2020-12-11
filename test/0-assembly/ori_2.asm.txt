@@ -1,7 +1,7 @@
-lw $t2, $zero, 4
+lw $t2, 4($zero)
 ori $v0, $t2, FFFF    
 jr $zero
    
 
 
-comment: ori imm=FFFF
+comment: imm=FFFF

@@ -1,7 +1,7 @@
-lw $t2, $zero, 4
-xori $v0, $t2, AAAA     
+lw $t2, 4($zero)
+xori $v0, $t2, 43690     
 jr $zero
    
 
 
-comment: xori random imm
+comment: imm=AAAA

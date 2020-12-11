@@ -9,6 +9,7 @@
 #include <cstring>
 #include <string.h>
 #include <stdlib.h>
+#include <iomanip>
 //Sry for the include spam, was experimenting a lot.
 
 using namespace std;
@@ -220,20 +221,20 @@ int main() {
                 Construct_I_Type(5, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "lb") == 0) {
-                Construct_I_Type(32, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(32, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lbu") == 0) {
-                Construct_I_Type(36, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(36, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lh") == 0) {
-                Construct_I_Type(33, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(33, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lhu") == 0) {
-                Construct_I_Type(37, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(37, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lui") == 0) {
                 Construct_I_Type(15, 0, RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
-            }
+            } //Uhhh
             if (strcmp(firstparam, "lw") == 0) {
                 //lw $rt, offset($rs)
                 //This means that we have offset as third param,
@@ -368,6 +369,6 @@ int main() {
 
 }
     ofstream outFile("output.txt"); //Destination file
-    for (const auto &e : instructions) outFile << hex << e.to_ulong() << "\n"; //Cast the elements of the array instructions onto the output file
+    for (const auto &e : instructions) outFile << setfill('0') << setw(8) << hex << e.to_ulong() << "\n"; //Cast the elements of the array instructions onto the output file
     //EDIT: Changed radix of output file, keeps binary data structure just incase but outputs file in Hex
 }

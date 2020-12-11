@@ -1,9 +1,9 @@
-lw $t2, $zero, 4
-andi $zero, $t2, AAAA 
+lw $t2, 4($zero)
+andi $zero, $t2, 43690 
 addiu $v0, $zero, 0     
 jr $zero
    
 
 
-comment: andi rd=$zero 
+comment: rd=$zero 
 

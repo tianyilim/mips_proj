@@ -1,0 +1,13 @@
+addiu $ra, $zero, 6
+addiu $v0, $zero, 10
+jr $ra 
+nop
+jr $zero
+nop
+jal 2
+nop
+addiu $v0, $zero, 12
+jr $zero
+
+
+comment: jal backwards

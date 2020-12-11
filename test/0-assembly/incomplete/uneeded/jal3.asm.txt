@@ -1,0 +1,8 @@
+lw $t2, $zero, (data mem address)
+jr $t2
+nop
+
+
+comment: link to data address??
+
+#jal opcode in mem

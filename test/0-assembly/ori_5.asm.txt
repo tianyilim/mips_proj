@@ -1,0 +1,11 @@
+lw $t2, $zero, 4
+ori $zero, $t2, AAAA 
+addiu $v0, $zero, 0     
+jr $zero
+   
+
+
+comment: andi rd=$zero 
+
+#we could do have t4=0 so we can ori $zero, $t4, 0 to fix?
+#will fail jr $zero always timeout and fail

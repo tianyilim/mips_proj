@@ -1,0 +1,11 @@
+lw $t2, $zero, 6   #7f5785de
+lw $t3, $zero, 5   #0000ec5b
+addu $v0, $t2, $t3
+jr $zero
+
+
+
+comment: addu no overflow
+
+
+

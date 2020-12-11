@@ -1,0 +1,9 @@
+lw $t2, $zero, 5  #0000EC5B
+lw $t3, $zero, 6  #7f5785de   
+or $v0, $t2, $t3
+jr $zero
+
+
+
+comment: 7F5785DE or 0000EC5B
+

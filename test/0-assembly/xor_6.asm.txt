@@ -1,0 +1,9 @@
+lw $t6, $zero, 5
+lw $t7, $zero, 5   #0000ec5b
+xor $zero, $t6, $t7
+addiu $v0, $zero, 0
+jr $zero
+
+
+
+comment: rd is $zero

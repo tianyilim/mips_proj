@@ -132,17 +132,14 @@ int ConvertImmediate(char *immediate){ //As before, we have tokens for each part
 int itype(int opcode, int rt, int rs, int imm)
 {
 	int x = 0;
-
 	imm = (imm & 0xffff);
 	rt = (rt & 0x1f) << 16;
 	rs = (rs & 0x1f) << 21;
 	opcode = (opcode & 0x3f) << 26;
-
 	x |= imm;
 	x |= rt;
 	x |= rs;
 	x |= opcode;
-
 	return x;
 }
 */
@@ -269,7 +266,6 @@ int main() {
                 I will now do the R-Type instructions, which are called in virtually the same way however will now use the R-Constructor, which takes in 
                 extra parameters, now the Immediate (4th param) will just be called in as the 3rd register, and we will include other pre-defined values, the
                 SHIFT AMT, and also the function code.
-
                 Thankfully, for R-Type instructions most of these constants are pre-defined, the 3 exceptions are SRL, SRA, and SLL which we can just re-purpose the fourth param
                 for, as the opcode is all 0 for the R-Type anyway.
             */
@@ -346,7 +342,6 @@ int main() {
 
            /*
                 The R type instructions are complete.
-
                 Left to implement are 2 J type instructions. J and JAL, these are simple and merely only require 
                 2 variables to read in too, so this can be done quickly. 
            */
@@ -360,7 +355,7 @@ int main() {
 
             //I still need to play around with the J type instructions to ensure they do the right thing.
         for(int i = 0; i<instructions.size();i++) {
-            cout << instructions[i] << endl;
+            cout << hex << instructions[i].to_ulong() << endl;
         } //Just a test thing, I'll remove this later on
         
     }
@@ -368,6 +363,6 @@ int main() {
 
 }
     ofstream outFile("output.txt"); //Destination file
-    for (const auto &e : instructions) outFile << e << "\n"; //Cast the elements of the array instructions onto the output file
-
+    for (const auto &e : instructions) outFile << hex << e.to_ulong() << "\n"; //Cast the elements of the array instructions onto the output file
+    //EDIT: Changed radix of output file, keeps binary data structure just incase but outputs file in Hex
 }

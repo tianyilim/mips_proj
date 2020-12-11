@@ -1,0 +1,8 @@
+lw $t2, $zero, 3
+lw $t3, $zero, 3   #ffffffff
+addu $v0, $t2, $t3
+jr $zero
+
+
+
+comment: addu overflow

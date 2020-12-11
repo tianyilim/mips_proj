@@ -1,0 +1,12 @@
+nop
+nop
+jal  7
+nop
+jr $zero
+nop
+nop
+addiu $v0, $ra, 0
+jr $zero
+
+
+comment: jal test 1

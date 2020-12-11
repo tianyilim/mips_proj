@@ -1,0 +1,9 @@
+lw $t6, $zero, 5  #0000ec5b
+lw $t7, $zero, 6   #7f5785de
+or $t6, $t6, $t7
+addiu $v0, $t7, 0
+jr $zero
+
+
+
+comment: check rs unchanged

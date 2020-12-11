@@ -1,0 +1,10 @@
+lw $t3, $zero, 3
+addu $v0, $t3, $zero
+jr $zero
+
+
+
+comment: addu 0
+
+
+

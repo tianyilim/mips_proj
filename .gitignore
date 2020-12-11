@@ -2,3 +2,4 @@
 *.gtkw
 rtl/mips_cache_l2.v
 *.out
+*.log

@@ -1,0 +1,7 @@
+lw $t2, $zero, 4
+xori $v0, $t2, AAAA     
+jr $zero
+   
+
+
+comment: xori random imm

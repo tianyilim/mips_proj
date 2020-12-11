@@ -1,0 +1,7 @@
+lw $t2, $zero, 4
+andi $v0, $t2, 43690     
+jr $zero
+   
+
+
+comment: andi random imm

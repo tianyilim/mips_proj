@@ -1,0 +1,11 @@
+jal 3
+nop
+jr $zero
+nop
+addiu $v0, $ra, 0
+jr $zero
+
+comment: jal test 2
+
+
+before branch delay slot?

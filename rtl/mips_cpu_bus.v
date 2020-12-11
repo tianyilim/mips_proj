@@ -14,7 +14,9 @@ module mips_cpu_bus(
     input logic waitrequest,
     output logic[31:0] writedata,
     output logic[3:0] byteenable,
-    input logic[31:0] readdata
+    input logic[31:0] readdata,
+
+    output logic wb_empty_out // debug output
 );
 
     logic clk_enable_cpu_cc;
@@ -30,6 +32,9 @@ module mips_cpu_bus(
     logic[31:0] data_readdata_cpu_cc;
 
     logic[1:0] cc_state;        // DEBUG
+    logic wb_empty;
+
+    assign wb_empty_out = wb_empty;
 
     mips_cpu_harvard cpu(.clk(clk), .rst(reset), .clk_enable(clk_enable_cpu_cc), .register_v0(register_v0),
                         .active(active), .byteenable(byte_en_cpu_cc),
@@ -47,7 +52,7 @@ module mips_cpu_bus(
                         .mem_writedata(writedata), .mem_byteenable(byteenable), .mem_readdata(readdata),
                         .waitrequest(waitrequest),
 
-                        .cc_state(cc_state)
+                        .cc_state(cc_state), .wb_empty_out(wb_empty)
                         );
 
 endmodule

@@ -8,16 +8,26 @@ VCD info: dumpfile mips_CPU_bus_tb.vcd opened for output.
 TB : STATUS : 00 : Starting test
 CPU : Resetting
 TB : STATUS : 20 : CPU out of reset
+TB : ACTIVE : 25 : 
+########################################
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : ACTIVE : 35 : 
+########################################
 RAM : STATUS : Read requested at address 0xbfc00000, wait for 1 cycles
+TB : ACTIVE : 45 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
+TB : ACTIVE : 55 : 
+########################################
 RAM : READ : Read 0x24020000 data at address 0xbfc00000
+TB : ACTIVE : 65 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
@@ -27,20 +37,36 @@ INSTR_CACHE : Loading 0x24020000 into index 0x0, tag 0x05fe0000 assoc[0], addres
 CPU : FETCH : write_en = 0, instr = xxxxxxxx, instr_type =xx, pc = bfc00000, register_v0 = 00000000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
+TB : ACTIVE : 75 : 
+########################################
+TB : ACTIVE : 85 : 
+########################################
 CACHE_CTRL : STATE : IDLE
 CPU : EXEC1 : write_en = 0, instr = 24020000, instr_type =01, pc = bfc00000, register_v0 = 00000000
 CPU : EXEC2 : write_en = 1, instr = 24020000, instr_type =01, pc = bfc00004, register_v0 = 00000000
 CACHE_CTRL : STATE : IDLE
+TB : ACTIVE : 95 : 
+########################################
+TB : ACTIVE : 105 : 
+########################################
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : ACTIVE : 115 : 
+########################################
 RAM : STATUS : Read requested at address 0xbfc00004, wait for 1 cycles
+TB : ACTIVE : 125 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
+TB : ACTIVE : 135 : 
+########################################
 RAM : READ : Read 0x00000008 data at address 0xbfc00004
+TB : ACTIVE : 145 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
@@ -50,20 +76,36 @@ INSTR_CACHE : Loading 0x00000008 into index 0x1, tag 0x05fe0000 assoc[0], addres
 CPU : FETCH : write_en = 0, instr = 24020000, instr_type =01, pc = bfc00004, register_v0 = 00000000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
+TB : ACTIVE : 155 : 
+########################################
+TB : ACTIVE : 165 : 
+########################################
 CACHE_CTRL : STATE : IDLE
 CPU : EXEC1 : write_en = 0, instr = 00000008, instr_type =00, pc = bfc00004, register_v0 = 00000000
 CPU : EXEC2 : write_en = 0, instr = 00000008, instr_type =00, pc = bfc00008, register_v0 = 00000000
 CACHE_CTRL : STATE : IDLE
+TB : ACTIVE : 175 : 
+########################################
+TB : ACTIVE : 185 : 
+########################################
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : ACTIVE : 195 : 
+########################################
 RAM : STATUS : Read requested at address 0xbfc00008, wait for 1 cycles
+TB : ACTIVE : 205 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
+TB : ACTIVE : 215 : 
+########################################
 RAM : READ : Read 0x00000000 data at address 0xbfc00008
+TB : ACTIVE : 225 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
@@ -73,21 +115,37 @@ INSTR_CACHE : Loading 0x00000000 into index 0x2, tag 0x05fe0000 assoc[0], addres
 CPU : FETCH : write_en = 0, instr = 00000008, instr_type =00, pc = bfc00008, register_v0 = 00000000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
+TB : ACTIVE : 235 : 
+########################################
+TB : ACTIVE : 245 : 
+########################################
 CACHE_CTRL : STATE : IDLE
 CPU : EXEC1 : write_en = 0, instr = 00000000, instr_type =00, pc = bfc00008, register_v0 = 00000000
 ERROR: Writing to r0
 CPU : EXEC2 : write_en = 1, instr = 00000000, instr_type =00, pc = 00000000, register_v0 = 00000000
 CACHE_CTRL : STATE : IDLE
+TB : ACTIVE : 255 : 
+########################################
+TB : ACTIVE : 265 : 
+########################################
 CACHE_CTRL : STATE : IDLE
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
+TB : ACTIVE : 275 : 
+########################################
 RAM : STATUS : Read requested at address 0x00000000, wait for 1 cycles
+TB : ACTIVE : 285 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
+TB : ACTIVE : 295 : 
+########################################
 RAM : READ : Read 0x80000000 data at address 0x00000000
+TB : ACTIVE : 305 : 
+########################################
 CACHE_CTRL : STATE : FETCH
 CACHE_CTRL : STATUS : instr_stall: 1, data_stall: 0
 CACHE_CTRL : STATUS : waitrequest complete
@@ -97,6 +155,10 @@ INSTR_CACHE : Loading 0x80000000 into index 0x0, tag 0x00000000 assoc[1], addres
 CPU : FETCH : write_en = 0, instr = 00000000, instr_type =00, pc = 00000000, register_v0 = 00000000
 INSTR_CACHE : READ HIT
 CACHE_CTRL : STATE : FETCH
+TB : ACTIVE : 315 : 
+########################################
+TB : ACTIVE : 325 : 
+########################################
 TB : CYCLES : 0030
 TB : V0 : 00000000
 TB : FINISH : 325 : CPU finished execution.

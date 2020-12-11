@@ -43,6 +43,8 @@ module mips_CPU_bus_tb;
 	logic[31:0] mem_readdata;		// slave -> master
 	logic[31:0] mem_writedata;		// master -> slave
 
+	logic wb_empty;					// Debug output
+
 	// Connecting these together
 	assign mem_address = cpu_address;
 	assign mem_byteenable = cpu_byteenable;
@@ -86,7 +88,9 @@ module mips_CPU_bus_tb;
 		.write(cpu_write),				// master -> slave
 		.waitrequest(cpu_waitrequest),	// slave -> master
 		.readdata(cpu_readdata),		// slave -> master
-		.writedata(cpu_writedata)		// master -> slave
+		.writedata(cpu_writedata),		// master -> slave
+		
+		.wb_empty_out(wb_empty)
 	);
 	
 	// initial block for CPU clock
@@ -145,8 +149,9 @@ module mips_CPU_bus_tb;
 		cpu_reset = 0;
 		$display("TB : STATUS : %02t : CPU out of reset", $time);
 
-		while( cpu_active ) begin
+		while( cpu_active || !wb_empty ) begin
 			@(posedge cpu_clk);
+			$display("TB : ACTIVE : %02t : \n########################################", $time);
 		end
 		
 		$display("TB : CYCLES : %04d", current_cpu_cycles_ran);

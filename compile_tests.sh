@@ -11,10 +11,10 @@ for FILENAME in test/0-assembly/*.asm.txt; do
     # echo $FILENAME, $BASENAME.instr.hex
 
     # Move items into the test file
-    cp ${FILENAME} test/Assembler/src/test.txt
+    cp -v ${FILENAME} test/Assembler/src/test.txt
     # Perform assembly
     ./test/Assembler/src/assembler.out
     # Write to output file
-    cp test/Assembler/src/output.txt test/1-binary/$BASENAME.instr.hex
+    cp -v test/Assembler/src/output.txt test/1-binary/$BASENAME.instr.hex
 
 done

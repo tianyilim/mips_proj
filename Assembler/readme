@@ -22,6 +22,8 @@ addiu $s0, $s0, 1 (This is presuming that the value of i has been preloading int
 Taking this cross-compiled assembly code, our assembler would return the following result. 
 00100110000100000000000000000001
 Which can be directly read as a 32-bit instruction by our MIPS CPU, which will derive the required control signals and operation from these bits.
+NOTE: The actual output format will be in a hexadecimal format, so this instruction vector is not what you will see on the final output file. You would see something like
+26100001 instead.
 
 Justin has also made an equivalent C-assembler for use on the test-benches, these assemblers will both be used in order to test the CPU itself and then also to find its limits
 and test it with corner and edge-cases, as well as more sophisticated programs. 
@@ -78,15 +80,24 @@ Explaining from top to bottom in a TL;DR fashion:
     
     This principle is repeated for the rest of the instructions, which are varied depending on instruction operation and instruction type, but with the same fundemental operation.
     
-    -Output: We simply instantiate an auto which is used to print the contents of the array line by line on our ofstream output file.
+    -Output: We simply instantiate an auto which is used to print the contents of the array line by line on our ofstream output file, we specify the out radix to be hex
+    which easily converts it into a readable form.
+    
+    
+ TL;DR? Summary
+ ______________
+ -This assembler converts assembly level MIPS into machine code which our CPU can understand. 
+ -We will use higher level C code, cross-compile into MIPS and then run the output here to generate test cases for our processor.
     
  
  FURTHER COMMENTS
  ________________
  
  1) Support for labels has not yet been added, that is to be done. However this works for all other instructions when ran without .data, .text etc labels, strictly the
- instructions on their own.
+ instructions on their own. (NOTE: I believe TianYi has implemented a higher level implementation before the assembler which strips the required input of the labels, and
+ ensures we have something strictly of instruction type.)
  
  2) Instructions are in the binary file as I have assembled them directly, but for tidiness this may be changed to a Hex-based format if needed.
+ (NOTE: This has been resolved, output type is hex).
  
  

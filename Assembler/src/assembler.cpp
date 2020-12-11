@@ -286,8 +286,8 @@ int main() {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 9);
            }
            if (strcmp(firstparam, "jr") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 8);
-           }
+               Construct_R_Type(0, RegisterToInteger(secondparam), 0, 0, 0, 8);
+           } //jr only takes in two parameters, error was that we were pointing to nothing
            if (strcmp(firstparam, "mthi") == 0) {
                Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 17);
            }

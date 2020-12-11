@@ -42,6 +42,8 @@ module mips_cache_writebuffer(
     logic [BUF_BITS-1:0] read_ptr;           // Pointer for Cache to write to WB
     logic [BUF_BITS-1:0] write_ptr;          // Pointer for WB to write to MEM
 
+    logic write_sense;                      // Only take the first write in the case where write_en is high
+
     integer index;  // Iterator for reset
 
     // Combinatorial FULL/EMPTY
@@ -51,11 +53,18 @@ module mips_cache_writebuffer(
     assign write_writeenable = !empty & active; // Write when there are things to write!
 
     always @(posedge clk) begin
+        if (!rst) begin
+            write_sense <= write_en;
+        end
+    end
+
+    always @(posedge clk) begin
         if (rst) begin
             // $display("WB : Reset");
             state <= STATE_IDLE;
             read_ptr <= 0;
             write_ptr <= 0;
+            write_sense <= 0;
             // write_writeenable <= 0;
             // full <= 0;
             // empty <= 1;
@@ -69,7 +78,7 @@ module mips_cache_writebuffer(
             // $display("WB : Unreset");
             // writing always happens when not empty unless active low
             if (active) begin
-                $display("WB : Active");
+                // $display("WB : Active");
                 if (full_buf[write_ptr]) begin
                     // write_writeenable <= 1;
                     write_addr <= addr_buf[write_ptr];
@@ -90,15 +99,13 @@ module mips_cache_writebuffer(
 
             case (state)
             STATE_IDLE: begin
-                if (write_en) begin
+                if (write_en && !write_sense) begin
                     full_buf[read_ptr] <= 1;
                     addr_buf[read_ptr] <= addr;
                     data_buf[read_ptr] <= writedata;
                     byte_en_buf[read_ptr] <= byteenable;
-                    // empty <= 0;
 
                     read_ptr <= read_ptr + 1;    // ovf is intentional
-                    state <= STATE_WRITE;
                 end
             end
             STATE_WRITE: begin
@@ -108,23 +115,22 @@ module mips_cache_writebuffer(
                     read_ptr <= write_ptr;      
                     // Our next empty slot for reading is the one currently being written out of
                     // full <= 1;
-                end else if (write_en) begin    // elseif is here - won't read anything if fulled
+                end else if (write_en && !write_sense) begin    // elseif is here - won't read anything if fulled
                     full_buf[read_ptr] <= 1;
                     addr_buf[read_ptr] <= addr;
                     data_buf[read_ptr] <= writedata;
                     byte_en_buf[read_ptr] <= byteenable;
 
                     read_ptr <= read_ptr + 1;    // ovf is intentional
+
                 end else if (full_buf==0) begin
                     state <= STATE_IDLE;
                     read_ptr <= 0;
                     write_ptr <= 0;
-                    // empty <= 1;
                 end
             end
             STATE_FULL: begin
                 if (full_buf != BUFSIZE-1) begin
-                    // full <= 0;
                     state <= STATE_WRITE;
                     // Writing is an always process
                 end

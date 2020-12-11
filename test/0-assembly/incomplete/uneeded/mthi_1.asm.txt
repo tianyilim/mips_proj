@@ -1,0 +1,6 @@
+lw $t2, 3($zero) 
+mthi $t2
+mfhi $v0
+jr $zero
+
+comment: assumes mfhi works

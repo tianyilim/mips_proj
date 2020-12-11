@@ -1,0 +1,4 @@
+mfhi $v0
+jr $zero
+
+comment: hi empty

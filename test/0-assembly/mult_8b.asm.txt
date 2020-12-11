@@ -1,0 +1,10 @@
+lw $t2, 1($zero)
+lw $t3, 1($zero)
+lw $t4, 4($zero)
+mult $t2, $t4
+mult $t2, $t3
+mflo $v0
+jr $zero
+
+
+comment: overwrite lo register

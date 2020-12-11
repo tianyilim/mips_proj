@@ -151,7 +151,7 @@ module mips_CPU_bus_tb;
 
 		while( cpu_active || !wb_empty ) begin
 			@(posedge cpu_clk);
-			$display("TB : ACTIVE : %02t : \n########################################", $time);
+			$display("\nTB : ACTIVE : %02t : ########################################", $time);
 		end
 		
 		$display("TB : CYCLES : %04d", current_cpu_cycles_ran);

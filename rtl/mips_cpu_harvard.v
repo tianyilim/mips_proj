@@ -176,9 +176,9 @@ module mips_cpu_harvard(
                                                                                                                                                                                                                (opcode == LWR))) ? 1 : 0));
 
     //Mem access assignmemts
-    assign data_write = ((state == EXEC2) && (instr_type == I) && ((opcode == SB) || // EXEC1 used to update data_writedata and byteenable
-                                                                   (opcode == SH) ||
-                                                                   (opcode == SW))) ? 1 : 0;
+    // assign data_write = ((state == EXEC2) && (instr_type == I) && ((opcode == SB) || // EXEC1 used to update data_writedata and byteenable
+    //                                                                (opcode == SH) ||
+    //                                                                (opcode == SW))) ? 1 : 0;
     assign data_read = ((state == EXEC1) && (instr_type == I) && ((opcode == LB)  || // Loading of registers happens at EXEC3
                                                                   (opcode == LBU) ||
                                                                   (opcode == LH)  ||
@@ -242,6 +242,7 @@ module mips_cpu_harvard(
         state = HALTED;
         active = 0;
         data_writedata = 0;
+        data_write = 0;
     end
 
     always @(posedge clk) begin
@@ -252,6 +253,9 @@ module mips_cpu_harvard(
             active <= 1;
         end
         else if (!clk_enable) begin // do nothing
+            if (data_write == 1) begin
+              data_write <= 0;
+            end
         end
         else if((state == FETCH) && (active == 1)) begin
             $display("CPU : FETCH : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
@@ -441,6 +445,7 @@ module mips_cpu_harvard(
                     end
                     SB: begin
                         // state <= FETCH;
+                        data_write <= 1;
                         data_writedata <= rt_data[7:0];
                         if(imm_addr[1:0] == 0) begin
                           byteenable <= 4'b0001;

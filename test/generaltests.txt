@@ -93,7 +93,7 @@ R type:
        MULTU
        - Multiply 2 largest number
        - Multiply by 0
-       - Multipl
+       - Multiply
        OR
        SLL
        SLLV

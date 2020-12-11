@@ -9,6 +9,7 @@
 #include <cstring>
 #include <string.h>
 #include <stdlib.h>
+#include <iomanip>
 //Sry for the include spam, was experimenting a lot.
 
 using namespace std;
@@ -368,6 +369,6 @@ int main() {
 
 }
     ofstream outFile("output.txt"); //Destination file
-    for (const auto &e : instructions) outFile << hex << e.to_ulong() << "\n"; //Cast the elements of the array instructions onto the output file
+    for (const auto &e : instructions) outFile << setfill('0') << setw(8) << hex << e.to_ulong() << "\n"; //Cast the elements of the array instructions onto the output file
     //EDIT: Changed radix of output file, keeps binary data structure just incase but outputs file in Hex
 }

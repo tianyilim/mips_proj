@@ -1,0 +1,8 @@
+lw $t2, $zero, 4
+xori $zero, $t2, AAAA 
+addiu $v0, $zero, 0     
+jr $zero
+   
+
+
+comment: xori rd=$zero 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Performs assembly within test/0-assembly
+./compile_tests.sh
 # Tests all hex instruction files within test/1-binary/
 ./parse_intermediate_files.sh
 

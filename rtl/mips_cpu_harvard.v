@@ -209,6 +209,8 @@ module mips_cpu_harvard(
                                                                    (opcode == LH) ||
                                                                    (opcode == LHU) ||
                                                                    (opcode == LW) ||
+                                                                   (opcode == LWL) ||
+                                                                   (opcode == LWR) ||
                                                                    (opcode == SB) ||
                                                                    (opcode == SH) ||
                                                                    (opcode == SLTI) ||
@@ -446,15 +448,15 @@ module mips_cpu_harvard(
                           data_writedata[7:0] <= rt_data[7:0];
                           byteenable <= 4'b0001;
                         end
-                        else if(imm_addr[1:0 == 1]) begin
+                        else if(imm_addr[1:0] == 1) begin
                           data_writedata[15:8] <= rt_data[7:0];
                           byteenable <= 4'b0010;
                         end
-                        else if(imm_addr[1:0 == 2]) begin
+                        else if(imm_addr[1:0] == 2) begin
                           data_writedata[23:16] <= rt_data[7:0];
                           byteenable <= 4'b0100;
                         end
-                        else if(imm_addr[1:0 == 3]) begin
+                        else if(imm_addr[1:0] == 3) begin
                           data_writedata[31:24] <= rt_data[7:0];
                           byteenable <= 4'b1000;
                         end
@@ -466,7 +468,7 @@ module mips_cpu_harvard(
                           data_writedata <= rt_data[15:0];
                           byteenable <= 4'b0011;
                         end
-                        else if(imm_addr[1:0 == 2]) begin
+                        else if(imm_addr[1:0] == 2) begin
                           data_writedata[31:16] <= rt_data[15:0];
                           byteenable <= 4'b1100;
                         end
@@ -564,7 +566,7 @@ module mips_cpu_harvard(
                         if(imm_addr[1:0] == 0) begin
                           write_back_data <= {{16{data_readdata[15]}},data_readdata[15:0]};
                         end
-                        else if(imm_addr[1:0 == 2]) begin
+                        else if(imm_addr[1:0] == 2) begin
                           write_back_data <= {{16{data_readdata[15]}},data_readdata[31:16]};
                         end
                         else begin
@@ -576,7 +578,7 @@ module mips_cpu_harvard(
                         if(imm_addr[1:0] == 0) begin
                           write_back_data <= {{16'h0000},data_readdata[15:0]};
                         end
-                        else if(imm_addr[1:0 == 2]) begin
+                        else if(imm_addr[1:0] == 2) begin
                           write_back_data <= {{16'h0000},data_readdata[31:16]};
                         end
                         else begin
@@ -597,13 +599,13 @@ module mips_cpu_harvard(
                         if(imm_addr[1:0] == 0) begin
                           write_back_data <= {data_readdata[7:0],rt_data[23:0]};
                         end
-                        else if(imm_addr[1:0 == 1]) begin
+                        else if(imm_addr[1:0] == 1) begin
                           write_back_data <= {data_readdata[15:0],rt_data[15:0]};
                         end
-                        else if(imm_addr[1:0 == 2]) begin
+                        else if(imm_addr[1:0] == 2) begin
                           write_back_data <= {data_readdata[23:0],rt_data[7:0]};
                         end
-                        else if(imm_addr[1:0 == 3]) begin
+                        else if(imm_addr[1:0] == 3) begin
                           write_back_data <= data_readdata;
                         end
                         else begin
@@ -615,13 +617,13 @@ module mips_cpu_harvard(
                         if(imm_addr[1:0] == 0) begin
                           write_back_data <= data_readdata;
                         end
-                        else if(imm_addr[1:0 == 1]) begin
+                        else if(imm_addr[1:0] == 1) begin
                           write_back_data <= {rt_data[31:24],data_readdata[31:8]};
                         end
-                        else if(imm_addr[1:0 == 2]) begin
+                        else if(imm_addr[1:0] == 2) begin
                           write_back_data <= {rt_data[31:16],data_readdata[31:16]};
                         end
-                        else if(imm_addr[1:0 == 3]) begin
+                        else if(imm_addr[1:0] == 3) begin
                           write_back_data <= {rt_data[31:8],data_readdata[31:24]};
                         end
                         else begin

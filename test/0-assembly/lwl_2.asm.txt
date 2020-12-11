@@ -1,0 +1,3 @@
+addiu $v0 $s0 432
+lwl $v0 17($zero)
+jr $zero

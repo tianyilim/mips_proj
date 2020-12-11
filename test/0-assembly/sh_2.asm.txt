@@ -1,0 +1,4 @@
+addiu $s0 $s0 432
+sb $s0 c($zero)
+lw $v0 c($zero)
+jr $zero

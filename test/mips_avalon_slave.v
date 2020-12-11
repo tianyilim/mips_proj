@@ -49,7 +49,7 @@ module mips_avalon_slave(
             $readmemh(RAM_INIT_FILE, memory_instr);
         end
         if (DATA_INIT_FILE != "") begin
-            $display("RAM : INIT : Loading Data contents from %s", RAM_INIT_FILE);
+            $display("RAM : INIT : Loading Data contents from %s", DATA_INIT_FILE);
             $readmemh(DATA_INIT_FILE, memory_data);
         end
 

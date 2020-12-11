@@ -166,9 +166,13 @@ int main() {
    //The below system opens the test file, we assume it to be txt for now but I will change this to asm if unavoidable.
    string line;
    ifstream parsedfile("test/Assembler/src/test.txt");
-
+   int count = 0; //Something to do if we hit white space
    if (parsedfile.is_open()) {
        while(getline(parsedfile,line)) {
+        if(line.empty()) { //This part is the base case, if we hit white space we just increment this count, basically do nothing
+            count = count + 1;
+        }
+        else { //Otherwise, we do the line splitting as normal
            char delims[] = " (),\t"; //These are the standard delimiters in a MIPs file, we can split these into tokens.
            char linearr[20]; //Char array, because I can use the C string operations on them
            line.copy(linearr, line.size() + 1); //Copies the line from the .txt string, casts it into the array
@@ -366,7 +370,7 @@ int main() {
         } //Just a test thing, I'll remove this later on
         
     }
-
+       }
 
 }
     ofstream outFile("test/Assembler/src/output.txt"); //Destination file

@@ -220,20 +220,20 @@ int main() {
                 Construct_I_Type(5, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "lb") == 0) {
-                Construct_I_Type(32, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(32, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lbu") == 0) {
-                Construct_I_Type(36, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(36, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lh") == 0) {
-                Construct_I_Type(33, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(33, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lhu") == 0) {
-                Construct_I_Type(37, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(37, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lui") == 0) {
                 Construct_I_Type(15, 0, RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
-            }
+            } //Uhhh
             if (strcmp(firstparam, "lw") == 0) {
                 //lw $rt, offset($rs)
                 //This means that we have offset as third param,

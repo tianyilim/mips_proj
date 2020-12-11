@@ -102,7 +102,10 @@ int RegisterToInteger(char* Register) { //As you will later see, we parse each l
 
 
 int ConvertImmediate(char *immediate){ //As before, we have tokens for each part of the instruction, including the immediate, we gotta convert this into a useable form.
-    // 2 cases - hexadecimal and decimal immediate.
+    // 3 cases - hexadecimal and decimal immediate, the EXTRA case is the case of zero offset, i.e offset is given as $zero
+    if(strcmp(immediate, "$zero") == 0) {
+        return Registers[immediate];
+    }
     char *hexcase;
     hexcase = strstr(immediate, "0x"); //Checks for occurence of Hex in the constant, we can use this for a case by case consideration
     if (hexcase != NULL) { //Case 1: If the ptr isn't null then it means that we have an occurence of Hex in the constant.
@@ -232,22 +235,24 @@ int main() {
                 Construct_I_Type(15, 0, RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "lw") == 0) {
-                Construct_I_Type(35, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                //lw $rt, offset($rs)
+                //This means that we have offset as third param,
+                Construct_I_Type(35, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lwl") == 0) {
-                Construct_I_Type(34, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(34, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lwr") == 0) {
-                Construct_I_Type(42, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(42, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "ori") == 0) {
                 Construct_I_Type(13, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "sb") == 0) {
-                Construct_I_Type(40, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(40, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "sh") == 0) {
-                Construct_I_Type(41, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(41, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "slti") == 0) {
                 Construct_I_Type(10, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
@@ -256,7 +261,7 @@ int main() {
                 Construct_I_Type(11, 0, RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "sw") == 0) {
-                Construct_I_Type(43, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(43, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "xori") == 0) {
                 Construct_I_Type(14, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));

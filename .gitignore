@@ -3,5 +3,7 @@
 rtl/mips_cache_l2.v
 *.out
 *.log
+*.instr.hex
+*.data.hex
 
 yaya.sh

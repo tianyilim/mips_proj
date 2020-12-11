@@ -165,7 +165,8 @@ int main() {
 
    //The below system opens the test file, we assume it to be txt for now but I will change this to asm if unavoidable.
    string line;
-   ifstream parsedfile("test.txt");
+   ifstream parsedfile("test/Assembler/src/test.txt");
+
    if (parsedfile.is_open()) {
        while(getline(parsedfile,line)) {
            char delims[] = " (),\t"; //These are the standard delimiters in a MIPs file, we can split these into tokens.
@@ -361,14 +362,14 @@ int main() {
 
             //I still need to play around with the J type instructions to ensure they do the right thing.
         for(int i = 0; i<instructions.size();i++) {
-            cout << hex << instructions[i].to_ulong() << endl;
+            // cout << hex << instructions[i].to_ulong() << endl;
         } //Just a test thing, I'll remove this later on
         
     }
 
 
 }
-    ofstream outFile("output.txt"); //Destination file
+    ofstream outFile("test/Assembler/src/output.txt"); //Destination file
     for (const auto &e : instructions) outFile << setfill('0') << setw(8) << hex << e.to_ulong() << "\n"; //Cast the elements of the array instructions onto the output file
     //EDIT: Changed radix of output file, keeps binary data structure just incase but outputs file in Hex
 }

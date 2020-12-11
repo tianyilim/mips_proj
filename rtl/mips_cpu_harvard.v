@@ -461,11 +461,13 @@ module mips_cpu_harvard(
                     end
                     SH: begin
                         // state <= FETCH;
-                        data_writedata <= rt_data[15:0];
+                        
                         if(imm_addr[1:0] == 0) begin
+                          data_writedata <= rt_data[15:0];
                           byteenable <= 4'b0011;
                         end
                         else if(imm_addr[1:0 == 2]) begin
+                          data_writedata[31:16] <= rt_data[15:0];
                           byteenable <= 4'b1100;
                         end
                         else begin

@@ -1,0 +1,9 @@
+lw $t2, 9($zero)
+lw $t4, 7($zero)
+addiu $t3, $zero, 6
+div $t2, $t4
+div $t2, $t3
+mfhi $v0
+jr $zero
+
+comment: overwrite hilo

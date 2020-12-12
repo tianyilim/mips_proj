@@ -1,7 +1,7 @@
 lw $t2, 12($zero)  #FFFFFFFF
 lw $t3, 12($zero)   
 and $v0, $t2, $t3,
-jr $zero
+jr $zero,
 
 
 

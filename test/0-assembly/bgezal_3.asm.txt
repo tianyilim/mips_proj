@@ -1,0 +1,10 @@
+addu $t8, $zero, $zero					#1 $pc = bfc00004
+bgezal $t8, 2							#2 branch taken, $ra = $pc + 8, $pc currently is bfc00008, $ra = bfc00010
+addiu $v0, $ra, 0						#2
+jr $zero								#2
+addiu $v0, $ra, 1						#2
+jr $zero								#2
+
+comments:
+1. $t8 has a random number which is bigger than or equal to zero
+2. Use bgez to set $v0 = $ra + 1 if branch taken, else set $v0 = $ra if not equal. Therefore, $v0 should be bfc00011

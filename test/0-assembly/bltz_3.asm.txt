@@ -1,0 +1,10 @@
+addu $a2, $zero, $zero					#1
+bltz $a2, 2								#2 branch not taken
+addiu $v0, $zero, 0						#2
+jr $zero								#2
+addiu $v0, $zero, 1						#2
+jr $zero								#2
+
+comments:
+1. $a2 = 0
+2. Use bgez to set $v0 = 1 if branch taken, else set $v0 = 0 if not equal. Therefore, $v0 should be 0

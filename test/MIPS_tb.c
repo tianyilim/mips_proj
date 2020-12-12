@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #define reset_vct 0xbfc00000
 
 // registers
@@ -39,6 +40,16 @@
 #define $fp 30
 #define $ra 31
 
+char* getreg[32] = {
+	"$zero", "$at", "$v0", "$v1",
+	"$a0", "$a1", "$a2", "$a3",
+	"$t0", "$t1", "$t2", "$t3",
+	"$t4", "$t5", "$t6", "$t7",
+	"$s0", "$s1", "$s2", "$s3",
+	"$s4", "$s5", "$s6", "$s7",
+	"$t8", "$t9", "$k0", "$k1",
+	"$gp", "$sp", "$fp", "$ra", };
+
 // r type
 #define addu 0x21
 #define and 0x24
@@ -58,7 +69,7 @@
 #define sra 0x03
 #define srav 0x07
 #define srl 0x02
-#define srlv 0x06
+#define srlv 0c06
 #define subu 0x23
 #define xor 0x26
 
@@ -92,6 +103,18 @@
 // j type
 #define j 0x02
 #define jal 0x03
+
+int randreg()
+{
+	int x = rand() & 0x1f;
+
+	while (x == $zero | x == $at | x == $v0 | x == $gp | x == $sp | x == $fp | x == $ra)
+	{
+		x = rand() & 0x1f;
+	}
+
+	return x;
+}
 
 /*
 example:
@@ -207,13 +230,14 @@ void test_lw(FILE* fp)
 		lui $s0, ((randloc - 8) >> 16)
 		addiu $s0, $s0, (randloc - 8) & 0xffff
 		lw $v0, 8($s0)
+		jr $zero
 	*/
 	int memloc, data;
 
 	int randloc = reset_vct + 0x200 + (rand() & 0x3f) * 4;
 	int temp = (rand() << 18) ^ (rand() << 10) ^ (rand());
 
-	fprintf(fp, "` 4 testing lw\n");
+	fprintf(fp, "` 5 testing lw\n");
 
 	memloc = randloc;
 	data = temp;
@@ -244,7 +268,7 @@ void test_lw(FILE* fp)
 	fprintf(fp,"@ %08x\n", temp);
 }
 
-void test_sw(FILE* fp)
+void test_sw(FILE *fp_data, FILE *fp_instr, FILE *fp_output, FILE *fp_comments)
 {
 	/*
 		1. CPU points to a random location using $s0
@@ -252,95 +276,482 @@ void test_sw(FILE* fp)
 		3. CPU stores the random number into the random location
 		4. CPU reads the random number from the location back into $v0
 
-		addu $s0, $zero, $zero						1
-		lui $s0, ((randloc - 8) >> 16)				1
-		addiu $s0, $s0, (randloc - 8) & 0xffff		1
-		lui $s1, (rand() >> 16)						2
-		addiu $s1, $s1, rand() & 0xffff				2
-		sw $s1, 8($s0)								3
-		addiu $s0, $s0, 8							4
-		lw $v0, 0($s0)								4
+		addu reg1, $zero, $zero						1
+		lui reg1, ((randloc - 8) >> 16)				1
+		ori reg1, reg1, (randloc - 8) & 0xffff		1
+		lui reg2, (randnum >> 16)						2
+		ori reg2, reg2, randnum & 0xffff				2
+		sw reg2, 8(reg1)								3
+		addiu reg1, reg1, 8							4
+		lw $v0, 0(reg1)								4
+		jr $zero
 	*/
-	int memloc, data;
+	int data;
 
 	int randloc = reset_vct + 0x200 + (rand() & 0x3f) * 4;
-	int temp = (rand() << 18) ^ (rand() << 10) ^ (rand());
+	int randnum = (rand() << 18) ^ (rand() << 10) ^ (rand());
 
-	fprintf(fp, "` 8 testing sw\n");
+	int reg1 = randreg(), reg2 = randreg();
+	while (reg1 == reg2) reg2 = randreg();
 
-	memloc = reset_vct;
-	data = rtype(addu, $s0, $zero, $zero, 0);
-	fprintf(fp, "# %08x %08x ; addu $s0, $zero, $zero\n", memloc, data);
 
-	memloc += 4;
-	data = itype(lui, $s0, 0, (randloc - 8) >> 16);
-	fprintf(fp, "# %08x %08x ; lui $s0, ((randloc - 8) >> 16)\n", memloc, data);
+	data = rtype(addu, reg1, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg1]);
 
-	memloc += 4;
-	data = itype(addiu, $s0, $s0, (randloc - 8) & 0xffff);
-	fprintf(fp, "# %08x %08x ; addiu $s0, $s0, (randloc - 8) & 0xffff\n", memloc, data);
+	data = itype(lui, reg1, 0, (randloc - 8) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, ((randloc - 8) >> 16)\n", getreg[reg1]);
 
-	memloc += 4;
-	data = itype(lui, $s1, 0, (temp) >> 16);
-	fprintf(fp, "# %08x %08x ; lui $s1, (rand() >> 16)\n", memloc, data);
+	data = itype(ori, reg1, reg1, (randloc - 8) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, (randloc - 8) & 0xffff\n", getreg[reg1], getreg[reg1]);
 
-	memloc += 4;
-	data = itype(addiu, $s1, $s1, (temp) & 0xffff);
-	fprintf(fp, "# %08x %08x ; addiu $s1, $s1, (rand()) & 0xffff\n", memloc, data);
+	data = itype(lui, reg2, 0, (randnum) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, (randnum >> 16)\n", getreg[reg2]);
 
-	memloc += 4;
-	data = itype(sw, $s1, $s0, 8);
-	fprintf(fp, "# %08x %08x ; sw $v0, 8($s0)\n", memloc, data);
+	data = itype(ori, reg2, reg2, (randnum) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, (randnum) & 0xffff\n", getreg[reg2], getreg[reg2]);
 
-	memloc += 4;
-	data = itype(addiu, $s0, $s0, 8);
-	fprintf(fp, "# %08x %08x ; addiu $s0, $s0, 8", memloc, data);
+	data = itype(sw, reg2, reg1, 8);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "sw %s, 8(%s)\n", getreg[reg2], getreg[reg1]);
 
-	memloc += 4;
-	data = itype(lw, $v0, $s0, 8);
-	fprintf(fp, "# %08x %08x ; lw $v0, 8($s0)\n", memloc, data);
+	data = itype(addiu, reg1, reg1, 8);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu %s, %s, 8\n", getreg[reg1], getreg[reg1]);
 
-	memloc += 4;
+	data = itype(lw, $v0, reg1, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lw $v0, 0(%s)\n", getreg[reg1]);
+
 	data = rtype(jr, 0, $zero, 0, 0);
-	fprintf(fp, "# %08x %08x ; jr $zero\n", memloc, data);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
 
-
-	fprintf(fp, "@ %08x\n", temp);
+	fprintf(fp_output, "%08x\n", randnum);
 }
 
+void test_beq1(FILE* fp_data, FILE* fp_instr, FILE* fp_output, FILE* fp_comments)
+{
+	/*
+		This is the case where we branch
+
+		1. reg1 has a random number
+		2. reg2 has a random number, and is equal to reg 1
+		3. Use beq to set $v0 = 1 if they are equal, else set $v0 = 0 if not equal. Therefore, $v0 should be 1
+
+		addu reg1, $zero, $zero					1
+		lui reg1, (randnum1 >> 16)				1
+		ori reg1, reg1, (randnum1) & 0xffff		1
+		addu reg1, $zero, $zero					2
+		lui reg2, (randnum2 >> 16)				2
+		ori reg2, reg2, (randnum2) & 0xffff		2
+		beq reg1, reg2, 2						3 branch taken
+		addiu $v0, $zero, 0						3
+		jr $zero								3
+		addiu $v0, $zero, 1						3
+		jr $zero								3
+	*/
+
+
+	int data;
+	int randnum1 = (rand() << 18) ^ (rand() << 10) ^ (rand()), randnum2 = randnum1;
+
+	int reg1 = randreg(), reg2 = randreg();
+	while (reg1 == reg2) reg2 = randreg();
+
+	data = rtype(addu, reg1, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg1]);
+
+	data = itype(lui, reg1, 0, (randnum1) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, 0x%04x\n", getreg[reg1], ((randnum1) >> 16) & 0xffff);
+
+	data = itype(ori, reg1, reg1, (randnum1) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, 0x%04x\n", getreg[reg1], getreg[reg1], (randnum1) & 0xffff);
+
+	data = rtype(addu, reg2, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg2]);
+
+	data = itype(lui, reg2, 0, (randnum2) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, 0x%04x\n", getreg[reg2], ((randnum2) >> 16) & 0xffff);
+
+	data = itype(ori, reg2, reg2, (randnum2) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, 0x%04x\n", getreg[reg2], getreg[reg2], (randnum2) & 0xffff);
+
+	data = itype(beq, reg1, reg2, 2);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "beq  %s, %s, 2\n", getreg[reg1], getreg[reg2]);
+
+	data = itype(addiu, $v0, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 0\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	data = itype(addiu, $v0, $zero, 1);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 1\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	fprintf(fp_output, "%08x\n", 1);
+}
+
+void test_beq2(FILE* fp_data, FILE* fp_instr, FILE* fp_output, FILE* fp_comments)
+{
+	/*
+		This is the case where we dont branch
+
+		1. reg1 has a random number
+		2. reg2 has a random number, and is NOT equal to reg 1
+		3. Use beq to set $v0 = 1 if they are equal, else set $v0 = 0 if not equal. Therefore, $v0 should be 0
+
+		addu reg1, $zero, $zero					1
+		lui reg1, (randnum1 >> 16)				1
+		ori reg1, reg1, (randnum1) & 0xffff		1
+		addu reg1, $zero, $zero					2
+		lui reg2, (randnum2 >> 16)				2
+		ori reg2, reg2, (randnum2) & 0xffff		2
+		beq reg1, reg2, 2						3 branch not taken
+		addiu $v0, $zero, 0						3
+		jr $zero								3
+		addiu $v0, $zero, 1						3
+		jr $zero								3
+
+
+
+
+	*/
+
+
+	int data;
+	int randnum1 = (rand() << 18) ^ (rand() << 10) ^ (rand()), randnum2 = (rand() << 18) ^ (rand() << 10) ^ (rand());
+	while (randnum1 == randnum2) randnum2 = (rand() << 18) ^ (rand() << 10) ^ (rand());
+
+	int reg1 = randreg(), reg2 = randreg();
+	while (reg1 == reg2) reg2 = randreg();
+
+	data = rtype(addu, reg1, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg1]);
+
+	data = itype(lui, reg1, 0, (randnum1) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, 0x%04x\n", getreg[reg1], ((randnum1) >> 16) & 0xffff);
+
+	data = itype(ori, reg1, reg1, (randnum1) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, 0x%04x\n", getreg[reg1], getreg[reg1], (randnum1) & 0xffff);
+
+	data = rtype(addu, reg2, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg2]);
+
+	data = itype(lui, reg2, 0, (randnum2) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, 0x%04x\n", getreg[reg2], ((randnum2) >> 16) & 0xffff);
+
+	data = itype(ori, reg2, reg2, (randnum2) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, 0x%04x\n", getreg[reg2], getreg[reg2], (randnum2) & 0xffff);
+
+	data = itype(beq, reg1, reg2, 2);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "beq  %s, %s, 2\n", getreg[reg1], getreg[reg2]);
+
+	data = itype(addiu, $v0, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 0\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	data = itype(addiu, $v0, $zero, 1);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 1\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	fprintf(fp_output, "%08x\n", 0);
+}
+
+void test_bgez1(FILE* fp_data, FILE* fp_instr, FILE* fp_output, FILE* fp_comments)
+{
+	/*
+		This is the case where we branch
+
+		1. reg1 has a random number which is bigger than or equal to zero
+		2. Use bgez to set $v0 = 1 if branch taken, else set $v0 = 0 if not equal. Therefore, $v0 should be 1
+
+		addu reg1, $zero, $zero					1
+		lui reg1, (randnum1 >> 16)				1
+		ori reg1, reg1, (randnum1) & 0xffff		1
+		bgez reg1, 2							2 branch taken
+		addiu $v0, $zero, 0						2
+		jr $zero								2
+		addiu $v0, $zero, 1						2
+		jr $zero								2
+	*/
+
+
+	int data;
+	int randnum1 = (rand() << 18) ^ (rand() << 10) ^ (rand());
+	randnum1 &= 0x7fffffff;
+
+	int reg1 = randreg();
+
+	data = rtype(addu, reg1, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg1]);
+
+	data = itype(lui, reg1, 0, (randnum1) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, (randnum1 >> 16)\n", getreg[reg1]);
+
+	data = itype(ori, reg1, reg1, (randnum1) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, (randnum1) & 0xffff\n", getreg[reg1], getreg[reg1]);
+
+	data = itype(bgez, 0x1, reg1, 2);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "bgez %s, 2\n", getreg[reg1]);
+
+	data = itype(addiu, $v0, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 0\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	data = itype(addiu, $v0, $zero, 1);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 1\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	fprintf(fp_output, "%08x\n", 1);
+}
+
+void test_bgez2(FILE* fp_data, FILE* fp_instr, FILE* fp_output, FILE* fp_comments)
+{
+	/*
+		This is the case where we dont branch
+
+		1. reg1 has a random number which is smaller than zero
+		2. Use bgez to set $v0 = 1 if branch taken, else set $v0 = 0 if not equal. Therefore, $v0 should be 1
+
+		addu reg1, $zero, $zero					1
+		lui reg1, (randnum1 >> 16)				1
+		ori reg1, reg1, (randnum1) & 0xffff		1
+		bgez reg1, 2							2 branch not taken
+		addiu $v0, $zero, 0						2
+		jr $zero								2
+		addiu $v0, $zero, 1						2
+		jr $zero								2
+	*/
+
+
+	int data;
+	int randnum1 = (rand() << 18) ^ (rand() << 10) ^ (rand());
+	randnum1 |= 0x80000000;
+
+	int reg1 = randreg();
+
+	data = rtype(addu, reg1, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg1]);
+
+	data = itype(lui, reg1, 0, (randnum1) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, (randnum1 >> 16)\n", getreg[reg1]);
+
+	data = itype(ori, reg1, reg1, (randnum1) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, (randnum1) & 0xffff\n", getreg[reg1], getreg[reg1]);
+
+	data = itype(bgez, 0x1, reg1, 2);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "bgez %s, 2\n", getreg[reg1]);
+
+	data = itype(addiu, $v0, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 0\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	data = itype(addiu, $v0, $zero, 1);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 1\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	fprintf(fp_output, "%08x\n", 0);
+}
+
+void test_bgezal1(FILE* fp_data, FILE* fp_instr, FILE* fp_output, FILE* fp_comments)
+{
+	/*
+		This is the case where we branch
+
+		1. reg1 has a random number which is bigger than or equal to zero
+		2. Use bgez to set $v0 = 1 if branch taken, else set $v0 = 0 if not equal. Therefore, $v0 should be bfc00019
+
+		addu reg1, $zero, $zero					1
+		lui reg1, (randnum1 >> 16)				1
+		ori reg1, reg1, (randnum1) & 0xffff		1
+		bgezal reg1, 2							2 branch taken, $ra = $pc + 8, $pc currently is bfc00010, $ra = bfc00018
+		addiu $v0, $ra, 0						2
+		jr $zero								2
+		addiu $v0, ra, 1						2
+		jr $zero								2
+	*/
+
+
+	int data;
+	int randnum1 = (rand() << 18) ^ (rand() << 10) ^ (rand());
+	randnum1 &= 0x7fffffff;
+
+	int reg1 = randreg();
+
+	data = rtype(addu, reg1, $zero, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addu %s, $zero, $zero\n", getreg[reg1]);
+
+	data = itype(lui, reg1, 0, (randnum1) >> 16);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "lui %s, (randnum1 >> 16)\n", getreg[reg1]);
+
+	data = itype(ori, reg1, reg1, (randnum1) & 0xffff);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "ori %s, %s, (randnum1) & 0xffff\n", getreg[reg1], getreg[reg1]);
+
+	data = itype(bgezal, 0x11, reg1, 2);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "bgezal %s, 2\n", getreg[reg1]);
+
+	data = itype(addiu, $v0, $zero, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 0\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	data = itype(addiu, $v0, $zero, 1);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "addiu $v0, $zero, 1\n");
+
+	data = rtype(jr, 0, $zero, 0, 0);
+	fprintf(fp_instr, "%08x\n", data);
+	fprintf(fp_comments, "jr $zero\n");
+
+	fprintf(fp_output, "%08x\n", 1);
+}
 
 int main(int argc, char** argv)
 {
 	srand(time(NULL));
-	FILE* fp = fopen("test_prog_list.txt", "w");
+	FILE *fp_data, *fp_instr, *fp_output, *fp_comments;
+	char fname[130], fnamehead[100];
+	/*
+		data file format = "<instruction>_<n-th case>.data.hex", data location starts from 0x00000000
+		instr file format = "<instruction>_<n-th case>.instr.hex", instruction location starts from 0xbfc00000
+		output file format = "<instruction>_<n-th case>.output.txt"
+		assembly comment code = "<instruction>_<n-th case>.asm.txt"
+	*/
+
+	char* instructions[46] = {
+		"beq", "sw"
+	};
+
+
+
 	printf("argc = %d\n", argc);
 
-	char* ptr;
-
-	if (argc > 1)
+	for (int ii = 0; ii < 2; ii++)
 	{
-		while (--argc)
+		for (int jj = 0; jj < 5; jj++)
 		{
-			ptr = *++argv;
+			
+			strcpy(fnamehead, "");
+			sprintf(fnamehead, "%s_%d", instructions[ii], jj);
 
-			if (strcmp(ptr, "jr") == 0)
-				for (int i = 0; i < 10; i++) test_jr(fp);
-			else if (strcmp(ptr, "addiu") == 0)
-				for (int i = 0; i < 10; i++) test_addiu(fp);
-			else if (strcmp(ptr, "lw") == 0)
-				for (int i = 0; i < 10; i++) test_lw(fp);
+			strcpy(fname, "");
+			sprintf(fname, "%s.data.hex", fnamehead);
+			fp_data = fopen(fname, "w");
 
+			strcpy(fname, "");
+			sprintf(fname, "%s.instr.hex", fnamehead);
+			fp_instr = fopen(fname, "w");
+
+			strcpy(fname, "");
+			sprintf(fname, "%s.output.txt", fnamehead);
+			fp_output = fopen(fname, "w");
+
+			strcpy(fname, "");
+			sprintf(fname, "%s.asm.txt", fnamehead);
+			fp_comments = fopen(fname, "w");
+
+			test_beq1(fp_data, fp_instr, fp_output, fp_comments);
 		}
-	}
-	else
-	{
-		for (int i = 0; i < 10; i++) test_jr(fp);
-		for (int i = 0; i < 10; i++) test_addiu(fp);
-		for (int i = 0; i < 10; i++) test_lw(fp);
-
+		
 	}
 
-	fclose(fp);
+
+	fclose(fp_data);
+	fclose(fp_instr);
+	fclose(fp_output);
+	fclose(fp_comments);
+
+	//char* ptr;
+
+	//if (argc > 1)
+	//{
+	//	while (--argc)
+	//	{
+	//		ptr = *++argv;
+
+	//		if (strcmp(ptr, "jr") == 0)
+	//			for (int i = 0; i < 10; i++) test_jr(fp);
+	//		else if (strcmp(ptr, "addiu") == 0)
+	//			for (int i = 0; i < 10; i++) test_addiu(fp);
+	//		else if (strcmp(ptr, "lw") == 0)
+	//			for (int i = 0; i < 10; i++) test_lw(fp);
+
+	//	}
+	//}
+	//else
+	//{
+	//	for (int i = 0; i < 10; i++) test_jr(fp);
+	//	for (int i = 0; i < 10; i++) test_addiu(fp);
+	//	for (int i = 0; i < 10; i++) test_lw(fp);
+
+	//}
+
+	//fclose(fp);
 
 	return 0;
 }

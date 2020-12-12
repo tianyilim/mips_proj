@@ -25,16 +25,12 @@ for i in "${cases[@]}"; do
         BASENAME=`basename ${NAME}` # Name of test case
         INSTR_NAME=${BASENAME%_*}
 
-<<<<<<< HEAD
         declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
 
         if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
             echo "Test answer ${BASENAME} does not exist"
             continue
         fi
-=======
-        # [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
->>>>>>> f3f1ac4f6de82031c3b4d9a177153ebb5794a383
         # if sample output does not exist, don't bother running the test case
 
         if [ -f ${NAME}.data.hex ]; then
@@ -49,6 +45,7 @@ for i in "${cases[@]}"; do
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
             -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
+            -P mips_CPU_bus_tb.READ_DELAY=2 \
             -s mips_CPU_bus_tb \
             -o joe.out
 
@@ -70,7 +67,7 @@ for i in "${cases[@]}"; do
         diff --ignore-all-space -i <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt > /dev/null # compare expected and given output
         DIFFPASS=$?
 
-        FATAL_FOUND=$(grep -q "FATAL" test/3-output/${BASENAME}.log)
+        FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}.log)
         FATAL_PASS=$?
     
         # If fatal is found anywhere in the log file, consider the testcase as failed

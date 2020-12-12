@@ -43,6 +43,17 @@ for i in "${cases[@]}"; do
             DATANAME="test/datamem.txt"
         fi
 
+        # List of files:
+            # rtl/mips_cpu_bus.v \
+            # rtl/mips_cpu_cache_controller.v \
+            # rtl/mips_cpu_cache_data.v \
+            # rtl/mips_cpu_cache_instr.v \
+            # rtl/mips_cpu_cache_writebuffer.v \
+            # rtl/mips_cpu_eight_bit_extension.v \
+            # rtl/mips_cpu_harvard.v \
+            # rtl/mips_cpu_register_file.v \
+            # rtl/mips_cpu_sixteen_bit_extension.v \
+
         iverilog -Wall -g 2012 \
             rtl/mips_cpu_*.v \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb_change.v \

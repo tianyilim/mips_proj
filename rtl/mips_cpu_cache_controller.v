@@ -90,27 +90,32 @@ module mips_cache_controller(
     assign clk_enable = !(instr_stall || data_stall || wb_full);
     assign mem_address = (state==STATE_WRITE) ? addr_wbtomem : (instr_stall) ? instr_address : data_address;
 
+    assign mem_read = (instr_stall || data_stall) && (state==STATE_FETCH);
+
+    assign instr_data_valid = instr_stall && !waitrequest && (state==STATE_FETCH);
+    assign data_data_valid = data_stall && !waitrequest && (state==STATE_FETCH);
+
     always @ (posedge clk) begin
         if (rst) begin
             state <= STATE_IDLE;
-            data_data_valid <= 0;
-            instr_data_valid <= 0;
+            // data_data_valid <= 0;
+            // instr_data_valid <= 0;
             wb_active <= 0;
 
-            mem_read <= 0;  // Known state at start
+            // mem_read <= 0;  // Known state at start
 
         end else begin
             case (state)    // State machine
                 STATE_IDLE : begin
                     // Lmao do nothing
                     $display("CACHE_CTRL : STATE : IDLE");
-                    instr_data_valid <= 0;
-                    data_data_valid <= 0;
+                    // instr_data_valid <= 0;
+                    // data_data_valid <= 0;
 
                     // State transitions
                     if (instr_stall || data_stall) begin
                         state <= STATE_FETCH;
-                        mem_read <= 1;
+                        // mem_read <= 1;
                     end else if (!wb_empty) begin
                         state <= STATE_WRITE;
                         // wb_active <= 1;
@@ -126,7 +131,7 @@ module mips_cache_controller(
                     if (!waitrequest) begin
                         if (instr_stall || data_stall) begin
                             state <= STATE_FETCH;
-                            mem_read <= 1;
+                            // mem_read <= 1;
                             wb_active <= 0;
                         end else if (wb_empty) begin
                             state <= STATE_IDLE;
@@ -143,29 +148,23 @@ module mips_cache_controller(
 
                         if (!waitrequest) begin
                             $display("CACHE_CTRL : STATUS : waitrequest complete");
-                            mem_read <= 0;
+                            // mem_read <= 0;
                             if (instr_stall) begin
-                                // instr_data_in <= mem_readdata;
-                                instr_data_valid <= 1;
-                                data_data_valid <= 0;
+                                // instr_data_valid <= 1;
+                                // data_data_valid <= 0;
                             end else if (data_stall) begin
-                                // data_data_in <= mem_readdata;
-                                data_data_valid <= 1;
-                                instr_data_valid <= 0;
+                                // data_data_valid <= 1;
+                                // instr_data_valid <= 0;
                             end
                         end else begin
-                            instr_data_valid <= 0;
-                            data_data_valid <= 0;
+                            // instr_data_valid <= 0;
+                            // data_data_valid <= 0;
                         end
                     end
 
                     // State transitions
                     if (!waitrequest & !(instr_stall || data_stall) ) begin
-                        state <= (wb_empty) ? STATE_IDLE : STATE_WRITE;
-                        // Ensure that state transitions are obeyed
-                        instr_data_valid <= 0;
-                        data_data_valid <= 0;
-                        // wb_active <= (wb_empty) ? 0 : 1;
+                        state <= STATE_IDLE;
                     end
                 end
             endcase

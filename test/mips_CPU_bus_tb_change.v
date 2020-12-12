@@ -128,13 +128,6 @@ module mips_CPU_bus_tb;
 			mem_clk = ~mem_clk;
 		end
 	end
-
-	// Remove this test case first
-	// always @(negedge mem_clk) begin
-	// 	if (loading_memory == 1 && cpu_active == 1) begin
-	// 		$fatal(2, "FAIL! CPU somehow started on its own when programs are being loaded into memory!\n");
-	// 	end
-	// end
 	
 	// initial block for main testbench
 	initial begin

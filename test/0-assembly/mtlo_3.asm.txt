@@ -1,0 +1,8 @@
+lw $t2, 16($zero) 
+addiu $t3, $t2, 10
+mtlo $t3
+mtlo $t2
+mflo $v0
+jr $zero
+
+comment: mtlo twice

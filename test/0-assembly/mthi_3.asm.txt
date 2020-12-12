@@ -1,0 +1,8 @@
+lw $t2, 12($zero) 
+addiu $t3, $t2, 10
+mthi $t3
+mthi $t2
+mfhi $v0
+jr $zero
+
+comment: mthi twice

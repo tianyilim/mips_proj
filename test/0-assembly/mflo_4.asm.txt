@@ -1,0 +1,8 @@
+lw $t2, 16($zero)
+addiu $t3, $zero, 25
+multu $t2, $t3
+mflo $zero
+addiu $v0, $zero, 0
+jr $zero
+
+comment: rd is $zero

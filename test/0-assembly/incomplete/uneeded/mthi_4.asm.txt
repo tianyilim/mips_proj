@@ -1,6 +1,0 @@
-lw $t2, 4($zero) 
-mthi $t2
-mflo $v0
-jr $zero
-
-comment: check lo reg

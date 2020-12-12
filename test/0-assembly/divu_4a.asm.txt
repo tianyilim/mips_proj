@@ -1,5 +1,5 @@
 lw $t2, 0($zero)
-lw $t3, 4($zero)
+lw $t3, 16($zero)
 divu $t3, $t2
 mfhi $v0
 jr $zero

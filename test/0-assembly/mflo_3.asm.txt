@@ -1,4 +1,4 @@
-lw $t2, 4($zero)
+lw $t2, 16($zero)
 addiu $t3, $zero, 25
 multu $t2, $t3
 mflo $t3

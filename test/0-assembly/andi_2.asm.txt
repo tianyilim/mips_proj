@@ -1,4 +1,4 @@
-lw $t2, 4($zero)
+lw $t2, 16($zero)
 andi $v0, $t2, FFFF    
 jr $zero
    

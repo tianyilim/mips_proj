@@ -1,6 +1,0 @@
-lw $t2, 4($zero) 
-mthi $t2
-addiu $v0, t2, 2
-jr $zero
-
-comment: check rs unchanged

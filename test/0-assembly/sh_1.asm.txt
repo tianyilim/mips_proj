@@ -1,4 +1,4 @@
 addiu $s0 $s0 783
-sb $s0 6($zero)
+sh $s0 6($zero)
 lw $v0 4($zero)
 jr $zero

@@ -1,4 +1,4 @@
-lw $t2, 4($zero)
+lw $t2, 16($zero)
 xori $v0, $t2, 43690     
 jr $zero
    

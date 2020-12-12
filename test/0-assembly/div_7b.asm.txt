@@ -1,4 +1,4 @@
-lw $t4, 9($zero)
+lw $t4, 36($zero)
 addiu $t5, $zero, 6
 div $t4, $t5
 mflo $v0

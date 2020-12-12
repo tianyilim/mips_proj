@@ -1,4 +1,4 @@
-lw $t2, 3($zero) 
+lw $t2, 12($zero) 
 addiu $t3, $t2, 10
 mthi $t3
 mthi $t2

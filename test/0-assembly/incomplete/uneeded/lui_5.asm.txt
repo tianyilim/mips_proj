@@ -1,0 +1,5 @@
+lw $t2, 7($zero)
+lui $t2, 23
+jr $zero
+
+comment: rd not empty

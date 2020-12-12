@@ -16,9 +16,14 @@ for line in f:
     if line == '':
         continue # Disregard empty lines
 
+    if line=="nop":
+        line="addiu $zero, $zero, 0"
+
     # Add trailing commas for assembler
     if line[-1] != ')' or line[-1] != ',':
         line += ','
+    
+    # print(line)
 
     tmp.write(line+'\n')
 

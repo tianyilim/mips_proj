@@ -84,7 +84,7 @@ for i in "${cases[@]}"; do
         fi
 
         V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
-        diff --ignore-all-space -i <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt > /dev/null # compare expected and given output
+        DIFF_FOUND=$(diff -q --ignore-all-space --ignore-blank-lines --strip-trailing-cr --ignore-case <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt) # compare expected and given output
         DIFFPASS=$?
         if [ ! $DIFFPASS = 0 ]; then
             V0_CHECK="${RED}$V0_CHECK${RESTORE}"

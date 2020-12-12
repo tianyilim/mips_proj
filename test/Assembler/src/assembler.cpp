@@ -289,7 +289,8 @@ int main() {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 36);
            }
            if (strcmp(firstparam, "div") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), 0, 0, 26);
+               //div $rs, $rt, rs is second param and rt is third 
+               Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 26);
            }
            if (strcmp(firstparam, "divu") == 0) {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), 0, 0, 27);

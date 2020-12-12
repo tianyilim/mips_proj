@@ -25,7 +25,7 @@ for i in "${cases[@]}"; do
         BASENAME=`basename ${NAME}` # Name of test case
         INSTR_NAME=${BASENAME%_*}
 
-        [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
+        # [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
         # if sample output does not exist, don't bother running the test case
 
         if [ -f ${NAME}.data.hex ]; then

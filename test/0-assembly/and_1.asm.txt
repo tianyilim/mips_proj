@@ -1,5 +1,5 @@
 lw $t3, 12($zero) 
-and $v0, $t3, $zero
+and $v0, $t3, $zero,
 jr $zero
 
 

@@ -238,8 +238,9 @@ int main() {
                 Construct_I_Type(37, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lui") == 0) {
-                Construct_I_Type(15, 0, RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
-            } //Uhhh
+                //lui instructions of form lui $x, IMMD. So we need to take in the third param as immediate
+                Construct_I_Type(15, 0, RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
+            } 
             if (strcmp(firstparam, "lw") == 0) {
                 //lw $rt, offset($rs)
                 //This means that we have offset as third param,
@@ -288,7 +289,8 @@ int main() {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 36);
            }
            if (strcmp(firstparam, "div") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), 0, 0, 26);
+               //div $rs, $rt, rs is second param and rt is third 
+               Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 26);
            }
            if (strcmp(firstparam, "divu") == 0) {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), 0, 0, 27);

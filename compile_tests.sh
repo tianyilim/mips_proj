@@ -17,7 +17,7 @@ else
     done
 fi
 
-for i in ${cases[@]}; do
+for i in "${cases[@]}"; do
     for FILENAME in test/0-assembly/${i}*.asm.txt; do
         [ -e "$FILENAME" ] || continue # Avoid case where there are no matches
         BASENAME=`basename ${FILENAME}` # Name of test case

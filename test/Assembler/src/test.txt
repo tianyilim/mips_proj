@@ -1,5 +1,0 @@
-j 1,
-addiu $v0, $zero, 10,
-j 3,
-addiu $v0, $zero, 2,
-jr $zero,

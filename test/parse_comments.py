@@ -10,11 +10,15 @@ tmp = open("test/Assembler/src/test.txt", 'w')
 for line in f:
     stuff = line.split('#') # Gets rid of comments
     line=stuff[0].strip()
-
     if "comment" in line:
-        break
+        break # Disregard everything after 'comment'
+
     if line == '':
-        continue
+        continue # Disregard empty lines
+
+    # Add trailing commas for assembler
+    if line[-1] != ')' or line[-1] != ',':
+        line += ','
 
     tmp.write(line+'\n')
 

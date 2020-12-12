@@ -1,5 +1,6 @@
 addiu $t2, $zero, 10
 lui $t2, 23
+addiu $v0, $t2, 0
 jr $zero
 
 comment: rd not empty

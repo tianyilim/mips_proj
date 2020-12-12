@@ -8,4 +8,3 @@ jr $zero
 comment: jal test 2
 
 
-before branch delay slot?

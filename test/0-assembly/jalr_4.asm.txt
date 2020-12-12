@@ -1,0 +1,10 @@
+lw $t4, 8($zero)
+jalr $t2, $t4
+addiu $t5, $t4, 0
+nop
+jr $zero
+nop
+addiu $v0, $t5, 16   #random no
+jr $zero
+
+comment: check rd in branch delay slot

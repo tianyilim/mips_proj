@@ -12,7 +12,7 @@ if [ $# = 0 ]; then
     cases+=("")
 else
     for arg do
-        cases+=("$arg")
+        cases+=("$arg"_)
     done
 fi
 
@@ -25,7 +25,16 @@ for i in "${cases[@]}"; do
         BASENAME=`basename ${NAME}` # Name of test case
         INSTR_NAME=${BASENAME%_*}
 
+<<<<<<< HEAD
+        declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
+
+        if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
+            echo "Test answer ${BASENAME} does not exist"
+            continue
+        fi
+=======
         # [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
+>>>>>>> f3f1ac4f6de82031c3b4d9a177153ebb5794a383
         # if sample output does not exist, don't bother running the test case
 
         if [ -f ${NAME}.data.hex ]; then
@@ -52,23 +61,26 @@ for i in "${cases[@]}"; do
         # cat test/3-output/${BASENAME}.log  # Display debug output directly
 
         V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}.log)
-        CYCLES=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
+        CYCLES_STR=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
         V0_OUT=${V0_OUT#"TB : V0 : "}
-        CYCLES=${CYCLES#"TB : CYCLES : "}
+        declare -i CYCLES=${CYCLES_STR#"TB : CYCLES : "}
+        CPI=$(expr $CYCLES / $INSTR_COUNT)
 
         V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
         diff --ignore-all-space -i <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt > /dev/null # compare expected and given output
         DIFFPASS=$?
 
+        FATAL_FOUND=$(grep -q "FATAL" test/3-output/${BASENAME}.log)
+        FATAL_PASS=$?
+    
         # If fatal is found anywhere in the log file, consider the testcase as failed
-        if [ $DIFFPASS = 0 ] && ! grep -q "FATAL" test/3-output/${BASENAME}.log; then
+        if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ]; then
             FAIL="Pass"
-            echo $BASENAME $INSTR_NAME $FAIL $V0_OUT, $CYCLES
         else
             FAIL="Fail"
-            echo $BASENAME $INSTR_NAME $FAIL "V0: "$V0_OUT, "EXP: "$V0_CHECK $CYCLES
         fi
 
+        echo "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "INSTRS: "$INSTR_COUNT, "CPI: "$CPI, $FATAL_FOUND"
 
         set -e
         # Opens with savefiles, Cleanup

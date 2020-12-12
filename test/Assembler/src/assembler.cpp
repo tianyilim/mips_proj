@@ -211,16 +211,16 @@ int main() {
                 Construct_I_Type(1, RegisterToInteger(thirdparam), 17, ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "bgtz") == 0) {
-                Construct_I_Type(7, RegisterToInteger(thirdparam), 0, ConvertImmediate(fourthparam));
+                Construct_I_Type(7, RegisterToInteger(secondparam), 0, ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "blez") == 0) {
-                Construct_I_Type(6, RegisterToInteger(thirdparam), 0, ConvertImmediate(fourthparam));
+                Construct_I_Type(6, RegisterToInteger(secondparam), 0, ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "bltz") == 0) {
-                Construct_I_Type(1, RegisterToInteger(thirdparam), 0, ConvertImmediate(fourthparam));
+                Construct_I_Type(1, RegisterToInteger(secondparam), 0, ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "bltzal") == 0) {
-                Construct_I_Type(1, RegisterToInteger(thirdparam), 16, ConvertImmediate(fourthparam));
+                Construct_I_Type(1, RegisterToInteger(secondparam), 16, ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "bne") == 0) {
                 Construct_I_Type(5, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));

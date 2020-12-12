@@ -1,4 +1,4 @@
-addiu $ra, $zero, 6
+addiu $ra, $zero, 24
 addiu $v0, $zero, 10
 jr $ra 
 nop

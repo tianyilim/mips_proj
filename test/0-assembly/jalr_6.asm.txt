@@ -1,0 +1,12 @@
+lw $t2, 16($zero)  #address contains addiu v0,t4,10 then halt
+jalr $t4, $t2
+nop
+jr $zero
+
+
+
+
+
+
+comment: wrap around(assumes j works)
+

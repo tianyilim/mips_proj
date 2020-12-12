@@ -1,4 +1,4 @@
-lw $t2, 7($zero)
+lw $t2, 28($zero)
 lui $t2, 23
 jr $zero
 

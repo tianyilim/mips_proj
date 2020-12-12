@@ -1,0 +1,9 @@
+lw $t4, 4($zero)
+jalr $t2, $t4
+nop
+jr $zero
+nop
+addiu $v0, $t2, 0
+jr $zero
+
+comment: jalr test 2

@@ -1,4 +1,4 @@
-lw $t2, 4($zero) 
+lw $t2, 16($zero) 
 mtlo $t2
 mfhi $v0
 jr $zero

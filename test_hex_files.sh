@@ -27,7 +27,10 @@ for i in "${cases[@]}"; do
 
         declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
 
-        # [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
+        if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
+            echo "Test answer ${BASENAME} does not exist"
+            continue
+        fi
         # if sample output does not exist, don't bother running the test case
 
         if [ -f ${NAME}.data.hex ]; then

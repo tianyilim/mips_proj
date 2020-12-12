@@ -1,4 +1,4 @@
 addiu $s0 $s0 432
-sb $s0 c($zero)
-lw $v0 c($zero)
+sh $s0 12($zero)
+lw $v0 12($zero)
 jr $zero

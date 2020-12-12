@@ -1,11 +1,12 @@
 lw $t2, 24($zero)   #7f5785de
 lw $t3, 20($zero)    #0000ec5b
+<<<<<<< HEAD
 addu $v0, $t2, $t3
+=======
+addu $v0, $t2, $t3,
+>>>>>>> a73c4529d9c091300a4523651d5f6e8439557ee6
 jr $zero
 
 
 
 comment: addu no overflow
-
-
-

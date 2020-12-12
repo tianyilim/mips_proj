@@ -7,16 +7,18 @@ module mips_CPU_bus_tb;
 	parameter MEM_CLK_TIME = CPU_CLK_TIME;
 	parameter INSTR_INIT_FILE = "";
 	parameter DATA_INIT_FILE = "";
+	parameter READ_DELAY = 2;
+	parameter WRITE_DELAY = READ_DELAY;
 
 	integer current_cpu_cycles_ran;					// total cycles ran since beginning of testbench
-	reg[50*8 - 1:0] str;							// for file io use (read the test program name)
-	reg[7:0] ccc;									// for file io use (read the delimiter characters)
-	reg[31:0] mem_loc, mem_data;					// for file io use (mem_loc = read the mem loc, mem_data = read the mem data)
-	integer fp, shut_up, file_flag, file_counter;	// for file io use (fp = file pointer, shut_up to suppress compiler warnings, file_flag and file_counter for loop control)
-	integer mem_load_flag;							// for loop control in loading the program into memory
+	// reg[50*8 - 1:0] str;							// for file io use (read the test program name)
+	// reg[7:0] ccc;									// for file io use (read the delimiter characters)
+	// reg[31:0] mem_loc, mem_data;					// for file io use (mem_loc = read the mem loc, mem_data = read the mem data)
+	// integer fp, shut_up, file_flag, file_counter;	// for file io use (fp = file pointer, shut_up to suppress compiler warnings, file_flag and file_counter for loop control)
+	// integer mem_load_flag;							// for loop control in loading the program into memory
 
 	// expected result
-	reg[31:0] expected_result;						// to be read from file
+	// reg[31:0] expected_result;						// to be read from file
 	
 	// testbench interface with the CPU
 	reg mem_clk;				// input into memory
@@ -63,7 +65,8 @@ module mips_CPU_bus_tb;
 		10: SLAVEERROR—Error from an endpoint slave. Indicatesan unsuccessful transaction.
 		11: DECODEERROR—Indicates attempted access to anundefined location
 	*/
-	mips_avalon_slave #(.RAM_INIT_FILE(INSTR_INIT_FILE), .DATA_INIT_FILE(DATA_INIT_FILE)) 
+	mips_avalon_slave #(.RAM_INIT_FILE(INSTR_INIT_FILE), .DATA_INIT_FILE(DATA_INIT_FILE),
+						.READ_DELAY(READ_DELAY), .WRITE_DELAY(WRITE_DELAY))
 		MEM(
 		.clk(mem_clk),					
 		.address(mem_address),			// master -> slave
@@ -154,7 +157,7 @@ module mips_CPU_bus_tb;
 			$display("\nTB : ACTIVE : %02t : ########################################", $time);
 		end
 		
-		$display("TB : CYCLES : %04d", current_cpu_cycles_ran);
+		$display("TB : CYCLES : %d", current_cpu_cycles_ran);
 		$display("TB : V0 : %h", cpu_register_v0);
 		$display("TB : FINISH : %02t : CPU finished execution.", $time);
 		$finish;

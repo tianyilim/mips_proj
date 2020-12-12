@@ -1,6 +1,6 @@
 lw $t2, 12($zero)
 lw $t3, 12($zero)   #ffffffff
-addu $v0, $t2, $t3
+addu $v0, $t2, $t3,
 jr $zero
 
 

@@ -1,7 +1,7 @@
 lw $t6, 20($zero)
 lw $t7, 20($zero)   #0000ec5b
-addu $zero, $t6, $t7
-addiu $v0, $zero, 0
+addu $zero, $t6, $t7,
+addiu $v0, $zero, 0,
 jr $zero
 
 

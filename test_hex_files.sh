@@ -5,6 +5,10 @@
 # Tests all hex instruction files within test/1-binary/
 # ./parse_intermediate_files.sh
 
+# colors
+RESTORE='\033[0m'
+RED='\033[00;31m'
+
 cases=()
 
 if [ $# = 0 ]; then
@@ -12,7 +16,7 @@ if [ $# = 0 ]; then
     cases+=("")
 else
     for arg do
-        cases+=("$arg")
+        cases+=("$arg"_)
     done
 fi
 
@@ -25,7 +29,12 @@ for i in "${cases[@]}"; do
         BASENAME=`basename ${NAME}` # Name of test case
         INSTR_NAME=${BASENAME%_*}
 
-        [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
+        declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
+
+        if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
+            echo "Test answer ${BASENAME} does not exist"
+            continue
+        fi
         # if sample output does not exist, don't bother running the test case
 
         if [ -f ${NAME}.data.hex ]; then
@@ -40,37 +49,48 @@ for i in "${cases[@]}"; do
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
             -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
+            -P mips_CPU_bus_tb.READ_DELAY=2 \
             -s mips_CPU_bus_tb \
             -o joe.out
 
         # Save the waveforms
 
-        set +e
         # Auto-run and log into the a log file into 3-output
         ./joe.out > test/3-output/${BASENAME}.log
         cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}.vcd
         # cat test/3-output/${BASENAME}.log  # Display debug output directly
 
         V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}.log)
-        CYCLES=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
+        CYCLES_STR=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
         V0_OUT=${V0_OUT#"TB : V0 : "}
-        CYCLES=${CYCLES#"TB : CYCLES : "}
+        declare -i CYCLES=${CYCLES_STR#"TB : CYCLES : "}
+        CPI=$(expr $CYCLES / $INSTR_COUNT)  # Check if CPI limit has been exceeded
+        if [ $CPI -gt 36 ]; then
+            CPI_PASS=0
+            CPI="${RED}$CPI${RESTORE}"
+        else
+            CPI_PASS=1
+        fi
 
         V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
         diff --ignore-all-space -i <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt > /dev/null # compare expected and given output
         DIFFPASS=$?
-
-        # If fatal is found anywhere in the log file, consider the testcase as failed
-        if [ $DIFFPASS = 0 ] && ! grep -q "FATAL" test/3-output/${BASENAME}.log; then
-            FAIL="Pass"
-            echo $BASENAME $INSTR_NAME $FAIL $V0_OUT, $CYCLES
-        else
-            FAIL="Fail"
-            echo $BASENAME $INSTR_NAME $FAIL "V0: "$V0_OUT, "EXP: "$V0_CHECK $CYCLES
+        if [ ! $DIFFPASS = 0 ]; then
+            V0_CHECK="${RED}$V0_CHECK${RESTORE}"
         fi
 
+        FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}.log)
+        FATAL_PASS=$?
+    
+        # If fatal is found anywhere in the log file, consider the testcase as failed
+        if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ]; then
+            FAIL="Pass"
+        else
+            FAIL="${RED}Fail${RESTORE}"
+        fi
 
-        set -e
+        echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "INSTRS: "$INSTR_COUNT, "CPI: "$CPI, $FATAL_FOUND"
+
         # Opens with savefiles, Cleanup
         # gtkwave mips_CPU_bus_tb.vcd mips_CPU_bus_tb.gtkw -a mips_CPU_bus_tb.gtkw; \
 

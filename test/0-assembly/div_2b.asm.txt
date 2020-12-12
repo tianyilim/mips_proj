@@ -1,7 +1,7 @@
 lw $t2, 36($zero)
-addiu $t3, $zero, 6
-div $t3, $t2
-mflo $v0
-jr $zero
+addiu $t3, $zero, 6,
+div $t3, $t2,
+mflo $v0,
+jr $zero,
 
 comment: only remainder

@@ -1,5 +1,5 @@
 lw $t2, 16($zero)
-andi $v0, $t2, 43690     
+andi $v0, $t2, 43690,
 jr $zero
    
 

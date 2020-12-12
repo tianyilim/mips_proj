@@ -12,7 +12,7 @@ if [ $# = 0 ]; then
     cases+=("")
 else
     for arg do
-        cases+=("$arg")
+        cases+=("$arg"_)
     done
 fi
 
@@ -25,7 +25,7 @@ for i in "${cases[@]}"; do
         BASENAME=`basename ${NAME}` # Name of test case
         INSTR_NAME=${BASENAME%_*}
 
-        [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
+        # [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
         # if sample output does not exist, don't bother running the test case
 
         if [ -f ${NAME}.data.hex ]; then
@@ -60,13 +60,16 @@ for i in "${cases[@]}"; do
         diff --ignore-all-space -i <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt > /dev/null # compare expected and given output
         DIFFPASS=$?
 
+        FATAL_FOUND=$(grep -q "FATAL" test/3-output/${BASENAME}.log)
+        FATAL_PASS=$?
+    
         # If fatal is found anywhere in the log file, consider the testcase as failed
-        if [ $DIFFPASS = 0 ] && ! grep -q "FATAL" test/3-output/${BASENAME}.log; then
+        if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ]; then
             FAIL="Pass"
-            echo $BASENAME $INSTR_NAME $FAIL $V0_OUT, $CYCLES
+            echo $BASENAME $INSTR_NAME $FAIL $V0_OUT, $CYCLES, $FATAL_FOUND
         else
             FAIL="Fail"
-            echo $BASENAME $INSTR_NAME $FAIL "V0: "$V0_OUT, "EXP: "$V0_CHECK $CYCLES
+            echo $BASENAME $INSTR_NAME $FAIL "V0: "$V0_OUT, "EXP: "$V0_CHECK $CYCLES, $FATAL_FOUND
         fi
 
 

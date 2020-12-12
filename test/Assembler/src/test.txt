@@ -1,5 +1,5 @@
-lw $t2, 6($zero)
-lw $t3, 5($zero)
-lw $v0, 4($zero)
-addu $v0, $t2, $t3
+lw $t3, 16($zero)
+lw $t4, 20($zero)
+andi $t4, $t3, 43690
+addiu $v0, $t4, 0
 jr $zero

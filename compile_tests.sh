@@ -13,7 +13,7 @@ if [ $# = 0 ]; then
     cases+=("")
 else
     for arg do
-        cases+=("$arg")
+        cases+=("$arg"_)
     done
 fi
 

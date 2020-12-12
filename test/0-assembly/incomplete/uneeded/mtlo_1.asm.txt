@@ -1,0 +1,6 @@
+lw $t2, 3($zero) 
+mtlo $t2
+mflo $v0
+jr $zero
+
+comment: assumes mfhi works

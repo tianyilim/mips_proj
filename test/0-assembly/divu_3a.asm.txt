@@ -1,0 +1,7 @@
+lw $t2, 9($zero)
+addiu $t3, $zero, 23
+divu $t2, $t3
+mfhi $v0
+jr $zero
+
+comment: quotient and remainder

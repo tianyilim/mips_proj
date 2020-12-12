@@ -1,0 +1,8 @@
+lw $t2, 4($zero)
+addiu $t3, $zero, 25
+multu $t2, $t3
+mfhi $t3
+mfhi $v0
+jr $zero
+
+comment: mfhi twice

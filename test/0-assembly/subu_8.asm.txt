@@ -1,0 +1,9 @@
+lw $t2, 6($zero)   #7f5785de
+lw $t3, 5($zero)   #0000ec5b
+lw $v0, 4($zero)
+subu $v0, $t2, $t3
+jr $zero
+
+
+
+comment: rd already written to

@@ -9,7 +9,7 @@ INSTRUCTION="$3"
 
 #extract comment 
 comment=$(grep -w comment ./test/0-assembly/${TESTNAME}.asm.txt)  
-comment=${comment:8}    
+comment=${comment:8}
 
 
 

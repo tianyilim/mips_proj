@@ -1,2 +1,4 @@
-addiu $v0 $v0 0
-jr $zero
+addiu $v0 $v0 0 # asdfas
+jr $zero ## asdf #
+
+comment: hallo

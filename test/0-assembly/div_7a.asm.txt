@@ -1,0 +1,7 @@
+lw $t4, 9($zero)
+addiu $t5, $zero, 6
+div $t4, $t5
+mfhi $v0
+jr $zero
+
+comment: different registers

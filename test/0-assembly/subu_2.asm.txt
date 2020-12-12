@@ -5,4 +5,4 @@ jr $zero
 
 
 
-comment:subu no overflow
+comment: subu no overflow

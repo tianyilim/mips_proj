@@ -1,4 +1,4 @@
-lw $t3, 4($zero)
+lw $t3, 16($zero)
 andi $t4, $t3, 43690  
 addiu $v0, $t4, 0
 jr $zero

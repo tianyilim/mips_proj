@@ -1,5 +1,5 @@
-lw $t2, 4($zero)
-lw $t3, 5($zero)
+lw $t2, 16($zero)
+lw $t3, 20($zero)
 mult $t2, $t3
 mfhi $v0
 jr $zero

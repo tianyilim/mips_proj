@@ -1,5 +1,5 @@
-lw $t6, 3($zero)   #ffffffff
-lw $t7, 5($zero)   #0000ec5b
+lw $t6, 12($zero)   #ffffffff
+lw $t7, 20($zero)   #0000ec5b
 subu $zero, $t6, $t7
 addiu $v0, $zero, 0
 jr $zero

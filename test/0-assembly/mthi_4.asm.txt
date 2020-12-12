@@ -1,4 +1,4 @@
-lw $t2, 4($zero) 
+lw $t2, 16($zero) 
 mthi $t2
 mflo $v0
 jr $zero

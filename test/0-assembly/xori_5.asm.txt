@@ -1,4 +1,4 @@
-lw $t2, 4($zero)
+lw $t2, 16($zero)
 xori $zero, $t2, AAAA 
 addiu $v0, $zero, 0     
 jr $zero

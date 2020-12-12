@@ -302,10 +302,12 @@ int main() {
                Construct_R_Type(0, RegisterToInteger(secondparam), 0, 0, 0, 8);
            } //jr only takes in two parameters, error was that we were pointing to nothing
            if (strcmp(firstparam, "mthi") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 17);
+              // Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 17);
+		Construct_R_Type(0, RegisterToInteger(secondparam), 0, 0, 0, 17);
            }
            if (strcmp(firstparam, "mtlo") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 19);
+              // Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 19);
+		Construct_R_Type(0, RegisterToInteger(secondparam), 0, 0, 0, 19);
            }
            if (strcmp(firstparam, "mult") == 0) {
                Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 24);

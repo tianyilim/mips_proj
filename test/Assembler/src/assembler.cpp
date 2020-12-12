@@ -293,7 +293,7 @@ int main() {
                Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 26);
            }
            if (strcmp(firstparam, "divu") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), 0, 0, 27);
+               Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 27);
            }
            if (strcmp(firstparam, "jalr") == 0) {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 9);
@@ -302,16 +302,18 @@ int main() {
                Construct_R_Type(0, RegisterToInteger(secondparam), 0, 0, 0, 8);
            } //jr only takes in two parameters, error was that we were pointing to nothing
            if (strcmp(firstparam, "mthi") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 17);
+              // Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 17);
+		Construct_R_Type(0, RegisterToInteger(secondparam), 0, 0, 0, 17);
            }
            if (strcmp(firstparam, "mtlo") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 19);
+              // Construct_R_Type(0, RegisterToInteger(thirdparam), 0, 0, 0, 19);
+		Construct_R_Type(0, RegisterToInteger(secondparam), 0, 0, 0, 19);
            }
            if (strcmp(firstparam, "mult") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), 0, 0, 24);
+               Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 24);
            }
            if (strcmp(firstparam, "multu") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), 0, 0, 25);
+               Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 25);
            }
            if (strcmp(firstparam, "or") == 0) {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 37);

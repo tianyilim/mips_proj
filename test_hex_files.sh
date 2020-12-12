@@ -8,6 +8,9 @@
 # colors
 RESTORE='\033[0m'
 RED='\033[00;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
 
 cases=()
 
@@ -80,6 +83,7 @@ for i in "${cases[@]}"; do
             CPI_PASS=0
             CPI="${RED}$CPI${RESTORE}"
         else
+            CPI="${YELLOW}$CPI${RESTORE}"
             CPI_PASS=1
         fi
 
@@ -92,15 +96,17 @@ for i in "${cases[@]}"; do
 
         FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}.log)
         FATAL_PASS=$?
+
+        COMMENT=$(grep -w --ignore-case "comment" test/0-assembly/${BASENAME}.asm.txt)
     
         # If fatal is found anywhere in the log file, consider the testcase as failed
         if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ]; then
-            FAIL="Pass"
+            FAIL="${GREEN}Pass${RESTORE}"
         else
             FAIL="${RED}Fail${RESTORE}"
         fi
 
-        echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "INSTRS: "$INSTR_COUNT, "CPI: "$CPI, $FATAL_FOUND"
+        echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "INSTRS: "$INSTR_COUNT, "CPI: "$CPI, $FATAL_FOUND, $COMMENT"
 
         # Opens with savefiles, Cleanup
         # gtkwave mips_CPU_bus_tb.vcd mips_CPU_bus_tb.gtkw -a mips_CPU_bus_tb.gtkw; \

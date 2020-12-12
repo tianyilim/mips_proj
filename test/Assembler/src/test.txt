@@ -1,13 +1,5 @@
-lw $t3, 4($zero) #comment: what's this?
-
-lw $t4, 3($zero)
-
-xori $t4, $t3, 0   
-
-lw $v0, $t4, 0
-
+lw $t2, 6($zero)
+lw $t3, 5($zero)
+lw $v0, 4($zero)
+addu $v0, $t2, $t3
 jr $zero
-   
-jr $s1
-
-comment: rd not empty

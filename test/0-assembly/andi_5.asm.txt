@@ -1,6 +1,6 @@
 lw $t2, 16($zero)
-andi $zero, $t2, 43690 
-addiu $v0, $zero, 0     
+andi $zero, $t2, 43690, 
+addiu $v0, $zero, 0,     
 jr $zero
    
 

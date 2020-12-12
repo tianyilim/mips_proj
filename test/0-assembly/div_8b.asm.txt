@@ -1,9 +1,9 @@
 lw $t2, 36($zero)
 lw $t4, 28($zero)
-addiu $t3, $zero, 6
-div $t2, $t4
-div $t2, $t3
-mflo $v0
-jr $zero
+addiu $t3, $zero, 6,
+div $t2, $t4,
+div $t2, $t3,
+mflo $v0,
+jr $zero,
 
 comment: overwrite hilo

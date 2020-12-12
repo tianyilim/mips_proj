@@ -1,7 +1,7 @@
 lw $t3, 16($zero)
 lw $t4, 20($zero)
-andi $t4, $t3, 43690  
-addiu $v0, $t4, 0
+andi $t4, $t3, 43690,  
+addiu $v0, $t4, 0,
 jr $zero
    
 

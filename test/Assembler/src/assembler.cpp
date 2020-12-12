@@ -205,7 +205,7 @@ int main() {
                 Construct_I_Type(4, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "bgez") == 0) {
-                Construct_I_Type(1, RegisterToInteger(thirdparam), 1, ConvertImmediate(fourthparam));
+                Construct_I_Type(1, RegisterToInteger(secondparam), 1, ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "bgezal") == 0) {
                 Construct_I_Type(1, RegisterToInteger(thirdparam), 17, ConvertImmediate(fourthparam));

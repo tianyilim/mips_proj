@@ -12,7 +12,7 @@ for line in f:
     line=stuff[0].strip()
 
     if "comment" in line:
-        continue
+        break
     if line == '':
         continue
 

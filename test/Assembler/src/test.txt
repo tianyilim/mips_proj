@@ -1,7 +1,5 @@
-lw $t2, 0($zero)
-lw $t4, 20($zero)
-addiu $t3, $zero, 23,
-divu $t3, $t4,
-divu $t3, $t2,
-mflo $v0,
+j 1,
+addiu $v0, $zero, 10,
+j 3,
+addiu $v0, $zero, 2,
 jr $zero,

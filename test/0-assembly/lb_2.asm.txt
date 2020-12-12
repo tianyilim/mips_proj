@@ -1,0 +1,7 @@
+addiu $t3, $zero, 28, 
+lb $v0, 4($t3)                 #address contains 0xfd39619f
+jr $zero,
+
+
+comment: negative byte, positive offset
+

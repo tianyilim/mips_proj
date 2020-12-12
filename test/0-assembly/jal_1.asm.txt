@@ -1,6 +1,6 @@
 nop
 nop
-jal  7
+jal 0xFC0001C     #7
 nop
 jr $zero
 nop

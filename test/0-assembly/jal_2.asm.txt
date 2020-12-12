@@ -1,4 +1,4 @@
-jal 3
+jal 0xFC0000C     #3
 nop
 jr $zero
 nop

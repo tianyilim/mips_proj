@@ -1,0 +1,7 @@
+addiu $t3, $zero, 28, 
+lw $v0, 16($zero)               # contains 0xff3de00b
+lb $v0, 0($t3)                 #address contains 0x636d3811
+jr $zero,
+
+
+comment: rd not empty

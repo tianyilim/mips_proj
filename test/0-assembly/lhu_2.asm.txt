@@ -1,0 +1,7 @@
+addiu $t3, $zero, 12, 
+lhu $v0, 4($t3)                 #address contains 0xff3de00b
+jr $zero,
+
+
+comment: negative halfword, positive offset
+

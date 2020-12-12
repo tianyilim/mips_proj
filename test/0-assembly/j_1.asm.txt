@@ -1,13 +1,13 @@
-j 4               
+j 0xFC00010           #4               
 addiu $v0, $v0, 10
 jr $v0
 nop
-j 8
+j 0xFC00024         #9
 addiu $v0, $v0, 12
 jr $v0
 nop
 nop
-j 12
+j 0xFC000c0       #12
 nop
 jr $v0
 addiu $v0, $v0, 11

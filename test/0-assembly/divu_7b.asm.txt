@@ -1,6 +1,6 @@
 lw $t4, 0($zero)
 addiu $t5, $zero, 23,
-divu $t5, $t4,
+divu $t4, $t5,
 mflo $v0,
 jr $zero,
 

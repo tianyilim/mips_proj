@@ -2,7 +2,7 @@ lw $t2, 0($zero)
 lw $t4, 20($zero)
 addiu $t3, $zero, 23,
 divu $t3, $t4,
-divu $t3, $t2,
+divu $t2, $t3,
 mflo $v0,
 jr $zero,
 

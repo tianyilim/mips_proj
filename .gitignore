@@ -6,4 +6,8 @@ rtl/mips_cache_l2.v
 *.instr.hex
 *.data.hex
 
+test/Assembler/src/test.txt
+test/Assembler/src/output.txt
+
 yaya.sh
+play*.sh

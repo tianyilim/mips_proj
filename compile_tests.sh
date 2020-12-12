@@ -18,6 +18,8 @@ if [ $# = 0 ]; then
         if [ $? != 0 ]; then
             echo $FILENAME, $BASENAME.instr.hex # Debug outputs
             cat test/Assembler/src/test.txt # Debug outputs
+            # Remove the assembled file (if it exists) if no success
+            rm test/1-binary/$BASENAME.instr.hex
         else
             cp test/Assembler/src/output.txt test/1-binary/$BASENAME.instr.hex # Write to output only if successful
         fi
@@ -38,6 +40,8 @@ else
             if [ $? != 0 ]; then
                 echo $FILENAME, $BASENAME.instr.hex # Debug outputs
                 cat test/Assembler/src/test.txt # Debug outputs
+                # Remove the assembled file (if it exists) if no success
+                test/1-binary/$BASENAME.instr.hex
             else
                 cp test/Assembler/src/output.txt test/1-binary/$BASENAME.instr.hex # Write to output only if successful
             fi

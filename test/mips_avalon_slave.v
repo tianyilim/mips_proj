@@ -65,7 +65,7 @@ module mips_avalon_slave(
                 if (waiting) begin
                     if (wait_ctr==0) begin
                         // Have waited relevant cycles, perform the write operation
-                        readdata = memory_instr[addr_shift-ADDR_START_SHIFT];    // Offset the addressing space (and also in time)
+                        // readdata = memory_instr[addr_shift-ADDR_START_SHIFT];    // Offset the addressing space (and also in time)
                         waiting = 0;
                         wait_ctr = -1;
                         $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
@@ -110,7 +110,7 @@ module mips_avalon_slave(
                 if (waiting) begin
                     if (wait_ctr==0) begin
                         // Have waited relevant cycles, perform the write operation
-                        readdata = memory_instr[addr_shift];    // Offset the addressing space (and also in time)
+                        // readdata = memory_instr[addr_shift];    // Offset the addressing space (and also in time)
                         waiting = 0;
                         wait_ctr = -1;
                         $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);

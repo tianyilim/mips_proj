@@ -25,6 +25,8 @@ for i in "${cases[@]}"; do
         BASENAME=`basename ${NAME}` # Name of test case
         INSTR_NAME=${BASENAME%_*}
 
+        declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
+
         # [ -e test/2-simulator/"${BASENAME}".txt ] || echo "No sample out for "${BASENAME}""; continue
         # if sample output does not exist, don't bother running the test case
 
@@ -52,9 +54,10 @@ for i in "${cases[@]}"; do
         # cat test/3-output/${BASENAME}.log  # Display debug output directly
 
         V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}.log)
-        CYCLES=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
+        CYCLES_STR=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
         V0_OUT=${V0_OUT#"TB : V0 : "}
-        CYCLES=${CYCLES#"TB : CYCLES : "}
+        declare -i CYCLES=${CYCLES_STR#"TB : CYCLES : "}
+        CPI=$(expr $CYCLES / $INSTR_COUNT)
 
         V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
         diff --ignore-all-space -i <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt > /dev/null # compare expected and given output
@@ -66,12 +69,11 @@ for i in "${cases[@]}"; do
         # If fatal is found anywhere in the log file, consider the testcase as failed
         if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ]; then
             FAIL="Pass"
-            echo $BASENAME $INSTR_NAME $FAIL $V0_OUT, $CYCLES, $FATAL_FOUND
         else
             FAIL="Fail"
-            echo $BASENAME $INSTR_NAME $FAIL "V0: "$V0_OUT, "EXP: "$V0_CHECK $CYCLES, $FATAL_FOUND
         fi
 
+        echo "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "INSTRS: "$INSTR_COUNT, "CPI: "$CPI, $FATAL_FOUND"
 
         set -e
         # Opens with savefiles, Cleanup

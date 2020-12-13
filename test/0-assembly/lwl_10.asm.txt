@@ -1,0 +1,7 @@
+addiu $t2, $zero, 32,    # address(36) contains 0x14ba6b80
+lwl $v0, 5($t2)
+jr $zero,
+
+
+
+comment: offset=5 (>3) 

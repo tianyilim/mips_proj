@@ -1,7 +1,0 @@
-lw $t2, 24($zero)   # address contains 0x7f5785de
-lwr $v0, 3($t2)
-jr $zero,
-
-
-
-comment: offset 3

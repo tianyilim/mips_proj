@@ -1,7 +1,9 @@
+addu $ra, $zero, $zero
 addu $t8, $zero, $zero					#1 $pc = bfc00004
 bltzal $t8, 2							#2 branch not taken, $ra = $pc + 8, $pc currently is bfc00008, $ra = bfc00010
 addiu $v0, $ra, 0						#2
 jr $zero								#2
+addiu $s0, $s0, 0						#2 do nothing
 addiu $v0, $ra, 1						#2
 jr $zero								#2
 

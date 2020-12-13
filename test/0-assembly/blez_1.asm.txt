@@ -1,9 +1,10 @@
 addu $a2, $zero, $zero					#1
 lui $a2, 0x5720							#1 sign bit is 0, therefore >= 0
 ori $a2, $a2, 3636						#1
-blez $a2, 2								#2 branch not taken
+blez $a2, 3								#2 branch not taken
 addiu $v0, $zero, 0						#2
 jr $zero								#2
+addiu $s0, $s0, 0						#2 do nothing
 addiu $v0, $zero, 1						#2
 jr $zero								#2
 

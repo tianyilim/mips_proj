@@ -1,0 +1,9 @@
+addu $s6, $zero, $zero				#1
+lui $s6, 0x690a						#1
+ori $s6, $s6, 0x47a5				#1
+srl $v0, $s6, 13					#2
+
+comments:
+1. put a 0x690a47a5 in $s6
+2. arithmetic shift it right by 13
+3. $v0 should be 0x00034852

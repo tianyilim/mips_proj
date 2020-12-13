@@ -1,0 +1,8 @@
+addiu $t2, $zero, 24,   # address contains 0x7f5785de
+lwl $t4, 0($t2)
+addiu $v0, $t2, 0,
+jr $zero,
+
+
+
+comment: check rs unchanged

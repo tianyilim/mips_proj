@@ -1,0 +1,7 @@
+addiu $t2, $zero, 32,   # address(28) contains 0x636d3811
+lwr $v0, 65532($t2)
+jr $zero,
+
+
+
+comment: offset -4

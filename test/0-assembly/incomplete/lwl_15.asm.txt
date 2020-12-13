@@ -1,8 +1,0 @@
-lw $t2, 40($zero)   # address contains 0xBCF00000
-lwl $v0, 10($t2)
-addiu $t4, $zero, 10    ##addiu is 240C000A
-jr $zero,
-
-
-
-comment: instr adress

@@ -1,0 +1,6 @@
+lw $t2, 0($zero)        #contains 0xFFFFF003 (4294963203/-4093)
+sltiu $v0, $t2, 0xFF05,     # -4091
+jr $zero,
+
+
+comment: reg MSB 1, neg imm

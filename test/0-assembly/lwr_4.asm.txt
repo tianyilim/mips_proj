@@ -1,0 +1,7 @@
+addiu $t2, $zero, 24,   # address contains 0x7f5785de
+lwr $v0, 3($t2)
+jr $zero,
+
+
+
+comment: offset 3

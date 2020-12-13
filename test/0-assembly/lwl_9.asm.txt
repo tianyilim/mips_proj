@@ -1,0 +1,7 @@
+addiu $t2, $zero, 29,    # address(28) contains 0x636d3811
+lwl $v0, 1($t2)
+jr $zero,
+
+
+
+comment: index not multiple of 4

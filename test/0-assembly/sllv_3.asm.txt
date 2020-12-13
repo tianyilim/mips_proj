@@ -6,6 +6,6 @@ sllv $v0, $t3, $s5					#2
 
 comments:
 1. put a 0xe90a47a5 in $t3
-2. put 3 into $s5
+2. put 23 into $s5
 2. shift it left by 23
 3. $v0 should be 0xD2800000

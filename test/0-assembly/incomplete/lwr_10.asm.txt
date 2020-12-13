@@ -1,7 +1,0 @@
-lw $t2, 32($zero)   # address(36) contains 0x14ba6b80
-lwr $v0, 5($t2)
-jr $zero,
-
-
-
-comment: offset=5 (>3) 

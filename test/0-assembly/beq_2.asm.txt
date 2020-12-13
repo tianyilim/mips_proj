@@ -1,7 +1,7 @@
 addu $s6, $zero, $zero					#1
 lui $s6, 0x582e				            #1
 ori $s6, $s6, 0xc93b					#1 different number
-addu $s6, $zero, $zero					#2
+addu $t3, $zero, $zero					#2
 lui $t3, 0x4f72							#2
 ori $t3, $t3, 0x8c38					#2 different number
 beq $s6, $t3, 3						    #3 branch if equal, branch not taken

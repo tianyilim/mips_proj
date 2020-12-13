@@ -1,0 +1,7 @@
+addiu $t2, $zero, 20,
+sltiu $t4, $t2, 0,  
+addiu $v0, $t2, 0,   
+jr $zero,
+
+
+comment: check rt unchanged

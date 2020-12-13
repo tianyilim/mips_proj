@@ -1,0 +1,7 @@
+lw $t2, 20($zero)        #contains 0x0000ec5b (60507)
+sltiu $v0, $t2, 60530,
+jr $zero,
+
+
+comment: pos reg < pos imm
+

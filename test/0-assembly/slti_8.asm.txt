@@ -1,0 +1,6 @@
+addiu $t2, $zero, 20,
+slti $v0, $t2, 0,     
+jr $zero,
+
+
+comment: pos reg > imm=0

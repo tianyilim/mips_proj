@@ -1,0 +1,6 @@
+addiu $t2, $zero, 20,
+sltiu $v0, $t2, 20,     
+jr $zero,
+
+
+comment: pos reg = pos imm

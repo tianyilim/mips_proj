@@ -1,0 +1,11 @@
+addu $t5, $zero, $zero				#1
+lui $t5, 0xe90a						#1
+ori $t5, $t5, 0x47a5				#1
+addi $s5, $zero, 3					#2
+srlv $v0, $t5, $s5					#2
+jr $zero
+
+comments:
+1. put a 0xe90a47a5 in $t5
+2. arithmetic shift it right by 3
+3. $v0 should be 0x1D2148F4

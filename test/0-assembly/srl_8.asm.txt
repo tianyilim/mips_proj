@@ -1,0 +1,10 @@
+addu $a0, $zero, $zero				#1
+lui $a0, 0x690a						#1
+ori $a0, $a0, 0x47a5				#1
+srl $v0, $a0, 29						#2
+jr $zero
+
+comments:
+1. put a 0x690a47a5 in $a0
+2. arithmetic shift it right by 29
+3. $v0 should be 0x00000003

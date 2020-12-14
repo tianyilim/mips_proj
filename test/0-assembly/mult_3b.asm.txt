@@ -3,4 +3,4 @@ mult $t2, $zero
 mflo $v0
 jr $zero
 
-comment: mulu 0
+comment: mult 0

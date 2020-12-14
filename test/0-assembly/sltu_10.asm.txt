@@ -1,0 +1,8 @@
+addiu $t2, $zero, 20,
+sltu $t2, $t2, $zero,
+addiu $v0, $t2, 0,
+jr $zero,
+
+
+comment: rd = rs
+

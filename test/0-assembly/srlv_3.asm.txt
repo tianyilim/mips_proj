@@ -7,5 +7,5 @@ jr $zero
 
 comments:
 1. put a 0xe90a47a5 in $s1
-2. arithmetic shift it right by 23
+2. logical shift it right by 23
 3. $v0 should be 0x000001D2

@@ -1,7 +1,7 @@
 lw $t5, 4($zero)
 lw $t4, 4($zero)
 multu $t5, $t4
-mfhi $v0
+mflo $v0
 jr $zero
 
 comment: different registers

@@ -1,7 +1,7 @@
-lw $t2, 4($zero)
-lw $t3, 4($zero)
+lw $t2, 4($zero) # 7fffffff
+lw $t3, 4($zero) # 7fffffff
 mult $t2, $t3
 mfhi $v0
 jr $zero
 
-comment: positive numbers mult
+comment: 7fffffff * 7fffffff = 0x3fffffff \ 00000001

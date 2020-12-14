@@ -4,4 +4,4 @@ mult $t2, $t3
 mflo $v0
 jr $zero
 
-comment: positive numbers mult
+comment: 7fffffff * 7fffffff = 0x3fffffff \ 00000001

@@ -3,5 +3,4 @@ slti $v0, $t2, 20,
 jr $zero,
 
 
-comment: pos reg < pos imm
-
+comment: pos reg < pos imm. Edited this as sign-extended was messing it up.

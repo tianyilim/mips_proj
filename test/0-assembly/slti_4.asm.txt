@@ -3,4 +3,4 @@ slti $v0, $t2, 0xFF01,     # -4095
 jr $zero,
 
 
-comment: neg reg > neg imm
+comment: neg reg > neg imm (False)

@@ -4,7 +4,7 @@ jr $ra
 nop
 jr $zero
 nop
-jal 0xFC00004    #2
+jal 0xFC00004    
 nop
 addiu $v0, $v0, 12
 jr $zero

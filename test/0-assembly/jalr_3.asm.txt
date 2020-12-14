@@ -3,7 +3,7 @@ jalr $t2, $t4
 addiu $v0, $zero, 12
 nop
 jr $zero
-nop
+addiu $v0, $v0, 10
 jr $zero
 
-comment: brach delay slot
+comment: branch delay slot

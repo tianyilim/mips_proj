@@ -1,8 +1,8 @@
-lw $t2, 16($zero)
-lw $t3, 16($zero)
+lw $t2, 16($zero) # ff3de00b
+lw $t3, 16($zero) # ff3de00b
 multu $t2, $t3
 mfhi $v0
 jr $zero
 
-comment: negative numbers multu
+comment: negative numbers multu 0xff3de00b**2=0xfe7c534a\73514079
 

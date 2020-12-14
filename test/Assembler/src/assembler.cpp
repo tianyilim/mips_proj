@@ -322,7 +322,7 @@ int main() {
                Construct_R_Type(0, 0, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam), 0);
            } //SLL must be handled differently to other R types
            if (strcmp(firstparam, "sllv") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 4);
+               Construct_R_Type(0, RegisterToInteger(fourthparam), RegisterToInteger(thirdparam), RegisterToInteger(secondparam), 0, 4);
            }
            if (strcmp(firstparam, "slt") == 0) {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 42);
@@ -334,13 +334,13 @@ int main() {
                Construct_R_Type(0, 0, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam), 3);
            }
            if (strcmp(firstparam, "srav") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 7);
+               Construct_R_Type(0, RegisterToInteger(fourthparam), RegisterToInteger(thirdparam), RegisterToInteger(secondparam), 0, 7);
            }
            if (strcmp(firstparam, "srl") == 0) {
                Construct_R_Type(0, 0, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam), 2);
            }
            if (strcmp(firstparam, "srlv") == 0) {
-               Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 6);
+               Construct_R_Type(0, RegisterToInteger(fourthparam), RegisterToInteger(thirdparam), RegisterToInteger(secondparam), 0, 6);
            }
            if (strcmp(firstparam, "subu") == 0) {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 35);

@@ -155,6 +155,7 @@ module mips_cpu_harvard(
                                                                     (fn_code == SLTU) ||
                                                                     (fn_code == SRA) ||
                                                                     (fn_code == SRAV) ||
+                                                                    (fn_code == SRL) ||
                                                                     (fn_code == SRLV) ||
                                                                     (fn_code == SUBU) ||
                                                                     (fn_code == XOR) ||

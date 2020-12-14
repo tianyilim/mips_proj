@@ -3,4 +3,4 @@ slti $v0, $t2, 30,
 jr $zero,
 
 
-comment: neg reg < pos imm
+comment: neg reg < pos imm (True)

@@ -4,6 +4,5 @@ multu $t2, $t3
 mflo $v0
 jr $zero
 
-
 comment  neg(sign) overlow
 

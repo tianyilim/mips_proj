@@ -1,6 +1,6 @@
 lw $t4, 8($zero)
 jalr $t2, $t4
-addiu $t5, $t4, 0
+addiu $t5, $t2, 0
 nop
 jr $zero
 nop

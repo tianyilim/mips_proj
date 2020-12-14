@@ -1,0 +1,4 @@
+addiu $v0 $v0 1,
+jr $zero,
+
+comment: addiu 0 1

@@ -40,11 +40,15 @@ for i in "${cases[@]}"; do
         fi
         # if sample output does not exist, don't bother running the test case
 
-        if [ -f ${NAME}.data.hex ]; then
-            DATANAME=${NAME}.data.hex
+        if [ -e "${NAME}.data.hex" ]; then
+            DATANAME=test/1-binary/${NAME}.data.hex
+        elif [ -e "${NAME}.data.txt" ]; then
+            DATANAME=test/1-binary/${NAME}.data.txt
         else
             DATANAME="test/datamem.txt"
         fi
+
+        # echo $NAME, $DATANAME
 
         # List of files:
             # rtl/mips_cpu_bus.v \

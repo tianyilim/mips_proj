@@ -1,0 +1,15 @@
+nop
+nop
+jal 0xFC0001C     
+nop
+jr $zero
+nop
+nop
+nop
+addiu $v0, $ra, 10
+jr $zero
+
+
+comment: jal test 1
+#a
+

@@ -1,0 +1,10 @@
+jal 0xFC0000C     
+nop
+jr $zero
+nop
+addiu $v0, $ra, 0
+jr $zero
+
+comment: jal test 2
+
+

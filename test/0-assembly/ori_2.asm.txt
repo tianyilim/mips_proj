@@ -1,5 +1,5 @@
 lw $t2, 16($zero)
-ori $v0, $t2, FFFF    
+ori $v0, $t2, 0xFFFF    
 jr $zero
    
 

@@ -1,6 +1,6 @@
 lw $t3, 16($zero)
 xori $t3, $t3, 0   
-lw $v0, $t3, 0  
+addiu $v0, $t3, 0  
 jr $zero
    
 

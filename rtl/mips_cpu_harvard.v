@@ -245,6 +245,8 @@ module mips_cpu_harvard(
         state = HALTED;
         active = 0;
         data_writedata = 0;
+        Hi = 0;
+        Lo = 0;
     end
 
     always @(posedge clk) begin

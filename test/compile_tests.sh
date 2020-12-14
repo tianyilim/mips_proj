@@ -1,21 +1,30 @@
 #!/bin/bash
 
+RESTORE='\033[0m'
+RED='\033[00;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[0;33m'
+
 # Recompile assembler code
 g++ test/Assembler/src/assembler.cpp -o test/Assembler/src/assembler.out
 
 declare -i PASS=0
 declare -i FAIL=0
 
-cases=()
+cases=("")
 
 if [ $# = 0 ]; then
     echo "No argument given, will run for all testcases"
-    cases+=("")
 else
     for arg do
-        cases+=("$arg"_)
+        if [ ! "$arg" = "" ]; then
+            cases+=("$arg"_)
+        fi
     done
 fi
+
+# echo \'"${cases[@]}"\'
 
 for i in "${cases[@]}"; do
     for FILENAME in test/0-assembly/${i}*.asm.txt; do
@@ -39,4 +48,7 @@ for i in "${cases[@]}"; do
         # cat test/1-binary/$BASENAME.instr.hex # Debug outputs
     done
 done
-echo $FAIL, $PASS
+
+echo -e "Assembled $(($FAIL+$PASS)) testcases."
+echo -e "${GREEN}$PASS${RESTORE} testcases assembled successfully."
+echo -e "${RED}$FAIL_COUNT${RESTORE} testcases failed to assemble."

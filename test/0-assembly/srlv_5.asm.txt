@@ -3,6 +3,7 @@ lui $t5, 0x690a						#1
 ori $t5, $t5, 0x47a5				#1
 addi $s5, $zero, 3					#2
 srlv $v0, $t5, $s5					#2
+jr $zero
 
 comments:
 1. put a 0x690a47a5 in $t5

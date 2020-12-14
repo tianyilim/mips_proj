@@ -12,7 +12,7 @@ g++ test/Assembler/src/assembler.cpp -o test/Assembler/src/assembler.out
 declare -i PASS=0
 declare -i FAIL=0
 
-cases=("")
+cases=()
 
 if [ $# = 0 ]; then
     echo "No argument given, will run for all testcases"
@@ -20,6 +20,9 @@ else
     for arg do
         if [ ! "$arg" = "" ]; then
             cases+=("$arg"_)
+        else
+            cases=("")
+            break
         fi
     done
 fi
@@ -51,4 +54,4 @@ done
 
 echo -e "Assembled $(($FAIL+$PASS)) testcases."
 echo -e "${GREEN}$PASS${RESTORE} testcases assembled successfully."
-echo -e "${RED}$FAIL_COUNT${RESTORE} testcases failed to assemble."
+echo -e "${RED}$FAIL${RESTORE} testcases failed to assemble."

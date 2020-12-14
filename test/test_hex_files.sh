@@ -19,19 +19,24 @@ else
     TEST_DIR=$1
 fi
 
+
 # instructions to test / compile for
 # Slice the input argv array without considering the first (directory) element
-TEST_INSTRS=("")
+TEST_INSTRS=()
 if (("$#" > 1)); then
     for args in "${@:2}"; do
         if [ ! "$args" = "" ]; then
             TEST_INSTRS+=("$args"_) # Instruction
-        fi 
+        else
+            TEST_INSTRS=("")
+            break
+        fi
     done
 else
     echo "No argument given, will run for all testcases"
 fi
 
+# echo "$TEST_DIR"
 # echo \'"${TEST_INSTRS[@]}"\'
 
 declare -i PASS_COUNT=0
@@ -76,7 +81,7 @@ for i in "${TEST_INSTRS[@]}"; do
             # rtl/mips_cpu_sixteen_bit_extension.v \
 
         iverilog -Wall -g 2012 \
-            ${TEST_DIR}/mips_cpu_*.v \
+            "${TEST_DIR}"/mips_cpu_*.v \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
@@ -134,7 +139,9 @@ for i in "${TEST_INSTRS[@]}"; do
     done;
 done
 
-echo -e "Ran $(($FAIL_COUNT+$PASS_COUNT)) testcases. ${GREEN}$PASS_COUNT${RESTORE} testcases passed, ${RED}$FAIL_COUNT${RESTORE} testcases failed."
+echo -e "Ran $(($FAIL_COUNT+$PASS_COUNT)) testcases."
+echo -e "${GREEN}$PASS_COUNT${RESTORE} testcases passed."
+echo -e "${RED}$FAIL_COUNT${RESTORE} testcases failed."
 rm joe.out
 
 if [ ! $FAIL_COUNT = 0 ]; then

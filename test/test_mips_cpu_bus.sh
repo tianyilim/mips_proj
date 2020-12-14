@@ -15,7 +15,6 @@ VERBOSE=0
 
 if (("$#" > 1)); then
     for args in "${@:2}"; do
-        echo "$args"
         if [ "$args" = "-nc" ]; then
             echo "Skipping compilation step"
             COMPILE=0
@@ -32,6 +31,8 @@ if (("$#" > 1)); then
 else
     TEST_INSTRS+=("")
 fi
+
+# echo \'"${TEST_INSTRS[@]}"\'
 
 # assemble the code
 if [ $COMPILE -gt 0 ]; then

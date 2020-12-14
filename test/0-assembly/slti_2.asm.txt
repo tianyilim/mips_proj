@@ -1,5 +1,5 @@
-lw $t2, 20($zero)        #contains 0x0000ec5b (60507)
-slti $v0, $t2, 60530,
+addiu $t2, $zero, 10,       
+slti $v0, $t2, 20,
 jr $zero,
 
 

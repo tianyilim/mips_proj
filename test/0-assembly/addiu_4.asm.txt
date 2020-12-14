@@ -1,0 +1,5 @@
+addiu $v0, $v0, 0x8000,
+addiu $v0, $v0, 0xFFFF,
+jr $zero,
+
+comment: Sign Extension; -32768-1=-32769

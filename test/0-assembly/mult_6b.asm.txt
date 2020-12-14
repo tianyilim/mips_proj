@@ -5,5 +5,5 @@ mflo $v0
 jr $zero
 
 
-comment  neg(sign) overlow
+comment: neg(sign) overflow 80000000*7fffffff
 

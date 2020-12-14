@@ -1,12 +1,15 @@
-nop
-nop
-jal 0xFC0001C     #7
-nop
-jr $zero
-nop
-nop
-addiu $v0, $ra, 0
-jr $zero
+nop,
+nop,
+jal 0xFC00001C ,    
+nop,
+jr $zero,
+nop,
+nop,
+nop,
+addiu $v0, $ra, 10,
+jr $zero,
 
 
 comment: jal test 1
+#a
+

@@ -1,10 +1,10 @@
-nop
-jal 0xFC00010    #4
-addiu $v0, $ra, 0
-jr $zero
-nop
-addiu $v0, $zero, 15
-jr $zero
+nop,
+jal 0xFC00010,    #4
+addiu $v0, $ra, 0,
+jr $zero,
+nop,
+addiu $v0, $v0, 15,
+jr $zero,
 
 comment: check $ra in branch delay slot
 

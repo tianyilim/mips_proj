@@ -3,5 +3,5 @@ sltiu $v0, $t2, 60530,
 jr $zero,
 
 
-comment: pos reg < pos imm
+comment: 0000ec5b < FFFFEC72
 

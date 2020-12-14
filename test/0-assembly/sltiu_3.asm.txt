@@ -3,5 +3,5 @@ sltiu $v0, $t2, 65535,      # -1 if signed
 jr $zero,
 
 
-comment: pos reg > neg imm
+comment: 0000ec5b < FFFFFFFF
 

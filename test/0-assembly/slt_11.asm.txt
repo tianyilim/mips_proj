@@ -1,0 +1,9 @@
+addiu $t2, $zero, 20,
+addiu $t3, $zero, 30,
+slt $zero, $t2, $t3,
+addiu $v0, $zero, 0, 
+jr $zero,
+
+
+comment: rt is $zero
+

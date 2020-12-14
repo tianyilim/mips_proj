@@ -3,4 +3,4 @@ sltiu $v0, $t2, 30,
 jr $zero,
 
 
-comment: reg MSB 1, pos imm
+comment:  FFFFF003 > 30

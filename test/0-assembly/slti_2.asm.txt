@@ -1,5 +1,5 @@
-lh $t2, 28($zero)        #contains 0x00003811 (14353)
-slti $v0, $t2, 14354,
+addiu $t2, $zero, 10,       
+slti $v0, $t2, 20,
 jr $zero,
 
 

@@ -1,4 +1,4 @@
-lw $t2, 16($zero)
+lw $t2, 20($zero) # 
 ori $v0, $t2, 0     
 jr $zero
    

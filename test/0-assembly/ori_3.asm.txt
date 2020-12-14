@@ -1,4 +1,4 @@
-lw $t2, 16($zero)
+lw $t2, 16($zero) # ff3de00b
 ori $v0, $t2, 0xAAAA     
 jr $zero
    

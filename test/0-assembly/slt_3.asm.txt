@@ -1,0 +1,8 @@
+lw $t2, 20($zero)        #contains 0x0000ec5b (60507)
+lw $t3, 12($zero)        #contains 0xffffffff
+slt $v0, $t2, $t3,
+jr $zero,
+
+
+comment: 0000ec5b > FFFFFFFF(signed)
+

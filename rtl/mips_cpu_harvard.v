@@ -119,16 +119,6 @@ module mips_cpu_harvard(
     assign instr_read = (state == FETCH) ? 1 : 0;
     assign instr = ((state==EXEC2) || (state == EXEC3) ) ? instr_reg : instr_readdata;
 
-    /*
-    To Do: Ask TianYi about instr_address
-    Do signed extension
-    Do data_write, data_read logic
-    Divide by 0 handling
-    MFHI MFLO exceptions?
-    Problem Encountered while debugging:
-    1. write_back_data <= requires 2 cycles to right back to register, hence changing to blocking assignment =, it should be able to write in 1 cycle, but i dont know what it will synthesise
-    */
-
     //Decode assignments
     assign opcode = instr[31:26];
     assign instr_type = (opcode == 6'b000000) ? R : ((opcode[5:1] == 5'b00001) ? J : I);
@@ -329,10 +319,10 @@ module mips_cpu_harvard(
                       write_back_data <= (rs_data < rt_data) ? 1 : 0;
                     end
                     SRA: begin //arithmetic shift
-                      write_back_data <= rt_data >>> shift;
+                      write_back_data <= ($signed(rt_data) >>> shift);
                     end
                     SRAV: begin
-                      write_back_data <= rt_data >>> rs_data[4:0];
+                      write_back_data <= $signed(rt_data) >>> rs_data[4:0];
                     end
                     SRL: begin
                       write_back_data <= rt_data >> shift;

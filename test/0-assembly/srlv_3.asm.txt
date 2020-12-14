@@ -1,7 +1,7 @@
 addu $s1, $zero, $zero				#1
 lui $s1, 0xe90a						#1
 ori $s1, $s1, 0x47a5				#1
-addi $s5, $zero, 23					#2
+addiu $s5, $zero, 23					#2
 srlv $v0, $s1, $s5					#2
 jr $zero
 

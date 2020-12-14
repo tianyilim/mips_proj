@@ -30,13 +30,11 @@ module mips_cache_controller(
     input logic[3:0] data_byteenable,
     output logic[31:0]  data_readdata,
 
-    // DEBUG ports
-    output logic[1:0] cc_state,
+    // Control ports
     output logic wb_empty_out
 );
 
     logic [1:0] state;
-    assign cc_state = state;
     assign wb_empty_out = wb_empty;
 
     logic instr_stall;  // Instruction cache fetch stall

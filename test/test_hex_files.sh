@@ -12,18 +12,37 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[0;33m'
 
-cases=()
-
-if [ $# = 0 ]; then
-    echo "No argument given, will run for all testcases"
-    cases+=("")
+if (("$#" < 1)); then
+    echo "Please enter the name of the directory."
+    exit 1
 else
-    for arg do
-        cases+=("$arg"_)
-    done
+    TEST_DIR=$1
 fi
 
-for i in "${cases[@]}"; do
+
+# instructions to test / compile for
+# Slice the input argv array without considering the first (directory) element
+TEST_INSTRS=()
+if (("$#" > 1)); then
+    for args in "${@:2}"; do
+        if [ ! "$args" = "" ]; then
+            TEST_INSTRS+=("$args"_) # Instruction
+        else
+            TEST_INSTRS=("")
+            break
+        fi
+    done
+else
+    echo "No argument given, will run for all testcases"
+fi
+
+# echo "$TEST_DIR"
+# echo \'"${TEST_INSTRS[@]}"\'
+
+declare -i PASS_COUNT=0
+declare -i FAIL_COUNT=0
+
+for i in "${TEST_INSTRS[@]}"; do
     for FILENAME in test/1-binary/${i}*.instr.hex; do
         [ -e "$FILENAME" ] || continue # Avoid case where there are no matches
         
@@ -41,7 +60,7 @@ for i in "${cases[@]}"; do
         # if sample output does not exist, don't bother running the test case
 
         if [ -e "${NAME}.data.hex" ]; then
-            DATANAME=test/1-binary/${NAME}.data.hex
+            DATANAME=test/1-binary/${BASENAME}.data.hex
         elif [ -e "${NAME}.data.txt" ]; then
             DATANAME=test/1-binary/${NAME}.data.txt
         else
@@ -62,8 +81,8 @@ for i in "${cases[@]}"; do
             # rtl/mips_cpu_sixteen_bit_extension.v \
 
         iverilog -Wall -g 2012 \
-            rtl/mips_cpu_*.v \
-            test/mips_avalon_slave.v test/mips_CPU_bus_tb_change.v \
+            "${TEST_DIR}"/mips_cpu_*.v \
+            test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
             -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
@@ -106,8 +125,10 @@ for i in "${cases[@]}"; do
         # If fatal is found anywhere in the log file, consider the testcase as failed
         if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ]; then
             FAIL="${GREEN}Pass${RESTORE}"
+            PASS_COUNT=$PASS_COUNT+1
         else
             FAIL="${RED}Fail${RESTORE}"
+            FAIL_COUNT=$FAIL_COUNT+1
         fi
 
         echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "INSTRS: "$INSTR_COUNT, "CPI: "$CPI, $FATAL_FOUND, $COMMENT"
@@ -118,4 +139,15 @@ for i in "${cases[@]}"; do
     done;
 done
 
+echo -e "Ran $(($FAIL_COUNT+$PASS_COUNT)) testcases."
+echo -e "${GREEN}$PASS_COUNT${RESTORE} testcases passed."
+echo -e "${RED}$FAIL_COUNT${RESTORE} testcases failed."
 rm joe.out
+
+if [ ! $FAIL_COUNT = 0 ]; then
+    echo "Testbench failed."
+    exit 1
+else
+    echo "Testbench passed."
+    exit 0
+fi

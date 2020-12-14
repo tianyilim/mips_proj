@@ -1,9 +1,11 @@
+addu $ra, $zero, $zero					#1
 addu $t8, $zero, $zero					#1 $pc = bfc00004
 lui $t8, 0x9234							#1 $pc = bfc00008 sign bit is 1, therefore < 0
 ori $t8, $t8, 0xfab3					#1 $pc = bfc0000C
-bgezal $t8, 2							#2 branch if >= 0 and link, branch not taken, $ra = $pc + 8, $pc currently is bfc00010, $ra = bfc00018
+bgezal $t8, 3							#2 branch if >= 0 and link, branch not taken, $ra = $pc + 8, $pc currently is bfc00010, $ra = bfc00018
 addiu $v0, $ra, 0						#2
 jr $zero								#2
+addiu $s0, $s0, 0	                    #2 do nothing
 addiu $v0, $ra, 1						#2
 jr $zero								#2
 

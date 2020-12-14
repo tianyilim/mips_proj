@@ -159,14 +159,15 @@ module mips_cpu_harvard(
                                                                     (fn_code == SUBU) ||
                                                                     (fn_code == XOR) ||
                                                                     (fn_code == MFHI) ||
-                                                                    (fn_code == MFLO))) ? 1 : ( ((state == EXEC2) && (instr_type == I) && ((opcode == ADDIU) ||
+                                                                    (fn_code == MFLO))) ? 1 : ( ((state == EXEC2)  && ((opcode == ADDIU) ||
                                                                                                                                           (opcode == ANDI) ||
+                                                                                                                                          (opcode == JAL) ||
                                                                                                                                           (opcode == LUI) ||
                                                                                                                                           (opcode == ORI) ||
                                                                                                                                           (opcode == SLTI) ||
                                                                                                                                           (opcode == SLTIU) ||
-                                                                                                                                          ((opcode == BRANCH) && (rt_addr == 5'b10000)) || // BLTZAL
-                                                                                                                                          ((opcode == BRANCH) && (rt_addr == 5'b10001)) || //BGEZAL
+                                                                                                                                          ((opcode == BRANCH) && (rt_addr == 5'b10000) && branch_delay_slot == 1) || // BLTZAL
+                                                                                                                                          ((opcode == BRANCH) && (rt_addr == 5'b10001) && branch_delay_slot == 1) || //BGEZAL
                                                                                                                                           (opcode == XORI))) ? 1: ( ((state == EXEC3) && (instr_type == I) && ((opcode == LB)  ||
                                                                                                                                                                                                                (opcode == LBU) ||
                                                                                                                                                                                                                (opcode == LH)  ||
@@ -378,7 +379,7 @@ module mips_cpu_harvard(
                       end
                     end
                     BRANCH: begin
-                      case(rs_data)
+                      case(rt_addr)
                           5'b00001: begin //BGEZ
                               if ($signed(rs_data) >= 0) begin
                                   jump_store <= pc_next + $signed(sixteen_extended * 4);

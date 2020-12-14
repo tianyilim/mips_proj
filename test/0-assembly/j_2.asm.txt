@@ -1,7 +1,7 @@
 j 0xFC00004          #1
-addiu $v0, $zero, 10
+addiu $v0, $v0, 10
 j 0xFC0000C          #3
-addiu $v0, $zero, 2
+addiu $v0, $v0, 2
 jr $zero
 
 comment : j to branch delay slot

@@ -1,7 +1,8 @@
 addu $a2, $zero, $zero					#1
-blez $a2, 2								#2 branch taken
+blez $a2, 3								#2 branch taken
 addiu $v0, $zero, 0						#2
 jr $zero								#2
+addiu $s0, $s0, 0						#2 do nothing
 addiu $v0, $zero, 1						#2
 jr $zero								#2
 

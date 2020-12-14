@@ -147,11 +147,12 @@ module mips_avalon_slave(
                 end
             end
         end else begin
-            if (address != 32'hXXXXXXXX) begin
-                $error("RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+            // $display("RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+            if ($isunknown(address)) begin
+            end else begin
+                $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
             end
         end
     end
-
 
 endmodule

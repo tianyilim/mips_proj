@@ -1,0 +1,8 @@
+addiu $t2, $zero, 28,
+lb $t4, 3($t2)                 #address contains 0x636d3811
+addiu $v0, $t4, 0,
+jr $zero,
+
+
+comment: Access byte 3
+

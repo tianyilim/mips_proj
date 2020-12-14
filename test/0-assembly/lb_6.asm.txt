@@ -1,7 +1,7 @@
 addiu $t2, $zero, 28, 
-lb $t2, 0($t2)                 #address contains 0x636d3811
+lb $t2, 1($t2)                 #address contains 0x636d3811
 addiu $v0, $t2, 0,
 jr $zero,
 
 
-comment: rt same as rs
+comment: rt same as rs, access byte 1

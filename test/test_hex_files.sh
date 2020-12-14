@@ -62,7 +62,7 @@ for i in "${TEST_INSTRS[@]}"; do
         if [ -e "${NAME}.data.hex" ]; then
             DATANAME=test/1-binary/${BASENAME}.data.hex
         elif [ -e "${NAME}.data.txt" ]; then
-            DATANAME=test/1-binary/${NAME}.data.txt
+            DATANAME=test/1-binary/${BASENAME}.data.txt
         else
             DATANAME="test/datamem.txt"
         fi

@@ -62,7 +62,7 @@ They take mostly the same kinda form, and it's simple to explain.
 vector<bitset<32> >instructions; //Used bitset<32>, pretty strange choice of library but I found this easier than implementing a separate num->bin converter function, and more efficient.
 //All this does is basically store 32 bit binary sequences as elements in a vector, everytime we go through a line, and call one of the R,I, or J functions, a 32 bit number is added to this vector.
 
-/* R type instructions: Take in an instruction type, and operate based on 3 registers mostly (Except for shifts), 
+/* R type instructions: Take in an instruction type, and operate based on 3 registers mostly (Except for shifts),
 i.e addu $0, $1, $2 adds values in R[1] and R[2], stored in R[0].
 */
 
@@ -80,9 +80,9 @@ void Construct_R_Type(int op, int rs, int rt, int rd, int shamt, int fc) { //Fir
 void Construct_I_Type(int op, int rs, int rt, int immediate) {
     //For the I type instruction, I have to shift by the opcode just like before, shift rs and rd, but then also by the immediate.
     bitset<32> out = 0; //Output same as before
-    out = (op << 26); 
-    out |= (rs << 21); 
-    out |= (rt << 16); 
+    out = (op << 26);
+    out |= (rs << 21);
+    out |= (rt << 16);
     out |= immediate; //Superpose with the immediate constant
     out |= (immediate & 65535); //ERR checking, to be refined later on.
     instructions.push_back(out); //Returns the complete binary sequence
@@ -90,7 +90,7 @@ void Construct_I_Type(int op, int rs, int rt, int immediate) {
 
 void Construct_J_Type(int op, int immediate) {
     //J type instruction declaration is the easiest variant, all parameters are just the opcode and the immediate addr
-    bitset<32> out = 0; 
+    bitset<32> out = 0;
     out = (op << 26); //Superpose opcode, same as before
     out |= immediate; //Remaining 26 bits are the required parts.
     instructions.push_back(out); //Returns the complete binary sequence
@@ -116,7 +116,7 @@ int ConvertImmediate(char *immediate){ //As before, we have tokens for each part
     }
 }
 
-//Helper functions made, next step is to read the files directly. 
+//Helper functions made, next step is to read the files directly.
 
 
 
@@ -180,9 +180,9 @@ int main() {
            char * secondparam;
            char * thirdparam;
            char * fourthparam = NULL; //These are the four parameters of the instruction, the instruction type, the registers involved (2 for some and 3 for others), where a third instruction isn't used we have an immediate constant
-               
+
            firstparam = strtok(linearr, delims); //Generate the tokens we need
-           if(firstparam != NULL) 
+           if(firstparam != NULL)
                 secondparam = strtok(NULL,delims); //This splits it into four, whenever we hit a delimiter we call the function again.
            if(secondparam != NULL)
                 thirdparam = strtok(NULL,delims);
@@ -240,7 +240,7 @@ int main() {
             if (strcmp(firstparam, "lui") == 0) {
                 //lui instructions of form lui $x, IMMD. So we need to take in the third param as immediate
                 Construct_I_Type(15, 0, RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
-            } 
+            }
             if (strcmp(firstparam, "lw") == 0) {
                 //lw $rt, offset($rs)
                 //This means that we have offset as third param,
@@ -250,7 +250,7 @@ int main() {
                 Construct_I_Type(34, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "lwr") == 0) {
-                Construct_I_Type(42, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
+                Construct_I_Type(38, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));
             }
             if (strcmp(firstparam, "ori") == 0) {
                 Construct_I_Type(13, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
@@ -275,7 +275,7 @@ int main() {
             }
 
             /*
-                I will now do the R-Type instructions, which are called in virtually the same way however will now use the R-Constructor, which takes in 
+                I will now do the R-Type instructions, which are called in virtually the same way however will now use the R-Constructor, which takes in
                 extra parameters, now the Immediate (4th param) will just be called in as the 3rd register, and we will include other pre-defined values, the
                 SHIFT AMT, and also the function code.
                 Thankfully, for R-Type instructions most of these constants are pre-defined, the 3 exceptions are SRL, SRA, and SLL which we can just re-purpose the fourth param
@@ -289,7 +289,7 @@ int main() {
                Construct_R_Type(0, RegisterToInteger(thirdparam), RegisterToInteger(fourthparam), RegisterToInteger(secondparam), 0, 36);
            }
            if (strcmp(firstparam, "div") == 0) {
-               //div $rs, $rt, rs is second param and rt is third 
+               //div $rs, $rt, rs is second param and rt is third
                Construct_R_Type(0, RegisterToInteger(secondparam), RegisterToInteger(thirdparam), 0, 0, 26);
            }
            if (strcmp(firstparam, "divu") == 0) {
@@ -357,8 +357,8 @@ int main() {
 
            /*
                 The R type instructions are complete.
-                Left to implement are 2 J type instructions. J and JAL, these are simple and merely only require 
-                2 variables to read in too, so this can be done quickly. 
+                Left to implement are 2 J type instructions. J and JAL, these are simple and merely only require
+                2 variables to read in too, so this can be done quickly.
            */
 
             if (strcmp(firstparam, "j") == 0) {
@@ -372,7 +372,7 @@ int main() {
         for(int i = 0; i<instructions.size();i++) {
             // cout << hex << instructions[i].to_ulong() << endl;
         } //Just a test thing, I'll remove this later on
-        
+
     }
        }
 

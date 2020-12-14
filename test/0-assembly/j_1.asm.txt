@@ -7,7 +7,7 @@ addiu $v0, $v0, 12
 jr $v0
 nop
 nop
-j 0xFC000c0       #12
+j 0xFC00030       #12
 nop
 jr $v0
 addiu $v0, $v0, 11

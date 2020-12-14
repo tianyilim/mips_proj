@@ -159,8 +159,9 @@ module mips_cpu_harvard(
                                                                     (fn_code == SUBU) ||
                                                                     (fn_code == XOR) ||
                                                                     (fn_code == MFHI) ||
-                                                                    (fn_code == MFLO))) ? 1 : ( ((state == EXEC2) && (instr_type == I) && ((opcode == ADDIU) ||
+                                                                    (fn_code == MFLO))) ? 1 : ( ((state == EXEC2)  && ((opcode == ADDIU) ||
                                                                                                                                           (opcode == ANDI) ||
+                                                                                                                                          (opcode == JAL) ||
                                                                                                                                           (opcode == LUI) ||
                                                                                                                                           (opcode == ORI) ||
                                                                                                                                           (opcode == SLTI) ||

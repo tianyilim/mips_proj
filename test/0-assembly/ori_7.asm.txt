@@ -2,7 +2,5 @@ lw $t3, 16($zero) # ff3de00b
 ori $t4, $t3, 4   # FF3DE00F
 addiu $v0, $t4, 0  
 jr $zero
-   
-
 
 comment: check rs still the same

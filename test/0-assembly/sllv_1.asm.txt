@@ -1,7 +1,7 @@
 addu $t3, $zero, $zero				#1
 lui $t3, 0xe90a						#1
 ori $t3, $t3, 0x47a5				#1
-addi $s5, $zero, 3					#2
+addiu $s5, $zero, 3					#2
 sllv $v0, $t3, $s5					#2
 jr $zero
 

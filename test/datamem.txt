@@ -1,13 +1,13 @@
 80000000
-7fffffff
-00000000
-ffffffff
-ff3de00b
-0000ec5b
-7f5785de
-636d3811
-fd39619f
-14ba6b80
-BFC00000
+7fffffff    // Offset 04 | 0x04
+00000000    // Offset 08 | 0x08
+ffffffff    // Offset 12 | 0x0C
+ff3de00b    // Offset 16 | 0x10
+0000ec5b    // Offset 20 | 0x14
+7f5785de    // Offset 24 | 0x18
+636d3811    // Offset 28 | 0x1C
+fd39619f    // Offset 32 | 0x20
+14ba6b80    // Offset 36 | 0x24
+BFC00000    // Offset 40 | 0x28
 
 

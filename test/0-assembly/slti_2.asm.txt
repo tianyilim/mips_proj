@@ -1,7 +1,6 @@
-lw $t2, 20($zero)        #contains 0x0000ec5b (60507)
-slti $v0, $t2, 60530,
+lh $t2, 28($zero)        #contains 0x00003811 (14353)
+slti $v0, $t2, 14354,
 jr $zero,
 
 
-comment: pos reg < pos imm
-
+comment: pos reg < pos imm. Edited this as sign-extended was messing it up.

@@ -1,6 +1,6 @@
 nop
 jal 0xFC00010    #4
-addiu $ra, $zero, 10
+addiu $ra, $ra, 10
 jr $zero
 nop
 addiu $v0, $ra, 0

@@ -265,7 +265,7 @@ int main() {
                 Construct_I_Type(10, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "sltiu") == 0) {
-                Construct_I_Type(11, 0, RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
+                Construct_I_Type(11, RegisterToInteger(thirdparam), RegisterToInteger(secondparam), ConvertImmediate(fourthparam));
             }
             if (strcmp(firstparam, "sw") == 0) {
                 Construct_I_Type(43, RegisterToInteger(fourthparam), RegisterToInteger(secondparam), ConvertImmediate(thirdparam));

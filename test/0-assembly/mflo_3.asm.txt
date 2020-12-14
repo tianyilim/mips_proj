@@ -1,8 +1,8 @@
 lw $t2, 16($zero)
 addiu $t3, $zero, 25
 multu $t2, $t3
-mflo $t3
-mfhi $v0
+mfhi $t3
+mflo $v0
 jr $zero
 
 comment: mfhi twice

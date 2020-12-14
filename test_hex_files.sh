@@ -41,7 +41,7 @@ for i in "${cases[@]}"; do
         # if sample output does not exist, don't bother running the test case
 
         if [ -e "${NAME}.data.hex" ]; then
-            DATANAME=test/1-binary/${NAME}.data.hex
+            DATANAME=test/1-binary/${BASENAME}.data.hex
         elif [ -e "${NAME}.data.txt" ]; then
             DATANAME=test/1-binary/${NAME}.data.txt
         else

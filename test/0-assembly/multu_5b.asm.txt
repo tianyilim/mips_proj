@@ -1,4 +1,4 @@
-lw $t2, 16($zero)
+lw $t2, 16($zero) # ff3de00b
 multu $t2, $t2
 mflo $v0
 jr $zero

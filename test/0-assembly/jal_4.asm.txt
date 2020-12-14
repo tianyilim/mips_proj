@@ -1,13 +1,15 @@
 lw $ra, 0($zero)            # 0xBFC00018
-addiu $v0, $v0, 10,
-jr $ra, 
-nop,
-jr $zero,
-nop,
-jal 0xFC00004,    #2
-nop,
+addiu $v0, $v0, 10
+jr $ra 
+nop
+jr $zero
+nop
+jal 0xFC00004    #2
+nop
 addiu $v0, $v0, 12
-jr $zero,
+jr $zero
+
+
 
 
 comment: jal backwards

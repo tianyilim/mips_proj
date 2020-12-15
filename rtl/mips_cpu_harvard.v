@@ -104,10 +104,8 @@ module mips_cpu_harvard(
     logic[31:0] Hi, Lo;
     logic[31:0] rs_data, rt_data, write_back_data;
     logic[63:0] mult_output; // multiplier output
-    logic branch_delay_slot; // check whether the previous instruction was a jump
-    logic[31:0] jump_store; // storing the address of a branch/jump for the next instr
-    logic[31:0] quotient; // storing quotient in DIV and DIVU
-    logic[31:0] remainder;// storing remainder in DIV and DIVU
+    logic jump_check; // check whether the previous instruction was a jump
+    logic[31:0] branch_delay_slot; // storing the address of a branch/jump for the next instr
     logic write_enable; //writing to register
     logic write_enable_r;
     logic write_enable_i_exec2;
@@ -161,8 +159,8 @@ module mips_cpu_harvard(
                                                            (opcode == ORI) ||
                                                            (opcode == SLTI) ||
                                                            (opcode == SLTIU) ||
-                                                           ((opcode == BRANCH) && (rt_addr == 5'b10000) && branch_delay_slot == 1) || // BLTZAL
-                                                           ((opcode == BRANCH) && (rt_addr == 5'b10001) && branch_delay_slot == 1) || //BGEZAL
+                                                           ((opcode == BRANCH) && (rt_addr == 5'b10000) && jump_check == 1) || // BLTZAL
+                                                           ((opcode == BRANCH) && (rt_addr == 5'b10001) && jump_check == 1) || //BGEZAL
                                                            (opcode == XORI))) ? 1 : 0;
     assign write_enable_i_exec3 = ((state == EXEC3) && (instr_type == I) && ((opcode == LB)  ||
                                                                                (opcode == LBU) ||
@@ -188,14 +186,8 @@ module mips_cpu_harvard(
     
     
     // signed extension logic
-    logic[7:0] eight_bit;
     logic[15:0] sixteen_bit;
-    logic[31:0] eight_extended;
     logic[31:0] sixteen_extended;
-
-    assign eight_bit = ((state == EXEC2) && ((opcode == LB) || (opcode == LBU))) ?  ((imm_addr[1:0] == 0) ? data_readdata[7:0] :
-                                                                                   ((imm_addr[1:0] == 1) ? data_readdata[15:8] :
-                                                                                   ((imm_addr[1:0] == 2) ? data_readdata[23:16] : data_readdata[31:24]))) : 0; // masking which part of the data_readdata specified by the address
     assign sixteen_bit = ((instr_type == I) &&                    ((opcode == ADDIU) ||
                                                                    (opcode == BEQ) ||
                                                                    (opcode == BRANCH) ||
@@ -227,10 +219,6 @@ module mips_cpu_harvard(
         .write_enable(write_enable)
     );
 
-    eight_bit_extension eight(
-        .x(eight_bit),
-        .y(eight_extended)
-    );
     sixteen_bit_extension sixteen(
         .x(sixteen_bit),
         .y(sixteen_extended)
@@ -282,21 +270,21 @@ module mips_cpu_harvard(
                       write_back_data <= rs_data & rt_data;
                     end
                     DIV: begin// signed
-                      quotient <= $signed(rs_data) / $signed(rt_data);
-                      remainder <= $signed(rs_data) % $signed(rt_data);
+                      Lo <= $signed(rs_data) / $signed(rt_data);
+                      Hi <= $signed(rs_data) % $signed(rt_data);
                     end
                     DIVU: begin// unsigned
-                      quotient <= rs_data / rt_data;
-                      remainder <= rs_data % rt_data;
+                      Lo <= rs_data / rt_data;
+                      Hi <= rs_data % rt_data;
                     end
                     JALR: begin
                       write_back_data <= pc + 8;
-                      jump_store <= rs_data;
-                      branch_delay_slot <= 1;
+                      branch_delay_slot <= rs_data;
+                      jump_check <= 1;
                     end
                     JR: begin
-                      jump_store <= rs_data;
-                      branch_delay_slot <= 1;
+                      branch_delay_slot <= rs_data;
+                      jump_check <= 1;
                     end
                     MTHI: begin
                       Hi <= rs_data;
@@ -362,47 +350,47 @@ module mips_cpu_harvard(
                     end
                     BEQ: begin
                       if (rs_data == rt_data) begin
-                          jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          branch_delay_slot <= 1;
+                          branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                          jump_check <= 1;
                       end
                     end
                     BGTZ: begin
                       if ($signed(rs_data) > 0) begin
-                          jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          branch_delay_slot <= 1;
+                          branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                          jump_check <= 1;
                       end
                     end
                     BLEZ: begin
                       if ($signed(rs_data) <= 0) begin
-                          jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          branch_delay_slot <= 1;
+                          branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                          jump_check <= 1;
                       end
                     end
                     BRANCH: begin
                       case(rt_addr)
                           5'b00001: begin //BGEZ
                               if ($signed(rs_data) >= 0) begin
-                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  branch_delay_slot <= 1;
+                                  branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                                  jump_check <= 1;
                               end
                           end
                           5'b10001: begin //BGEZAL
                               if ($signed(rs_data) >= 0) begin
-                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  branch_delay_slot <= 1;
+                                  branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                                  jump_check <= 1;
                                   write_back_data <= pc + 8;
                               end
                           end
                           5'b00000: begin // BLTZ
                               if ($signed(rs_data) < 0) begin
-                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  branch_delay_slot <= 1;
+                                  branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                                  jump_check <= 1;
                               end
                           end
                           5'b10000: begin //BLTZAL
                               if ($signed(rs_data) < 0) begin
-                                  jump_store <= pc_next + $signed(sixteen_extended * 4);
-                                  branch_delay_slot <= 1;
+                                  branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                                  jump_check <= 1;
                                   write_back_data <= pc + 8;
                               end
                           end
@@ -411,8 +399,8 @@ module mips_cpu_harvard(
                     end
                     BNE: begin
                       if (rs_data != rt_data) begin
-                          jump_store <= pc_next + $signed(sixteen_extended * 4);
-                          branch_delay_slot <= 1;
+                          branch_delay_slot <= pc_next + $signed(sixteen_extended * 4);
+                          jump_check <= 1;
                       end
                     end
                     LUI: begin
@@ -485,20 +473,20 @@ module mips_cpu_harvard(
                       write_back_data <= rs_data ^ {{16'h0000},imm} ;
                     end
                     JUMP: begin
-                      jump_store <= {pc_next[31:28],jump_addr,2'b00};
-                      branch_delay_slot <= 1;
+                      branch_delay_slot <= {pc_next[31:28],jump_addr,2'b00};
+                      jump_check <= 1;
                     end
                     JAL: begin
-                      jump_store <= {pc_next[31:28],jump_addr,2'b00};
-                      branch_delay_slot <= 1;
+                      branch_delay_slot <= {pc_next[31:28],jump_addr,2'b00};
+                      jump_check <= 1;
                       write_back_data <= pc + 8;
                     end
                 endcase
             end
             //should this be moved up?
-            if(branch_delay_slot == 1) begin
-                pc <= jump_store;
-                branch_delay_slot <= 0;
+            if(jump_check == 1) begin
+                pc <= branch_delay_slot;
+                jump_check <= 0;
             end
             else begin
                 pc <= pc_next;
@@ -511,14 +499,6 @@ module mips_cpu_harvard(
         //R instruction
             if(instr_type == R) begin
                 case(fn_code)
-                    DIV: begin
-                      Lo <= quotient;
-                      Hi <= remainder;
-                    end
-                    DIVU: begin
-                      Lo <= quotient;
-                      Hi <= remainder;
-                    end
                     MULT: begin
                       Hi <= mult_output[63:32];
                       Lo <= mult_output[31:0];
@@ -534,11 +514,33 @@ module mips_cpu_harvard(
                 case(opcode)
                     LB: begin //8_Bit is signed extended
                         state <= EXEC3;
-                        write_back_data <= eight_extended;
+                        if(imm_addr[1:0] == 0) begin
+                          write_back_data <= {{24{data_readdata[7]}},data_readdata[7:0]};
+                        end
+                        else if(imm_addr[1:0] == 1) begin
+                          write_back_data <= {{24{data_readdata[15]}},data_readdata[15:8]};
+                        end
+                        else if(imm_addr[1:0] == 2) begin
+                          write_back_data <= {{24{data_readdata[23]}},data_readdata[23:16]};
+                        end
+                        else if(imm_addr[1:0] == 3) begin
+                          write_back_data <= {{24{data_readdata[31]}},data_readdata[31:24]};
+                        end
                     end
                     LBU: begin // 8_Bit is zero extended
                         state <= EXEC3;
-                        write_back_data <= {{24'h000000},eight_bit};
+                        if(imm_addr[1:0] == 0) begin
+                          write_back_data <= {{24'h000000},data_readdata[7:0]};
+                        end
+                        else if(imm_addr[1:0] == 1) begin
+                          write_back_data <= {{24'h000000},data_readdata[15:8]};
+                        end
+                        else if(imm_addr[1:0] == 2) begin
+                          write_back_data <= {{24'h000000},data_readdata[23:16]};
+                        end
+                        else if(imm_addr[1:0] == 3) begin
+                          write_back_data <= {{24'h000000},data_readdata[31:24]};
+                        end
                     end
                     LH: begin //16_Bit is signed extended
                         state <= EXEC3;

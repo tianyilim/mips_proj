@@ -1,0 +1,45 @@
+addu $t0, $zero, $zero						#1
+lui $t0, 0x0000								#1
+ori $t0, $t0, 0x02cc						#1 malloc()
+addu $v0, $zero, $zero                      #2
+ori $t1, $zero, 10                          #3 start
+sw $t1, 0($t0)
+ori $t1, $zero, 100
+sw $t1, 4($t0)
+ori $t1, $zero, 1000
+sw $t1, 8($t0)
+ori $t1, $zero, 9
+sw $t1, 12($t0)
+addu $t1, $zero, $zero
+lui $t1, 0x0fa5
+ori $t1, $t1, 0x0000
+sw $t1, 16($t0)                             #3 end
+addiu $t5, $zero, 5
+addiu $t2, $zero, 0                         #4
+lw $t1, 0($t0)                              #ans += *ptr;
+addu $v0, $v0, $t1                          #ans += *ptr;
+addiu $t0, $t0, 4                           #ptr++
+addiu $t2, $t2, 1                           #i++
+bne $t2, $t5, -5
+jr $zero
+
+# expected output = 10 + 100 + 1000 + 9 + 0x0fa50000 = 0x45f + 0x0fa50000 = 0x0fa5045f
+
+
+comment:
+int *ptr = malloc(5*sizeof(int)); // 1. use $t0 for ptr 
+int ans = 0; // 2. use $v0 for ans
+
+// 3.
+ptr[0] = 10;
+ptr[1] = 100;
+ptr[2] = 1000;
+ptr[3] = 9;
+ptr[4] = 0xfa50000;
+
+//4. use $t2 for i, $t5 to hold the value 5
+for (int i = 0; i != 5; i++)
+{
+    ans += *ptr;
+    ptr++;
+}

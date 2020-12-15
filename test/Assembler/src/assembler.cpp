@@ -68,6 +68,13 @@ i.e addu $0, $1, $2 adds values in R[1] and R[2], stored in R[0].
 
 void Construct_R_Type(int op, int rs, int rt, int rd, int shamt, int fc) { //First generator function, takes in 6 params which we know from the Excel (Thanks CH!! I wouldn't have had the patience to painstakingly find each instruction and then implement it :')) )
     bitset<32> out = 0; //32 bit output instantiated
+
+    fc = (fc & 0x3f);               
+	shamt = (shamt & 0x1f);    //added by Justin
+	rd = (rd & 0x1f);         
+	rt = (rt & 0x1f);        
+	rs = (rs & 0x1f);         //handle negative number
+
     out = (op << 26); //Opcode superposed in first 6 bits
     out |= (rs << 21); //Register in next 5 bits
     out |= (rt << 16); //Next register
@@ -80,6 +87,12 @@ void Construct_R_Type(int op, int rs, int rt, int rd, int shamt, int fc) { //Fir
 void Construct_I_Type(int op, int rs, int rt, int immediate) {
     //For the I type instruction, I have to shift by the opcode just like before, shift rs and rd, but then also by the immediate.
     bitset<32> out = 0; //Output same as before
+
+    immediate = (immediate & 0xffff);  //added by Justin
+	rt = (rt & 0x1f);             
+	rs = (rs & 0x1f);             
+	op = (op & 0x3f);             //handle negative numbers
+
     out = (op << 26);
     out |= (rs << 21);
     out |= (rt << 16);
@@ -91,6 +104,10 @@ void Construct_I_Type(int op, int rs, int rt, int immediate) {
 void Construct_J_Type(int op, int immediate) {
     //J type instruction declaration is the easiest variant, all parameters are just the opcode and the immediate addr
     bitset<32> out = 0;
+
+    immediate = (immediate & 0x03ffffff);   //added by Justin
+	op = (op & 0x3f);                 //handle negative numbers
+
     out = (op << 26); //Superpose opcode, same as before
     out |= immediate; //Remaining 26 bits are the required parts.
     instructions.push_back(out); //Returns the complete binary sequence

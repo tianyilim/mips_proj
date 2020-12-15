@@ -1,0 +1,7 @@
+addu $s0, $zero, $zero
+lui $s0, 0x0000
+addiu $s0, $s0, 0x001c
+lw $v0, -4($s0)
+jr $zero
+
+#expected result = 0x7f5785de

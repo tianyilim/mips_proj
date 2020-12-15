@@ -1,0 +1,25 @@
+addu $t9, $zero, $zero						#1
+lui $t9, 0x0000								#1
+ori $t9, $t9, 0x0234						#1
+addu $s7, $zero, $zero						#2
+lui $s7, 0x1f2e								#2
+ori $s7, $s7, 0x3abc						#2
+sw $s7, -8($t9)								#3
+addiu $t9, $t9, -11							#4
+lw $v0, 3($t9)								#4
+jr $zero
+
+comment:
+# 1. CPU points to memory location 0xbfc00234 using $t9
+# 2. CPU has 0x12345678 in $s7
+# 3. CPU stores $s7 into the location pointed by $t9
+# 4. CPU reads 0x12345678 from memory[0xbfc00234] back into $v0
+# expected output = 0x1f2e3abc
+
+
+# 1k bytes = 2^10 bytes
+# 00 0000 0000 -> 0x 0 0 0
+# 11 1111 1111 -> 0x 3 f f
+
+# program memory is from 0x0000 to 0x01ff
+# data memory is from 0x0200 to 0x03ff

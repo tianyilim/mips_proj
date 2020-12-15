@@ -1,4 +1,4 @@
-addiu $s0 $s0 432
-sh $s0 12($zero)
-lw $v0 12($zero)
+addiu $s0 $zero 0xcf3d
+sh $s0 4($zero)
+lw $v0 4($zero)
 jr $zero

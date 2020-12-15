@@ -1,4 +1,4 @@
-addiu $s0 $s0 783
-sh $s0 6($zero)
-lw $v0 4($zero)
+addiu $s0 $s0 0x4fe3
+sh $s0 10($zero)
+lw $v0 8($zero)
 jr $zero

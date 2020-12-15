@@ -109,6 +109,9 @@ module mips_cpu_harvard(
     logic[31:0] quotient; // storing quotient in DIV and DIVU
     logic[31:0] remainder;// storing remainder in DIV and DIVU
     logic write_enable; //writing to register
+    logic write_enable_r;
+    logic write_enable_i_exec2;
+    logic write_enable_i_exec3;
     logic[4:0] return_reg; // hold value of reg31
     logic[31:0] imm_addr; // hold value of base + imm
 
@@ -135,7 +138,7 @@ module mips_cpu_harvard(
     assign jump_addr = instr[25:0];
     assign imm_addr = rs_data + $signed(sixteen_extended);
 
-    assign write_enable =((state == EXEC2) && (instr_type == R) && ((fn_code == ADDU) ||
+    assign write_enable_r =((state == EXEC2) && (instr_type == R) &&((fn_code == ADDU) ||
                                                                     (fn_code == AND) ||
                                                                     (fn_code == JALR) ||
                                                                     (fn_code == OR) ||
@@ -150,22 +153,25 @@ module mips_cpu_harvard(
                                                                     (fn_code == SUBU) ||
                                                                     (fn_code == XOR) ||
                                                                     (fn_code == MFHI) ||
-                                                                    (fn_code == MFLO))) ? 1 : ( ((state == EXEC2)  && ((opcode == ADDIU) ||
-                                                                                                                                          (opcode == ANDI) ||
-                                                                                                                                          (opcode == JAL) ||
-                                                                                                                                          (opcode == LUI) ||
-                                                                                                                                          (opcode == ORI) ||
-                                                                                                                                          (opcode == SLTI) ||
-                                                                                                                                          (opcode == SLTIU) ||
-                                                                                                                                          ((opcode == BRANCH) && (rt_addr == 5'b10000) && branch_delay_slot == 1) || // BLTZAL
-                                                                                                                                          ((opcode == BRANCH) && (rt_addr == 5'b10001) && branch_delay_slot == 1) || //BGEZAL
-                                                                                                                                          (opcode == XORI))) ? 1: ( ((state == EXEC3) && (instr_type == I) && ((opcode == LB)  ||
-                                                                                                                                                                                                               (opcode == LBU) ||
-                                                                                                                                                                                                               (opcode == LH)  ||
-                                                                                                                                                                                                               (opcode == LHU) ||
-                                                                                                                                                                                                               (opcode == LW)  ||
-                                                                                                                                                                                                               (opcode == LWL) ||
-                                                                                                                                                                                                               (opcode == LWR))) ? 1 : 0));
+                                                                    (fn_code == MFLO))) ? 1 : 0;
+    assign write_enable_i_exec2 =  ((state == EXEC2)  && ((opcode == ADDIU) ||
+                                                           (opcode == ANDI) ||
+                                                           (opcode == JAL) ||
+                                                           (opcode == LUI) ||
+                                                           (opcode == ORI) ||
+                                                           (opcode == SLTI) ||
+                                                           (opcode == SLTIU) ||
+                                                           ((opcode == BRANCH) && (rt_addr == 5'b10000) && branch_delay_slot == 1) || // BLTZAL
+                                                           ((opcode == BRANCH) && (rt_addr == 5'b10001) && branch_delay_slot == 1) || //BGEZAL
+                                                           (opcode == XORI))) ? 1 : 0;
+    assign write_enable_i_exec3 = ((state == EXEC3) && (instr_type == I) && ((opcode == LB)  ||
+                                                                               (opcode == LBU) ||
+                                                                               (opcode == LH)  ||
+                                                                               (opcode == LHU) ||
+                                                                               (opcode == LW)  ||
+                                                                               (opcode == LWL) ||
+                                                                               (opcode == LWR))) ? 1 : 0;
+    assign write_enable = (write_enable_r == 1 || write_enable_i_exec3 == 1 || write_enable_i_exec2 == 1) ? 1 : 0;
 
     //Mem access assignmemts
     assign data_write = ((state == EXEC2) && (instr_type == I) && ((opcode == SB) || // EXEC1 used to update data_writedata and byteenable
@@ -238,6 +244,7 @@ module mips_cpu_harvard(
         data_writedata = 0;
         Hi = 0;
         Lo = 0;
+        byteenable = 0;
     end
 
     always @(posedge clk) begin
@@ -408,28 +415,6 @@ module mips_cpu_harvard(
                           branch_delay_slot <= 1;
                       end
                     end
-                    // Load instructions handled by data_address and data_read combinatorial logic
-                    // LB: begin
-                    //   data_address <= {imm_addr[31:2], 2'b00};
-                    // end
-                    // LBU: begin
-                    //   data_address <= {imm_addr[31:2], 2'b00};
-                    // end
-                    // LH: begin
-                    //   data_address <= {imm_addr[31:2], 2'b00};
-                    // end
-                    // LHU: begin
-                    //   data_address <= {imm_addr[31:2], 2'b00};
-                    // end
-                    // LW: begin
-                    //   data_address <= {imm_addr[31:2], 2'b00};
-                    // end
-                    // LWL: begin
-                    //   data_address <= {imm_addr[31:2], 2'b00};
-                    // end
-                    // LWR: begin
-                    //   data_address <= {imm_addr[31:2], 2'b00};
-                    // end
                     LUI: begin
                       write_back_data <= {imm,16'h0000};
                     end

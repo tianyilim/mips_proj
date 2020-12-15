@@ -1,0 +1,12 @@
+addu $t3, $zero, $zero				#1
+lui $t3, 0xe90a						#1
+ori $t3, $t3, 0x47a5				#1
+addiu $s5, $zero, 40					#2
+sllv $v0, $t3, $s5					#2
+jr $zero
+
+comments:
+1. put a 0xe90a47a5 in $t3
+2. put 40 into $s5
+2. shift it left by s5(8)
+3. $v0 should be 0xA0000000

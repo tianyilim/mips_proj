@@ -1,0 +1,8 @@
+addiu $t2, $zero, 8
+jr $t2      # address contains jr $zero
+nop
+nop
+addiu $v0, $zero, 10
+jr $zero
+
+comment: jr to instr address

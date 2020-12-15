@@ -1,0 +1,5 @@
+lw $t2, 0($zero)
+addiu $v0, $t2, 12
+jr $zero
+
+comment: rt = 80000000

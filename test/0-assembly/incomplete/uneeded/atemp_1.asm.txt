@@ -1,6 +1,0 @@
-lw $t2, 0($zero)
-slti $v0, $t2, 8,     
-jr $zero,
-
-
-comment: pos reg = pos imm

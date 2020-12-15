@@ -1,0 +1,5 @@
+addiu $zero, $zero, 20
+addiu $v0, $zero, 0
+jr $zero
+
+comment: rd is $zero

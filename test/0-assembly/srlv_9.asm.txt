@@ -1,0 +1,11 @@
+addu $t3, $zero, $zero				#1
+lui $t3, 0xe90a						#1
+ori $t3, $t3, 0x47a5				#1
+addiu $s5, $zero, 40					#2
+srlv $v0, $t3, $s5					#2
+jr $zero
+
+comments: rs > 4 bits
+1. put a 0xe90a47a5 in $t3
+2. put 40 into $s5
+2. logical shift it right by 8

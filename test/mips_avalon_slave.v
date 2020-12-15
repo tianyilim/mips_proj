@@ -36,14 +36,16 @@ module mips_avalon_slave(
     logic[31:0] addr_shift;
     assign addr_shift = address >> 2; // Byte addressing
 
- 
     always@(negedge clk) begin
         if (!$isunknown(address) && |address[1:0] && (read || write)) begin
-            $fatal(1, "RAM : FATAL : Attempted to access a non word-aligned address", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+            $fatal(1, "RAM : FATAL : Attempted to access a non word-aligned address 0x%h", address);
+        end
+
+        if ( (wait_ctr != -1) && !(read || write) ) begin
+            $fatal(1, "RAM : FATAL : De-asserted read or write before termination of a transaction");
         end
     end
-        
-
+    
     // Checking stuff isn't broken
     initial begin
         integer i;

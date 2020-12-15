@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if (("$#" < 1)); then
-    echo "Please enter the name of the directory."
+    # echo "Please enter the name of the directory."
     exit 1
 else
     TEST_DIR=$1
@@ -38,11 +38,11 @@ fi
 
 # assemble the code
 if [ $COMPILE -gt 0 ]; then
-    echo "Compiling code..."
+    # echo "Compiling code..."
     ./test/compile_tests.sh "${TEST_INSTRS[@]}"
 fi
 
 if [ ! $COMPILE = 2 ]; then
-    echo "Running testcases..."
+    # echo "Running testcases..."
     ./test/test_hex_files.sh "$TEST_DIR" "${TEST_INSTRS[@]}"
 fi

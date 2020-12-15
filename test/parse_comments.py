@@ -10,6 +10,7 @@ tmp = open("test/Assembler/src/test.txt", 'w')
 for line in f:
     stuff = line.split('#') # Gets rid of comments
     line=stuff[0].strip()
+    line=line.lower()       # ensure that comments are stringed
     if "comment" in line:
         break # Disregard everything after 'comment'
 

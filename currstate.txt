@@ -1,0 +1,369 @@
+Compiling code...
+Assembled 358 testcases.
+[0;32m358[0m testcases assembled successfully.
+[00;31m0[0m testcases failed to assemble.
+Running testcases...
+addiu_1 addiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 26, INSTRS: 2, CPI: [0;33m13[0m, , comment: addiu 0 0
+addiu_2 addiu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 26, INSTRS: 2, CPI: [0;33m13[0m, , comment: addiu 0 1
+addiu_3 addiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: Sign Extension, subtract by -1 and add one again
+addiu_4 addiu [0;32mPass[0m | V0: ffff7fff, EXP: ffff7fff, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: Sign Extension; -32768-1=-32769
+addiu_5 addiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: rd is $zero
+addiu_6 addiu [0;32mPass[0m | V0: 8000000c, EXP: 8000000C, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: rt = 80000000
+addu_1 addu [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: addu 0
+addu_2 addu [0;32mPass[0m | V0: 7f587239, EXP: 7F587239, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: addu no overflow
+addu_3 addu [0;32mPass[0m | V0: fffffffe, EXP: FFFFFFFE, CYCLES: 46, INSTRS: 4, CPI: [0;33m11[0m, , comment: addu overflow
+addu_4 addu [0;32mPass[0m | V0: 0001d8b6, EXP: 0001D8B6, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: diff registers
+addu_5 addu [0;32mPass[0m | V0: 0001d8b6, EXP: 0001D8B6, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd same as rs
+addu_6 addu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd is $zero
+addu_7 addu [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: check rs unchanged
+addu_8 addu [0;32mPass[0m | V0: 7f587239, EXP: 7F587239, CYCLES: 62, INSTRS: 5, CPI: [0;33m12[0m, , comment: rd already written to
+and_1 and [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: FFFFFFFF and 00000000
+and_2 and [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 46, INSTRS: 4, CPI: [0;33m11[0m, , comment: FFFFFFFF and FFFFFFFF
+and_3 and [0;32mPass[0m | V0: 0000845a, EXP: 0000845A, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: 7F5785DE and 0000EC5B
+and_4 and [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: diff registers
+and_5 and [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd same as rs
+and_6 and [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd is $zero
+and_7 and [0;32mPass[0m | V0: 7f5785de, EXP: 7F5785DE, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+andi_1 andi [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=0
+andi_2 andi [0;32mPass[0m | V0: 0000e00b, EXP: 0000E00B, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=FFFF
+andi_3 andi [0;32mPass[0m | V0: 0000a00a, EXP: 0000a00a, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=AAAA
+andi_4 andi [0;32mPass[0m | V0: 0000a00a, EXP: 0000a00a, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: different registers
+andi_5 andi [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rd=$zero 
+andi_6 andi [0;32mPass[0m | V0: 0000a00a, EXP: 0000a00a, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rd same as rs
+andi_7 andi [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs still the same
+andi_8 andi [0;32mPass[0m | V0: 0000a00a, EXP: 0000a00a, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: rd not empty
+beq_1 beq [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 82, INSTRS: 12, CPI: [0;33m6[0m, , comment:
+beq_2 beq [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 75, INSTRS: 12, CPI: [0;33m6[0m, , comment:
+beq_3 beq [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 54, INSTRS: 8, CPI: [0;33m6[0m, , comment: equal zeroes
+beq_4 beq [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 68, INSTRS: 11, CPI: [0;33m6[0m, , comment: postive and negative of same number
+bgez_1 bgez [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 61, INSTRS: 9, CPI: [0;33m6[0m, , 
+bgez_2 bgez [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 54, INSTRS: 9, CPI: [0;33m6[0m, , 
+bgez_3 bgez [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 47, INSTRS: 7, CPI: [0;33m6[0m, , 
+bgezal_1 bgezal [0;32mPass[0m | V0: bfc00019, EXP: bfc00019, CYCLES: 68, INSTRS: 10, CPI: [0;33m6[0m, , 
+bgezal_2 bgezal [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 61, INSTRS: 10, CPI: [0;33m6[0m, , 
+bgezal_3 bgezal [0;32mPass[0m | V0: bfc00011, EXP: bfc00011, CYCLES: 54, INSTRS: 8, CPI: [0;33m6[0m, , 
+bgtz_1 bgtz [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 61, INSTRS: 9, CPI: [0;33m6[0m, , 
+bgtz_2 bgtz [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 54, INSTRS: 9, CPI: [0;33m6[0m, , 
+bgtz_3 bgtz [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 7, CPI: [0;33m5[0m, , 
+blez_1 blez [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 54, INSTRS: 9, CPI: [0;33m6[0m, , 
+blez_2 blez [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 61, INSTRS: 9, CPI: [0;33m6[0m, , 
+blez_3 blez [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 47, INSTRS: 7, CPI: [0;33m6[0m, , 
+bltz_1 bltz [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 54, INSTRS: 9, CPI: [0;33m6[0m, , 
+bltz_2 bltz [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 61, INSTRS: 9, CPI: [0;33m6[0m, , 
+bltz_3 bltz [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 7, CPI: [0;33m5[0m, , 
+bltzal_1 bltzal [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 61, INSTRS: 10, CPI: [0;33m6[0m, , 
+bltzal_2 bltzal [0;32mPass[0m | V0: bfc00019, EXP: bfc00019, CYCLES: 75, INSTRS: 10, CPI: [0;33m7[0m, , 
+bltzal_3 bltzal [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 47, INSTRS: 8, CPI: [0;33m5[0m, , 
+bne_1 bne [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 75, INSTRS: 12, CPI: [0;33m6[0m, , comment:
+bne_2 bne [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 82, INSTRS: 12, CPI: [0;33m6[0m, , comment:
+bne_3 bne [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 47, INSTRS: 8, CPI: [0;33m5[0m, , comment: equal zeroes
+bne_4 bne [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 75, INSTRS: 11, CPI: [0;33m6[0m, , comment: postive and negative of same number
+div_1a div [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: positive numbers no remainder
+div_1b div [0;32mPass[0m | V0: 03746740, EXP: 03746740, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: positive numbers no remainder, correct answer
+div_2a div [0;32mPass[0m | V0: 00000006, EXP: 00000006, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: only remainder
+div_2b div [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: only remainder
+div_3a div [0;32mPass[0m | V0: 00000012, EXP: 00000012, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: quotient and remainder
+div_3b div [0;32mPass[0m | V0: 00e6b6c2, EXP: 00E6B6C2, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: quotient and remainder
+div_4a div [0;32mPass[0m | V0: ff64f8c8, EXP: FF64F8C8, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: negative numbers
+div_4b div [0;32mPass[0m | V0: 000000a8, EXP: 000000A8, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: negative numbers
+div_5a div [0;32mPass[0m | V0: fffffffa, EXP: FFFFFFFA, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: negative and positive number
+div_5b div [0;32mPass[0m | V0: fa6f4dea, EXP: FA6F4DEA, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: negative and positive number
+div_6a div [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: divu itself
+div_6b div [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: divu itself
+div_7a div [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+div_7b div [0;32mPass[0m | V0: 03746740, EXP: 03746740, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+div_8a div [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 71, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite hilo
+div_8b div [0;32mPass[0m | V0: 03746740, EXP: 03746740, CYCLES: 71, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite hilo
+div_9 div [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+divu_1a divu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: positive numbers no remainder
+divu_1b divu [0;32mPass[0m | V0: 03746740, EXP: 03746740, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: positive numbers no remainder
+divu_2a divu [0;32mPass[0m | V0: 00000006, EXP: 00000006, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: only remainder
+divu_2b divu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: only remainder
+divu_3a divu [0;32mPass[0m | V0: 00000012, EXP: 00000012, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: quotient and remainder
+divu_3b divu [0;32mPass[0m | V0: 00e6b6c2, EXP: 00E6B6C2, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: quotient and remainder
+divu_4a divu [0;32mPass[0m | V0: 7f3de00b, EXP: 7F3DE00B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: negative numbers
+divu_4b divu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: negative numbers
+divu_5a divu [0;32mPass[0m | V0: 00000017, EXP: 00000017, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: negative and positive number
+divu_5b divu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: negative and positive number
+divu_6a divu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: divu itself
+divu_6b divu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: divu itself
+divu_7a divu [0;32mPass[0m | V0: 00000006, EXP: 00000006, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+divu_7b divu [0;32mPass[0m | V0: 0590b216, EXP: 0590B216, CYCLES: 52, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+divu_8a divu [0;32mPass[0m | V0: 00000006, EXP: 00000006, CYCLES: 71, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite hilo
+divu_8b divu [0;32mPass[0m | V0: 0590b216, EXP: 0590B216, CYCLES: 71, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite hilo
+divu_9 divu [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+j_1 j [0;32mPass[0m | V0: 00000021, EXP: 00000021, CYCLES: 68, INSTRS: 14, CPI: [0;33m4[0m, , comment: normal jumps
+j_2 j [0;32mPass[0m | V0: 00000018, EXP: 00000018, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment : j to branch delay slot
+jal_1 jal [0;32mPass[0m | V0: bfc0001a, EXP: BFC0001A, CYCLES: 61, INSTRS: 10, CPI: [0;33m6[0m, , comment: jal test 1
+jal_2 jal [0;32mPass[0m | V0: bfc00008, EXP: BFC00008, CYCLES: 47, INSTRS: 6, CPI: [0;33m7[0m, , comment: jal test 2
+jal_3 jal [0;32mPass[0m | V0: bfc0001b, EXP: BFC0001B, CYCLES: 54, INSTRS: 7, CPI: [0;33m7[0m, , comment: check $ra in branch delay slot
+jal_4 jal [0;32mPass[0m | V0: 00000020, EXP: 00000020, CYCLES: 82, INSTRS: 10, CPI: [0;33m8[0m, , comment: jal backwards
+jal_5 jal [0;32mPass[0m | V0: bfc00016, EXP: BFC00016, CYCLES: 54, INSTRS: 7, CPI: [0;33m7[0m, , comment: change $ra in branch delay slot
+Test answer jal_6 does not exist
+jalr_1 jalr [0;32mPass[0m | V0: bfc00014, EXP: BFC00014, CYCLES: 73, INSTRS: 10, CPI: [0;33m7[0m, , comment jalr test 1
+jalr_2 jalr [0;32mPass[0m | V0: bfc0000c, EXP: BFC0000C, CYCLES: 59, INSTRS: 7, CPI: [0;33m8[0m, , comment: jalr test 2
+jalr_3 jalr [0;32mPass[0m | V0: 00000016, EXP: 00000016, CYCLES: 52, INSTRS: 7, CPI: [0;33m7[0m, , comment: branch delay slot
+jalr_4 jalr [0;32mPass[0m | V0: bfc0001c, EXP: BFC0001C, CYCLES: 59, INSTRS: 8, CPI: [0;33m7[0m, , comment: check rd in branch delay slot
+jalr_5 jalr [0;32mPass[0m | V0: bfc00016, EXP: BFC00016, CYCLES: 59, INSTRS: 8, CPI: [0;33m7[0m, , comment: change rd in branch delay slot
+jalr_6 jalr [0;32mPass[0m | V0: bfc00016, EXP: BFC00016, CYCLES: 54, INSTRS: 4, CPI: [0;33m13[0m, , comment: jalr to data address
+jr_1 jr [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 59, INSTRS: 7, CPI: [0;33m8[0m, , comment: branch delay slot
+jr_2 jr [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 6, CPI: [0;33m6[0m, , comment: jr to instr address
+lb_1 lb [0;32mPass[0m | V0: 00000011, EXP: 00000011, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive byte, no offset
+lb_2 lb [0;32mPass[0m | V0: ffffff9f, EXP: FFFFFF9F, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: negative byte, positive offset
+lb_3 lb [0;32mPass[0m | V0: 0000005b, EXP: 0000005B, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive byte, negative offset
+lb_4 lb [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: attempts to change $zero
+lb_5 lb [0;32mPass[0m | V0: 00000011, EXP: 00000011, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: rd not empty, access byte 0
+lb_6 lb [0;32mPass[0m | V0: 00000038, EXP: 00000038, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rt same as rs, access byte 1
+lb_7 lb [0;32mPass[0m | V0: 0000006d, EXP: 0000006d, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: Access Byte 2
+lb_8 lb [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: lb instr address
+lb_9 lb [0;32mPass[0m | V0: 00000063, EXP: 00000063, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: Access byte 3
+lbu_1 lbu [0;32mPass[0m | V0: 00000011, EXP: 00000011, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive byte, no offset
+lbu_2 lbu [0;32mPass[0m | V0: 0000009f, EXP: 0000009F, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: negative byte, positive offset
+lbu_3 lbu [0;32mPass[0m | V0: 0000005b, EXP: 0000005B, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive byte, negative offset
+lbu_4 lbu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: attempts to change $zero
+lbu_5 lbu [0;32mPass[0m | V0: 00000011, EXP: 00000011, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: rd not empty
+lbu_6 lbu [0;32mPass[0m | V0: 00000011, EXP: 00000011, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rt same as rs
+lbu_7 lbu [0;32mPass[0m | V0: 0000001c, EXP: 0000001C, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs unchanged
+lbu_8 lbu [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: lb instr address  
+lh_1 lh [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive halfword, no offset
+lh_2 lh [0;32mPass[0m | V0: ffffe00b, EXP: FFFFE00B, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: negative halfword, positive offset
+lh_3 lh [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive halfword, negative offset
+lh_4 lh [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: attempts to change $zero
+lh_5 lh [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: rd not empty
+lh_6 lh [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rt same as rs
+lh_7 lh [0;32mPass[0m | V0: 0000001c, EXP: 0000001C, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs unchanged
+lh_8 lh [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: lb instr address  
+lhu_1 lhu [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive halfword, no offset
+lhu_2 lhu [0;32mPass[0m | V0: 0000e00b, EXP: 0000E00B, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: negative halfword, positive offset
+lhu_3 lhu [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: positive halfword, negative offset
+lhu_4 lhu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: attempts to change $zero
+lhu_5 lhu [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: rd not empty
+lhu_6 lhu [0;32mPass[0m | V0: 00003811, EXP: 00003811, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rt same as rs
+lhu_7 lhu [0;32mPass[0m | V0: 0000001c, EXP: 0000001C, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs unchanged
+lhu_8 lhu [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: lb instr address  
+lui_1 lui [0;32mPass[0m | V0: ffff0000, EXP: FFFF0000, CYCLES: 26, INSTRS: 2, CPI: [0;33m13[0m, , comment: normal lui
+lui_2 lui [0;32mPass[0m | V0: 00170000, EXP: 00170000, CYCLES: 26, INSTRS: 2, CPI: [0;33m13[0m, , comment: normal lui
+lui_3 lui [0;32mPass[0m | V0: 0017000a, EXP: 0017000A, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: lui different register
+lui_4 lui [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: lui rd=$zero
+lui_5 lui [0;32mPass[0m | V0: 00170000, EXP: 00170000, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: rd not empty
+lwl_1 lwl [0;32mPass[0m | V0: de000000, EXP: DE000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 0
+lwl_10 lwl [0;32mPass[0m | V0: 6b800000, EXP: 6B800000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset=5 (>3) 
+lwl_11 lwl [0;32mPass[0m | V0: de000018, EXP: DE000018, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rs=rt
+lwl_12 lwl [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rt is $zero
+lwl_13 lwl [0;32mPass[0m | V0: de3de00b, EXP: DE3DE00B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: rt not empty
+lwl_14 lwl [0;32mPass[0m | V0: 00000018, EXP: 00000018, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs unchanged
+lwl_15 lwl [0;32mPass[0m | V0: 0c000a00, EXP: 0C000A00, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: instr adress
+lwl_2 lwl [0;32mPass[0m | V0: 85de0000, EXP: 85DE0000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 1
+lwl_3 lwl [0;32mPass[0m | V0: 5785de00, EXP: 5785DE00, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 2
+lwl_4 lwl [0;32mPass[0m | V0: 7f5785de, EXP: 7F5785DE, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 3
+lwl_5 lwl [0;32mPass[0m | V0: 636d3811, EXP: 636D3811, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -1
+lwl_6 lwl [0;32mPass[0m | V0: 6d381100, EXP: 6D381100, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -2
+lwl_7 lwl [0;32mPass[0m | V0: 38110000, EXP: 38110000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -3
+lwl_8 lwl [0;32mPass[0m | V0: 11000000, EXP: 11000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -4
+lwl_9 lwl [0;32mPass[0m | V0: 6d381100, EXP: 6D381100, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: index not multiple of 4
+lwr_1 lwr [0;32mPass[0m | V0: 7f5785de, EXP: 7F5785DE, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 0
+lwr_10 lwr [0;32mPass[0m | V0: 0014ba6b, EXP: 0014BA6B, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset=5 (>3) 
+lwr_11 lwr [0;32mPass[0m | V0: 7f5785de, EXP: 7F5785DE, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rs=rt
+lwr_12 lwr [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rt is $zero
+lwr_13 lwr [0;32mPass[0m | V0: ff7f5785, EXP: FF7F5785, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: rt not empty
+lwr_14 lwr [0;32mPass[0m | V0: 00000018, EXP: 00000018, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs unchanged
+lwr_15 lwr [0;32mPass[0m | V0: 0000240c, EXP: 0000240C, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: instr adress
+lwr_2 lwr [0;32mPass[0m | V0: 007f5785, EXP: 007F5785, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 1
+lwr_3 lwr [0;32mPass[0m | V0: 00007f57, EXP: 00007F57, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 2
+lwr_4 lwr [0;32mPass[0m | V0: 0000007f, EXP: 0000007F, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset 3
+lwr_5 lwr [0;32mPass[0m | V0: 00000063, EXP: 00000063, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -1
+lwr_6 lwr [0;32mPass[0m | V0: 0000636d, EXP: 0000636D, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -2
+lwr_7 lwr [0;32mPass[0m | V0: 00636d38, EXP: 00636D38, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -3
+lwr_8 lwr [0;32mPass[0m | V0: 636d3811, EXP: 636D3811, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: offset -4
+lwr_9 lwr [0;32mPass[0m | V0: 0000636d, EXP: 0000636D, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: index not multiple of 4
+mfhi_1 mfhi [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 26, INSTRS: 2, CPI: [0;33m13[0m, , comment: hi empty
+mfhi_2 mfhi [0;32mPass[0m | V0: 00000018, EXP: 00000018, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: different register
+mfhi_3 mfhi [0;32mPass[0m | V0: 00000018, EXP: 00000018, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: mfhi twice
+mfhi_4 mfhi [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: different register
+mflo_1 mflo [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 26, INSTRS: 2, CPI: [0;33m13[0m, , comment: hi empty
+mflo_2 mflo [0;32mPass[0m | V0: ed0ae113, EXP: ED0AE113, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: different register
+mflo_3 mflo [0;32mPass[0m | V0: ed0ae113, EXP: ED0AE113, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: mfhi twice
+mflo_4 mflo [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: rd is $zero
+mthi_1 mthi [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: assumes mfhi works
+mthi_2 mthi [0;32mPass[0m | V0: ff3de00d, EXP: FF3DE00D, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs unchanged
+mthi_3 mthi [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: mthi twice
+mthi_4 mthi [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check lo reg
+mtlo_1 mtlo [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: assumes mfhi works
+mtlo_2 mtlo [0;32mPass[0m | V0: ff3de00d, EXP: FF3DE00D, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs unchanged
+mtlo_3 mtlo [0;32mPass[0m | V0: ff3de00b, EXP: ff3de00b, CYCLES: 59, INSTRS: 6, CPI: [0;33m9[0m, , comment: mtlo twice
+mtlo_4 mtlo [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check hi reg
+mult_1a mult [0;32mPass[0m | V0: 3fffffff, EXP: 3FFFFFFF, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: 7fffffff * 7fffffff = 0x3fffffff \ 00000001
+mult_1b mult [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: 7fffffff * 7fffffff = 0x3fffffff \ 00000001
+mult_2a mult [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: ffffffff*ffffffff=00000000 \ 00000001
+mult_2b mult [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: ffffffff*ffffffff=00000000 \ 00000001
+mult_3a mult [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: mult 0
+mult_3b mult [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: mult 0
+mult_4a mult [0;32mPass[0m | V0: ffffff4c, EXP: FFFFFF4C, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: mult positive and negative number
+mult_4b mult [0;32mPass[0m | V0: c588c7e9, EXP: C588C7E9, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: mult positive and negative number
+mult_5a mult [0;32mPass[0m | V0: 00009334, EXP: 00009334, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rs same as rt
+mult_5b mult [0;32mPass[0m | V0: 73514079, EXP: 73514079, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rs same as rt
+mult_6a mult [0;32mPass[0m | V0: c0000000, EXP: C0000000, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: neg(sign) overflow 80000000*7fffffff
+mult_6b mult [0;32mPass[0m | V0: 80000000, EXP: 80000000, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: neg(sign) overflow 80000000*7fffffff
+mult_7a mult [0;32mPass[0m | V0: 3fffffff, EXP: 3fffffff, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+mult_7b mult [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+mult_8a mult [0;32mPass[0m | V0: 3fffffff, EXP: 3fffffff, CYCLES: 72, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite hi register
+mult_8b mult [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 72, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite lo register
+mult_9 mult [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+multu_1a multu [0;32mPass[0m | V0: 3fffffff, EXP: 3fffffff, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: positive numbers multu
+multu_1b multu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: positive numbers multu
+multu_2a multu [0;32mPass[0m | V0: fe7c534a, EXP: FE7C534A, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: negative numbers multu 0xff3de00b**2=0xfe7c534a\73514079
+multu_2b multu [0;32mPass[0m | V0: 73514079, EXP: 73514079, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: negative numbers multu
+multu_3a multu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: multu 0
+multu_3b multu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: multu 0
+multu_4a multu [0;32mPass[0m | V0: 0000eba7, EXP: 0000EBA7, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: multu positive and negative number
+multu_4b multu [0;32mPass[0m | V0: c588c7e9, EXP: C588C7E9, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: multu positive and negative number
+multu_5a multu [0;32mPass[0m | V0: fe7c534a, EXP: FE7C534A, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rs same as rt
+multu_5b multu [0;32mPass[0m | V0: 73514079, EXP: 73514079, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rs same as rt
+multu_6a multu [0;32mPass[0m | V0: 3fffffff, EXP: 3FFFFFFF, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment  neg(sign) overlow
+multu_6b multu [0;32mPass[0m | V0: 80000000, EXP: 80000000, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment  neg(sign) overlow
+multu_7a multu [0;32mPass[0m | V0: 3fffffff, EXP: 3fffffff, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+multu_7b multu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: different registers
+multu_8a multu [0;32mPass[0m | V0: 3fffffff, EXP: 3FFFFFFF, CYCLES: 72, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite hi register
+multu_8b multu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 72, INSTRS: 7, CPI: [0;33m10[0m, , comment: overwrite lo register
+multu_9 multu [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+or_1 or [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: FFFFFFFF or 00000000
+or_2 or [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 46, INSTRS: 4, CPI: [0;33m11[0m, , comment: FFFFFFFF or FFFFFFFF
+or_3 or [0;32mPass[0m | V0: 7f57eddf, EXP: 7F57EDDF, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: 7F5785DE or 0000EC5B
+or_4 or [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: diff registers
+or_5 or [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd same as rs
+or_6 or [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd is $zero
+or_7 or [0;32mPass[0m | V0: 7f5785de, EXP: 7F5785DE, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+ori_1 ori [0;32mPass[0m | V0: 0000ec5b, EXP: 0000ec5b, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=0
+ori_2 ori [0;32mPass[0m | V0: ff3dffff, EXP: FF3DFFFF, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=FFFF
+ori_3 ori [0;32mPass[0m | V0: ff3deaab, EXP: FF3DEAAB, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: random imm
+ori_4 ori [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment:  different registers
+ori_5 ori [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rd=$zero 
+ori_6 ori [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rd same as rs
+ori_7 ori [0;32mPass[0m | V0: ff3de00f, EXP: FF3DE00F, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs still the same
+ori_8 ori [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment:  rd not empty
+sb_1 sb [0;32mPass[0m | V0: 00000f00, EXP: 00000f00, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sb_2 sb [0;32mPass[0m | V0: 7fff01ff, EXP: 7fff01ff, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sb_3 sb [0;32mPass[0m | V0: 000f0000, EXP: 000f0000, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sb_4 sb [0;32mPass[0m | V0: 0f000000, EXP: 0f000000, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sb_5 sb [0;32mPass[0m | V0: 01ffffff, EXP: 01ffffff, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sb_6 sb [0;32mPass[0m | V0: ffff01ff, EXP: ffff01ff, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sb_7 sb [0;32mPass[0m | V0: ff01ffff, EXP: ff01ffff, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sb_8 sb [0;32mPass[0m | V0: 0fffffff, EXP: 0fffffff, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sh_1 sh [0;32mPass[0m | V0: 030fffff, EXP: 030fffff, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sh_2 sh [0;32mPass[0m | V0: ffff01b0, EXP: ffff01b0, CYCLES: 47, INSTRS: 4, CPI: [0;33m11[0m, , 
+sll_1 sll [0;32mPass[0m | V0: 48523d28, EXP: 48523D28, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sll_2 sll [0;32mPass[0m | V0: 48f4a000, EXP: 48F4A000, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sll_3 sll [0;32mPass[0m | V0: d2800000, EXP: D2800000, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sll_4 sll [0;32mPass[0m | V0: a0000000, EXP: A0000000, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+Test answer sll_5 does not exist
+sllv_1 sllv [0;32mPass[0m | V0: 48523d28, EXP: 48523D28, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+sllv_2 sllv [0;32mPass[0m | V0: 48f4a000, EXP: 48F4A000, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+sllv_3 sllv [0;32mPass[0m | V0: d2800000, EXP: D2800000, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+sllv_4 sllv [0;32mPass[0m | V0: a0000000, EXP: A0000000, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+sllv_5 sllv [0;32mPass[0m | V0: 0a47a500, EXP: 0A47A500, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+slt_1 slt [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: pos reg > pos reg
+slt_10 slt [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: rd = rs
+slt_11 slt [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , comment: rt is $zero
+slt_2 slt [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: pos reg < pos reg
+slt_3 slt [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: 0000ec5b > FFFFFFFF(signed)
+slt_4 slt [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: FFFFF003 > FFFFF001
+slt_5 slt [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: FFFFF003 < FFFFF007
+slt_6 slt [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: FFFFF003 < 32
+slt_7 slt [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: pos reg = pos imm
+slt_8 slt [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: pos reg > imm=0
+slt_9 slt [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: check rt unchanged
+slti_1 slti [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: pos reg > pos imm
+slti_10 slti [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: rt = rs
+slti_11 slti [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: rt is $zero
+slti_2 slti [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: pos reg < pos imm. Edited this as sign-extended was messing it up.
+slti_3 slti [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: pos reg > neg imm
+slti_4 slti [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: neg reg > neg imm (False)
+slti_5 slti [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: neg reg < neg imm
+slti_6 slti [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: neg reg < pos imm (True)
+slti_7 slti [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: pos reg = pos imm
+slti_8 slti [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: pos reg > imm=0
+slti_9 slti [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: check rt unchanged
+sltiu_1 sltiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: pos reg > pos imm
+sltiu_10 sltiu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: rt = rs
+sltiu_11 sltiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: rt is $zero
+sltiu_2 sltiu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: 0000ec5b < FFFFEC72
+sltiu_3 sltiu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: 0000ec5b < FFFFFFFF
+sltiu_4 sltiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: FFFFF003 > FFFFF001 
+sltiu_5 sltiu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: FFFFF003 < FFFFF005
+sltiu_6 sltiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment:  FFFFF003 > 30
+sltiu_7 sltiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: pos reg = pos imm
+sltiu_8 sltiu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: pos reg > imm=0
+sltiu_9 sltiu [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: check rt unchanged
+sltu_1 sltu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: pos reg > pos reg
+sltu_10 sltu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: rd = rs
+sltu_11 sltu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , comment: rt is $zero
+sltu_2 sltu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: pos reg < pos reg
+sltu_3 sltu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: 0000ec5b < FFFFFFFF
+sltu_4 sltu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: FFFFF003 > FFFFF001
+sltu_5 sltu [0;32mPass[0m | V0: 00000001, EXP: 00000001, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: FFFFF003 < FFFFF007
+sltu_6 sltu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: FFFFF003 > 32
+sltu_7 sltu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: pos reg = pos imm
+sltu_8 sltu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 33, INSTRS: 3, CPI: [0;33m11[0m, , comment: pos reg > imm=0
+sltu_9 sltu [0;32mPass[0m | V0: 00000014, EXP: 00000014, CYCLES: 40, INSTRS: 4, CPI: [0;33m10[0m, , comment: check rt unchanged
+sra_1 sra [0;32mPass[0m | V0: fd2148f4, EXP: FD2148F4, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sra_2 sra [0;32mPass[0m | V0: ffff4852, EXP: FFFF4852, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sra_3 sra [0;32mPass[0m | V0: ffffffd2, EXP: FFFFFFD2, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sra_4 sra [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sra_5 sra [0;32mPass[0m | V0: 0d2148f4, EXP: 0D2148F4, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sra_6 sra [0;32mPass[0m | V0: 00034852, EXP: 00034852, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sra_7 sra [0;32mPass[0m | V0: 000000d2, EXP: 000000D2, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+sra_8 sra [0;32mPass[0m | V0: 00000003, EXP: 00000003, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srav_1 srav [0;32mPass[0m | V0: fd2148f4, EXP: FD2148F4, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_2 srav [0;32mPass[0m | V0: ffff4852, EXP: FFFF4852, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_3 srav [0;32mPass[0m | V0: ffffffd2, EXP: FFFFFFD2, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_4 srav [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_5 srav [0;32mPass[0m | V0: 0d2148f4, EXP: 0D2148F4, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_6 srav [0;32mPass[0m | V0: 00034852, EXP: 00034852, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_7 srav [0;32mPass[0m | V0: 000000d2, EXP: 000000D2, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_8 srav [0;32mPass[0m | V0: 00000003, EXP: 00000003, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srav_9 srav [0;32mPass[0m | V0: ffe90a47, EXP: ffe90a47, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srl_1 srl [0;32mPass[0m | V0: 1d2148f4, EXP: 1D2148F4, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srl_2 srl [0;32mPass[0m | V0: 00074852, EXP: 00074852, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srl_3 srl [0;32mPass[0m | V0: 000001d2, EXP: 000001D2, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srl_4 srl [0;32mPass[0m | V0: 00000007, EXP: 00000007, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srl_5 srl [0;32mPass[0m | V0: 0d2148f4, EXP: 0D2148F4, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srl_6 srl [0;32mPass[0m | V0: 00034852, EXP: 00034852, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srl_7 srl [0;32mPass[0m | V0: 000000d2, EXP: 000000D2, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srl_8 srl [0;32mPass[0m | V0: 00000003, EXP: 00000003, CYCLES: 47, INSTRS: 5, CPI: [0;33m9[0m, , 
+srlv_1 srlv [0;32mPass[0m | V0: 1d2148f4, EXP: 1D2148F4, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_2 srlv [0;32mPass[0m | V0: 00074852, EXP: 00074852, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_3 srlv [0;32mPass[0m | V0: 000001d2, EXP: 000001D2, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_4 srlv [0;32mPass[0m | V0: 00000007, EXP: 00000007, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_5 srlv [0;32mPass[0m | V0: 0d2148f4, EXP: 0D2148F4, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_6 srlv [0;32mPass[0m | V0: 00034852, EXP: 00034852, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_7 srlv [0;32mPass[0m | V0: 000000d2, EXP: 000000D2, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_8 srlv [0;32mPass[0m | V0: 00000003, EXP: 00000003, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+srlv_9 srlv [0;32mPass[0m | V0: 00e90a47, EXP: 00e90a47, CYCLES: 54, INSTRS: 6, CPI: [0;33m9[0m, , 
+subu_1 subu [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: FFFFFFFF subu 00000000
+subu_2 subu [0;32mPass[0m | V0: 7f569983, EXP: 7F569983, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: subu no overflow
+subu_3 subu [0;32mPass[0m | V0: 80a9667d, EXP: 80A9667D, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment:subu overflow
+subu_4 subu [0;32mPass[0m | V0: ffff13a4, EXP: FFFF13A4, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: diff registers
+subu_5 subu [0;32mPass[0m | V0: ffff13a4, EXP: FFFF13A4, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: rd same as rs
+subu_6 subu [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: rd is $zero
+subu_7 subu [0;32mPass[0m | V0: 0000ec5b, EXP: 0000EC5B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+subu_8 subu [0;32mPass[0m | V0: 7f569983, EXP: 7F569983, CYCLES: 62, INSTRS: 5, CPI: [0;33m12[0m, , comment: rd already written to
+sw_1 sw [0;32mPass[0m | V0: bfc00000, EXP: bfc00000, CYCLES: 43, INSTRS: 4, CPI: [0;33m10[0m, , 
+xor_1 xor [0;32mPass[0m | V0: ffffffff, EXP: FFFFFFFF, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: FFFFFFFF xor 00000000
+xor_2 xor [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 46, INSTRS: 4, CPI: [0;33m11[0m, , comment: FFFFFFFF xor FFFFFFFF
+xor_3 xor [0;32mPass[0m | V0: 7f576985, EXP: 7F576985, CYCLES: 50, INSTRS: 4, CPI: [0;33m12[0m, , comment: 7F5785DE xor 0000EC5B
+xor_4 xor [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: diff registers
+xor_5 xor [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd same as rs
+xor_6 xor [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 53, INSTRS: 5, CPI: [0;33m10[0m, , comment: rd is $zero
+xor_7 xor [0;32mPass[0m | V0: 7f5785de, EXP: 7F5785DE, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: check rs unchanged
+xori_1 xori [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=0
+xori_2 xori [0;32mPass[0m | V0: ff3d1ff4, EXP: FF3D1FF4, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=FFFF
+xori_3 xori [0;32mPass[0m | V0: ff3d4aa1, EXP: ff3d4aa1, CYCLES: 38, INSTRS: 3, CPI: [0;33m12[0m, , comment: imm=AAAA
+xori_4 xori [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: different registers
+xori_5 xori [0;32mPass[0m | V0: 00000000, EXP: 00000000, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: xori rd=$zero 
+xori_6 xori [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: rd same as rs
+xori_7 xori [0;32mPass[0m | V0: ff3de009, EXP: FF3DE009, CYCLES: 45, INSTRS: 4, CPI: [0;33m11[0m, , comment: check rs still the same
+xori_8 xori [0;32mPass[0m | V0: ff3de00b, EXP: FF3DE00B, CYCLES: 57, INSTRS: 5, CPI: [0;33m11[0m, , comment: rd not empty
+Ran 358 testcases.
+[0;32m358[0m testcases passed.
+[00;31m0[0m testcases failed.
+Testbench passed.

@@ -56,12 +56,16 @@ module mips_avalon_slave(
         if (RAM_INIT_FILE != "") begin
             $display("RAM : INIT : Loading Instr contents from %s", RAM_INIT_FILE);
             $readmemh(RAM_INIT_FILE, memory_instr);
+        end else begin
+            $fatal(1, "RAM : FATAL : Unable to find Instr Init file");
         end
+
         if (DATA_INIT_FILE != "") begin
             $display("RAM : INIT : Loading Data contents from %s", DATA_INIT_FILE);
             $readmemh(DATA_INIT_FILE, memory_data);
+        end else begin
+            $fatal(1, "RAM : FATAL : Unable to find Data Init file");
         end
-
     end
 
     assign waitrequest = (read | write) && (wait_ctr != 0);

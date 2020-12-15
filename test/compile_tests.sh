@@ -15,7 +15,8 @@ declare -i FAIL=0
 cases=()
 
 if [ $# = 0 ]; then
-    echo "No argument given, will run for all testcases"
+    # echo "No argument given, will run for all testcases"
+    cases=("")
 else
     for arg do
         if [ ! "$arg" = "" ]; then
@@ -39,7 +40,7 @@ for i in "${cases[@]}"; do
 
         ./test/Assembler/src/assembler.out # Perform assembly
         if [ $? != 0 ]; then
-            echo $FILENAME, $BASENAME.instr.hex # Debug outputs
+            # echo $FILENAME, $BASENAME.instr.hex # Debug outputs
             cat test/Assembler/src/test.txt # Debug outputs
             # Remove the assembled file (if it exists) if no success
             rm test/1-binary/$BASENAME.instr.hex
@@ -52,6 +53,9 @@ for i in "${cases[@]}"; do
     done
 done
 
-echo -e "Assembled $(($FAIL+$PASS)) testcases."
-echo -e "${GREEN}$PASS${RESTORE} testcases assembled successfully."
-echo -e "${RED}$FAIL${RESTORE} testcases failed to assemble."
+# echo -e "Assembled $(($FAIL+$PASS)) testcases."
+# echo -e "${GREEN}$PASS${RESTORE} testcases assembled successfully."
+# echo -e "${RED}$FAIL${RESTORE} testcases failed to assemble."
+
+# echo -e "$PASS testcases assembled successfully."
+# echo -e "$FAIL testcases failed to assemble."

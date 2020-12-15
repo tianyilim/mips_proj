@@ -33,7 +33,8 @@ if (("$#" > 1)); then
         fi
     done
 else
-    echo "No argument given, will run for all testcases"
+    # echo "No argument given, will run for all testcases"
+    TEST_INSTRS=("")
 fi
 
 # echo "$TEST_DIR"
@@ -54,7 +55,7 @@ for i in "${TEST_INSTRS[@]}"; do
         declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
 
         if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
-            echo "Test answer ${BASENAME} does not exist"
+            # echo "Test answer ${BASENAME} does not exist"
             continue
         fi
         # if sample output does not exist, don't bother running the test case
@@ -118,16 +119,19 @@ for i in "${TEST_INSTRS[@]}"; do
         CPI=$(expr $CYCLES / $INSTR_COUNT)  # Check if CPI limit has been exceeded
         CPI_PASS=1 # Removed CPI pass factor
         if [ $CPI -gt 36 ]; then
-            CPI="${RED}$CPI${RESTORE}"
+            # CPI="${RED}$CPI${RESTORE}"
+            CPI="$CPI"
         else
-            CPI="${YELLOW}$CPI${RESTORE}"
+            # CPI="${YELLOW}$CPI${RESTORE}"
+            CPI="$CPI"
         fi
 
         V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
         DIFF_FOUND=$(diff -q --ignore-all-space --ignore-blank-lines --strip-trailing-cr --ignore-case <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt) # compare expected and given output
         DIFFPASS=$?
         if [ ! $DIFFPASS = 0 ]; then
-            V0_CHECK="${RED}$V0_CHECK${RESTORE}"
+            V0_CHECK="$V0_CHECK"
+            # V0_CHECK="${RED}$V0_CHECK${RESTORE}"
         fi
 
         FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}.log)
@@ -137,10 +141,12 @@ for i in "${TEST_INSTRS[@]}"; do
     
         # If fatal is found anywhere in the log file, consider the testcase as failed
         if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ]; then
-            FAIL="${GREEN}Pass${RESTORE}"
+            # FAIL="${GREEN}Pass${RESTORE}"
+            FAIL="Pass"
             PASS_COUNT=$PASS_COUNT+1
         else
-            FAIL="${RED}Fail${RESTORE}"
+            # FAIL="${RED}Fail${RESTORE}"
+            FAIL="Fail"
             FAIL_COUNT=$FAIL_COUNT+1
         fi
 
@@ -152,15 +158,18 @@ for i in "${TEST_INSTRS[@]}"; do
     done;
 done
 
-echo -e "Ran $(($FAIL_COUNT+$PASS_COUNT)) testcases."
-echo -e "${GREEN}$PASS_COUNT${RESTORE} testcases passed."
-echo -e "${RED}$FAIL_COUNT${RESTORE} testcases failed."
+# echo -e "Ran $(($FAIL_COUNT+$PASS_COUNT)) testcases."
+# echo -e "${GREEN}$PASS_COUNT${RESTORE} testcases passed."
+# echo -e "${RED}$FAIL_COUNT${RESTORE} testcases failed."
+
+# echo -e "$PASS_COUNT testcases passed."
+# echo -e "$FAIL_COUNT testcases failed."
 rm joe.out
 
 if [ ! $FAIL_COUNT = 0 ]; then
-    echo "Testbench failed."
+    # echo "Testbench failed."
     exit 1
 else
-    echo "Testbench passed."
+    # echo "Testbench passed."
     exit 0
 fi

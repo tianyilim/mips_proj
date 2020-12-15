@@ -1,0 +1,16 @@
+addu $s6, $zero, $zero					#1
+lui $s6, 0xffff				            #1
+ori $s6, $s6, 0xffff					#1 -1
+addu $t3, $zero, $zero					#2
+ori $t3, $t3, 0x0001					#2 1
+bne $s6, $t3, 3						    #3 branch if equal, branch taken
+addiu $v0, $zero, 0						#3
+jr $zero								#3
+addiu $s0, $s0, 0						#3 do nothing
+addiu $v0, $zero, 1						#3
+jr $zero								#3
+
+comment: postive and negative of same number
+1. $s6 has a random number
+2. $t3 has a random number, and is equal to reg 1
+3. Use beq to set $v0 = 1 if they are equal, else set $v0 = 0 if not equal. Therefore, $v0 should be 1

@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-12-15T16:04:34.183Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="Q5YXhtXDw4RK993szxff" version="14.0.1" type="github">
+<mxfile host="app.diagrams.net" modified="2020-12-15T16:06:43.757Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="8bmNQTC6ipS35-dHBRhf" version="14.0.1" type="github">
   <diagram id="R3oF64MNWBDG0hdB_Ak8" name="Page-1">
     <mxGraphModel dx="593" dy="313" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -15,9 +15,6 @@
         </mxCell>
         <mxCell id="OYv5rt0UbHbTrn6DFbpS-21" value="Glue&lt;br&gt;Logic" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="430" y="80" width="60" height="410" as="geometry" />
-        </mxCell>
-        <mxCell id="OYv5rt0UbHbTrn6DFbpS-22" value="" style="triangle;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="840" y="270.83" width="10" height="20" as="geometry" />
         </mxCell>
         <mxCell id="OYv5rt0UbHbTrn6DFbpS-23" value="CLK" style="endArrow=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=classic;startFill=1;endFill=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -104,6 +101,24 @@
             <mxPoint x="235" y="340" as="sourcePoint" />
             <mxPoint x="330" y="260" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="OYv5rt0UbHbTrn6DFbpS-38" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;size=0.5;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="660" y="190" width="20" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="OYv5rt0UbHbTrn6DFbpS-39" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;size=0.5;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="660" y="240" width="20" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="OYv5rt0UbHbTrn6DFbpS-40" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;size=0.5;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="660" y="290" width="20" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="OYv5rt0UbHbTrn6DFbpS-41" value="Testbench Debug Outputs" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="200" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="OYv5rt0UbHbTrn6DFbpS-43" value="General Control Signals" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="250" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="OYv5rt0UbHbTrn6DFbpS-44" value="Avalon Bus" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="690" y="350" width="80" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

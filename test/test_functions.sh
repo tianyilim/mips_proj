@@ -72,7 +72,8 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
 
             INPUT_BASENAME=`basename ${INPUT}` # Name for each test case
             INPUT_BASENAME="${INPUT_BASENAME%.*.*}"
-
+            INSTR_NUM="${INPUT_BASENAME#*_}"
+            
             iverilog -Wall -g 2012 \
             "${TEST_DIR}"/mips_cpu_*.v \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
@@ -108,7 +109,7 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
                 FAIL_COUNT=$FAIL_COUNT+1
             fi
 
-            echo -e "$TESTNAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK | $FATAL_FOUND"
+            echo -e "$TESTNAME_$INSTR_NUM $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK | $FATAL_FOUND"
         done
     done
 done

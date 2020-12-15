@@ -232,7 +232,7 @@ module mips_cpu_harvard(
         data_writedata = 0;
         Hi = 0;
         Lo = 0;
-        byteenable = 0;
+        byteenable = 4'b1111;
     end
 
     always @(posedge clk) begin

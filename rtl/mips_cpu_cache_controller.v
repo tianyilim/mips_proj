@@ -37,6 +37,9 @@ module mips_cache_controller(
     logic [1:0] state;
     assign wb_empty_out = wb_empty;
 
+    logic [3:0] wb_byteenable;    // Byteenable should be 1 on read
+    assign mem_byteenable = (state==STATE_WRITE) ? wb_byteenable : 4'b1111;
+
     logic instr_stall;  // Instruction cache fetch stall
     logic data_stall;   // Data cache (on read/write) fetch stall
 
@@ -74,7 +77,7 @@ module mips_cache_controller(
                                 .byteenable(data_byteenable), .active(wb_active),
                                 .waitrequest(waitrequest),
                                 .write_addr(addr_wbtomem), .write_data(mem_writedata), 
-                                .write_byteenable(mem_byteenable), .write_writeenable(mem_write),
+                                .write_byteenable(wb_byteenable), .write_writeenable(mem_write),
                                 .state_out(wb_state), .full(wb_full), .empty(wb_empty)
                                 );
 

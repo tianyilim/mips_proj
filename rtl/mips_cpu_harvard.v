@@ -106,8 +106,6 @@ module mips_cpu_harvard(
     logic[63:0] mult_output; // multiplier output
     logic branch_delay_slot; // check whether the previous instruction was a jump
     logic[31:0] jump_store; // storing the address of a branch/jump for the next instr
-    logic[31:0] quotient; // storing quotient in DIV and DIVU
-    logic[31:0] remainder;// storing remainder in DIV and DIVU
     logic write_enable; //writing to register
     logic write_enable_r;
     logic write_enable_i_exec2;
@@ -282,12 +280,12 @@ module mips_cpu_harvard(
                       write_back_data <= rs_data & rt_data;
                     end
                     DIV: begin// signed
-                      quotient <= $signed(rs_data) / $signed(rt_data);
-                      remainder <= $signed(rs_data) % $signed(rt_data);
+                      Lo <= $signed(rs_data) / $signed(rt_data);
+                      Hi <= $signed(rs_data) % $signed(rt_data);
                     end
                     DIVU: begin// unsigned
-                      quotient <= rs_data / rt_data;
-                      remainder <= rs_data % rt_data;
+                      Lo <= rs_data / rt_data;
+                      Hi <= rs_data % rt_data;
                     end
                     JALR: begin
                       write_back_data <= pc + 8;
@@ -511,14 +509,6 @@ module mips_cpu_harvard(
         //R instruction
             if(instr_type == R) begin
                 case(fn_code)
-                    DIV: begin
-                      Lo <= quotient;
-                      Hi <= remainder;
-                    end
-                    DIVU: begin
-                      Lo <= quotient;
-                      Hi <= remainder;
-                    end
                     MULT: begin
                       Hi <= mult_output[63:32];
                       Lo <= mult_output[31:0];

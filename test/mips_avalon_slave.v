@@ -38,7 +38,7 @@ module mips_avalon_slave(
 
  
     always@(negedge clk) begin
-        if (!$isunknown(address) && |address[1:0]) begin
+        if (!$isunknown(address) && |address[1:0] && (read || write)) begin
             $fatal(1, "RAM : FATAL : Attempted to access a non word-aligned address", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
         end
     end
@@ -162,7 +162,9 @@ module mips_avalon_slave(
             // $display("RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
             if ($isunknown(address)) begin
             end else begin
-                $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+                if (read || write) begin
+                    $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+                end
             end
         end
     end

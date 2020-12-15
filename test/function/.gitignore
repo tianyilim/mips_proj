@@ -1,4 +1,4 @@
 *.instr.hex
 *.data.hex
 *.log
-expected_output_*.txt
+expected_output/*.txt

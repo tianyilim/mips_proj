@@ -102,12 +102,11 @@ for i in "${TEST_INSTRS[@]}"; do
         V0_OUT=${V0_OUT#"TB : V0 : "}
         declare -i CYCLES=${CYCLES_STR#"TB : CYCLES : "}
         CPI=$(expr $CYCLES / $INSTR_COUNT)  # Check if CPI limit has been exceeded
+        CPI_PASS=1 # Removed CPI pass factor
         if [ $CPI -gt 36 ]; then
-            CPI_PASS=0
             CPI="${RED}$CPI${RESTORE}"
         else
             CPI="${YELLOW}$CPI${RESTORE}"
-            CPI_PASS=1
         fi
 
         V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)

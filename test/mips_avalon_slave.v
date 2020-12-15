@@ -38,7 +38,7 @@ module mips_avalon_slave(
 
  
     always@(negedge clk) begin
-        if (!$isunknown(address) && |address[1:0]) begin
+        if (!$isunknown(address) && |address[1:0] && (read || write)) begin
             $fatal(1, "RAM : FATAL : Attempted to access a non word-aligned address", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
         end
     end
@@ -56,12 +56,16 @@ module mips_avalon_slave(
         if (RAM_INIT_FILE != "") begin
             $display("RAM : INIT : Loading Instr contents from %s", RAM_INIT_FILE);
             $readmemh(RAM_INIT_FILE, memory_instr);
+        end else begin
+            $fatal(1, "RAM : FATAL : Unable to find Instr Init file");
         end
+
         if (DATA_INIT_FILE != "") begin
             $display("RAM : INIT : Loading Data contents from %s", DATA_INIT_FILE);
             $readmemh(DATA_INIT_FILE, memory_data);
+        end else begin
+            $fatal(1, "RAM : FATAL : Unable to find Data Init file");
         end
-
     end
 
     assign waitrequest = (read | write) && (wait_ctr != 0);
@@ -158,7 +162,9 @@ module mips_avalon_slave(
             // $display("RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
             if ($isunknown(address)) begin
             end else begin
-                $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+                if (read || write) begin
+                    $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+                end
             end
         end
     end

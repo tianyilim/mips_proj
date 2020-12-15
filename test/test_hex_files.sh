@@ -80,7 +80,19 @@ for i in "${TEST_INSTRS[@]}"; do
             # rtl/mips_cpu_register_file.v \
             # rtl/mips_cpu_sixteen_bit_extension.v \
 
-        iverilog -Wall -g 2012 \
+        if [ -e "${TEST_DIR}"/mips_cpu/*.v ]; then
+            iverilog -Wall -g 2012 \
+            "${TEST_DIR}"/mips_cpu_*.v \
+            "${TEST_DIR}"/mips_cpu/*.v \
+            test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
+            -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
+            -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
+            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
+            -P mips_CPU_bus_tb.READ_DELAY=2 \
+            -s mips_CPU_bus_tb \
+            -o joe.out
+        else
+            iverilog -Wall -g 2012 \
             "${TEST_DIR}"/mips_cpu_*.v \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
@@ -89,6 +101,8 @@ for i in "${TEST_INSTRS[@]}"; do
             -P mips_CPU_bus_tb.READ_DELAY=2 \
             -s mips_CPU_bus_tb \
             -o joe.out
+        fi
+        
 
         # Save the waveforms
 

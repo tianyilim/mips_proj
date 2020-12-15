@@ -5,6 +5,8 @@ if (("$#" < 1)); then
     exit 1
 else
     TEST_DIR=$1
+    # get rid of trailing / if it exists
+    TEST_DIR=${TEST_DIR%/}
 fi
 
 # instructions to test / compile for

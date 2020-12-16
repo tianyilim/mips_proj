@@ -21,6 +21,7 @@ addu $v0, $v0, $t1                          #ans += *ptr;
 addiu $t0, $t0, 4                           #ptr++
 addiu $t2, $t2, 1                           #i++
 bne $t2, $t5, -5
+nop
 jr $zero
 
 # expected output = 10 + 100 + 1000 + 9 + 0x0fa50000 = 0x45f + 0x0fa50000 = 0x0fa5045f

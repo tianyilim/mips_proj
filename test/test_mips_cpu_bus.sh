@@ -48,6 +48,6 @@ if [ ! $COMPILE = 2 ]; then
     # echo "Running testcases..."
     set -e
     ./test/test_hex_files.sh "$TEST_DIR" "${TEST_INSTRS[@]}"
-    # ./test/test_functions.sh "$TEST_DIR"
+    ./test/test_functions.sh "$TEST_DIR" "${TEST_INSTRS[@]}"   # Todo - link the functions to their test-cases
     exit $?
 fi

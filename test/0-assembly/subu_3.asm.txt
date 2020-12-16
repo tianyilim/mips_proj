@@ -1,5 +1,6 @@
 lw $t2, 24($zero)   #7f5785de
 lw $t3, 20($zero)   #0000ec5b
+nop
 subu $v0, $t3, $t2
 jr $zero
 

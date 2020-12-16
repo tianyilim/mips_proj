@@ -12,11 +12,13 @@ ori $t1, $zero, 9
 sw $t1, 12($t0)
 addu $t1, $zero, $zero
 lui $t1, 0x0fa5
+nop
 ori $t1, $t1, 0x0000
 sw $t1, 16($t0)                             #3 end
 addiu $t5, $zero, 5
 addiu $t2, $zero, 0                         #4
 lw $t1, 0($t0)                              #ans += *ptr;
+nop
 addu $v0, $v0, $t1                          #ans += *ptr;
 addiu $t0, $t0, 4                           #ptr++
 addiu $t2, $t2, 1                           #i++

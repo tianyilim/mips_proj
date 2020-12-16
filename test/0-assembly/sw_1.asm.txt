@@ -1,4 +1,5 @@
 lui $s0, 49088
+nop
 sw $s0, 0($zero)
 lw $v0, 0($zero)
 jr $zero

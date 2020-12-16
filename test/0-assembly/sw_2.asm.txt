@@ -1,8 +1,10 @@
 addu $t9, $zero, $zero						#1
-lui $t9, 0x0000								#1
+lui $t9, 0x0000	
+nop							#1
 ori $t9, $t9, 0x0234						#1 t9 now is 00000234
 addu $s7, $zero, $zero						#2
-lui $s7, 0x1234								#2
+lui $s7, 0x1234	
+nop							#2
 ori $s7, $s7, 0x5678						#2 s7 is now 12345678
 sw $s7, 8($t9)								#3 
 addiu $t9, $t9, 16							#4

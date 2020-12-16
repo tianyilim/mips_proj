@@ -1,4 +1,5 @@
-lw $t4, 8($zero)
+lw $t4, 0($zero)  # jump to addiu $v0
+nop
 jalr $t2, $t4
 addiu $t2, $t2, 10
 nop

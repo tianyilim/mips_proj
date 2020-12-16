@@ -1,6 +1,8 @@
 addiu $t2, $zero, 25,   # address contains 0x7f5785de
 lw $t3, 16($zero)  #contains 0xff3de00b
+nop
 lwr $t3, 0($t2)
+nop
 addiu $v0, $t3, 0,
 jr $zero,
 

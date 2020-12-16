@@ -1,5 +1,6 @@
 addiu $t2, $zero, 28, 
 lhu $t2, 0($t2)                 #address contains 0x636d3811
+nop
 addiu $v0, $t2, 0,
 jr $zero,
 

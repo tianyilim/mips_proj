@@ -164,7 +164,7 @@ done
 
 # echo -e "$PASS_COUNT testcases passed."
 # echo -e "$FAIL_COUNT testcases failed."
-rm joe.out
+rm joe.out > /dev/null 2>&1
 
 if [ ! $FAIL_COUNT = 0 ]; then
     # echo "Testbench failed."

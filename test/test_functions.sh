@@ -128,7 +128,7 @@ for TESTCASE in "${TEST_INSTRS[@]}"; do
     done
 done
 
-rm joe.out
+rm joe.out > /dev/null 2>&1
 
 # Factorial cases
 

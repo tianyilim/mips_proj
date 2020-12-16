@@ -1,4 +1,5 @@
-lw $t3, 12($zero) 
+lw $t3, 12($zero)
+nop
 and $v0, $t3, $zero,
 jr $zero
 

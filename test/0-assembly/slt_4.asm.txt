@@ -1,5 +1,6 @@
 lw $t2, 0($zero)        #contains 0x0000ec5b (60507)
 lw $t3, 8($zero)        #contains 0xffffffff
+nop
 slt $v0, $t2, $t3,
 jr $zero,
 

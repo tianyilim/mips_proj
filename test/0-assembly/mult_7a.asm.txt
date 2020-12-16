@@ -1,5 +1,6 @@
 lw $t5, 4($zero) # 7fffffff
 lw $t4, 4($zero) # 7fffffff
+nop
 mult $t5, $t4
 mfhi $v0
 jr $zero

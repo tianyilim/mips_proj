@@ -1,4 +1,5 @@
 lw $t2, 20($zero)        #contains 0x0000ec5b (60507)
+nop
 slti $v0, $t2, 20,
 jr $zero,
 

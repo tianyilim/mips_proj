@@ -1,4 +1,5 @@
 lw $t2, 16($zero)  #ff3de00b
+nop
 andi $v0, $t2, 65535, 
 jr $zero
    

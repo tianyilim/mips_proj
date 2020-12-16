@@ -1,5 +1,5 @@
 nop
-jal 0xFC00010   #4
+jal 0xFC00010       # code line 5
 addiu $v0, $ra, 0
 jr $zero
 nop

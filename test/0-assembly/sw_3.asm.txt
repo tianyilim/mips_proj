@@ -1,8 +1,10 @@
 addu $t9, $zero, $zero						#1
-lui $t9, 0x0000								#1
+lui $t9, 0x0000		
+nop						#1
 ori $t9, $t9, 0x0234						#1
 addu $s7, $zero, $zero						#2
-lui $s7, 0x1f2e								#2
+lui $s7, 0x1f2e		
+nop						#2
 ori $s7, $s7, 0x3abc						#2
 sw $s7, 8($t9)								#3
 addiu $t9, $t9, 12							#4

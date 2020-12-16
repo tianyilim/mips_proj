@@ -1,5 +1,6 @@
 lw $t2, 16($zero) # ff3de00b
 lw $t3, 16($zero) # ff3de00b
+nop
 multu $t2, $t3
 mfhi $v0
 jr $zero

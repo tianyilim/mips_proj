@@ -44,6 +44,8 @@ fi
 
 if [ ! $COMPILE = 2 ]; then
     # echo "Running testcases..."
+    set -e
     ./test/test_hex_files.sh "$TEST_DIR" "${TEST_INSTRS[@]}"
+    ./test/test_functions.sh "$TEST_DIR"
     exit $?
 fi

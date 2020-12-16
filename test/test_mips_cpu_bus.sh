@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chmod +x test/test_hex_files.sh test/compile_tests.sh test/test_functions.sh
+
 if (("$#" < 1)); then
     # echo "Please enter the name of the directory."
     exit 1
@@ -46,6 +48,6 @@ if [ ! $COMPILE = 2 ]; then
     # echo "Running testcases..."
     set -e
     ./test/test_hex_files.sh "$TEST_DIR" "${TEST_INSTRS[@]}"
-    ./test/test_functions.sh "$TEST_DIR"
+    # ./test/test_functions.sh "$TEST_DIR"
     exit $?
 fi

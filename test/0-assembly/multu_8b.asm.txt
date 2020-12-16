@@ -1,6 +1,7 @@
 lw $t2, 4($zero)
 lw $t3, 4($zero)
 lw $t4, 16($zero)
+nop
 multu $t2, $t4
 multu $t2, $t3
 mflo $v0

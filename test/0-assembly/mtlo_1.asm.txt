@@ -1,4 +1,5 @@
 lw $t2, 12($zero) 
+nop
 mtlo $t2
 mflo $v0
 jr $zero

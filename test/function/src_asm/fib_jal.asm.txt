@@ -1,0 +1,26 @@
+lw $a0 0($zero)               # 00 Load in the function argument
+addiu $s2, $zero, 2           # 04
+addiu $sp, $zero, 0x0400      # 08 initailise the sp so it starts somewhere
+addiu $sp, $sp, 0xFFF4        # 0C fibonacci: Prologue of fib function ($sp<=$sp-12)
+sw $ra, 8($sp)                # 10 Initialise stack
+sw $s0, 4($sp)                # 14 Initialise stack, $s0 
+sw $s1, 0($sp)                # 18 Initialise stack, $s1
+addiu $s0, $a0, 0             # 1C Move in the argument
+addiu $v0, $a0, 0             # 20 return value for terminal condition (return)
+slt $t0, $s0, $s2             # 24 Check terminating condition (n<2)
+bne $t0, $zero, 8             # 28 check terminal condition; jump to fibonacciExit
+addiu $a0, $s0, -1            # 2C set args for recursive call to f(n-1)
+jal 0xFC0000C                 # 30 ;jump to fibonacci
+nop                           # 34 ?is this needed?
+addiu $s1, $v0, 0             # 38 store result of f(n-1) to s1
+addiu $a0, $s0, -2            # 3C set args for recursive call to f(n-2)
+jal 0xFC0000C                 # 40 ;jump to fibonacci
+nop                           # 44 ?is this needed?
+addu $v0, $s1, $v0            # 48 add result of f(n-1) to it
+lw $ra, 8($sp)                # 4C fibonacciExit: Epilogue
+lw $s0, 4($sp)                # 50 Restore stack
+lw $s1, 0($sp)                # 54 Restore stack
+addiu $sp, $sp, 12            # 58 Restore stack
+jr $ra                        # 5C End?
+
+comment: Fibonacci sequence

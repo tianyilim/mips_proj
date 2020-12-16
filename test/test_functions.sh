@@ -54,8 +54,9 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
 
         BASENAME=`basename ${FILENAME}` # Name of test case
         BASENAME="${BASENAME%.*.*}"
-        TESTNAME="${BASENAME%%_*}"
+        TESTNAME="${BASENAME%_*}"
         INSTR_NAME="${BASENAME#*_}"
+        # echo $BASENAME, $TESTNAME, $INSTR_NAME
 
         python3 test/parse_comments.py ${FILENAME} # Get rid of comments and move items into the test file
 
@@ -85,15 +86,14 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
 
             INPUT_BASENAME=`basename ${INPUT}` # Name for each test case
             INPUT_BASENAME="${INPUT_BASENAME%.*.*}"
-            INSTR_NUM="${INPUT_BASENAME#*_}"
-            
-            
+            INSTR_NUM="${INPUT_BASENAME#*_*_}"
+            # echo $INSTR_NUM
 
             iverilog -Wall -g 2012 ${TESTING} \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"test/function/src_bin/"${BASENAME}.instr.hex"\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\""${INPUT}"\" \
-            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
+            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=20000 \
             -P mips_CPU_bus_tb.READ_DELAY=2 \
             -s mips_CPU_bus_tb \
             -o joe.out
@@ -123,7 +123,7 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
                 FAIL_COUNT=$FAIL_COUNT+1
             fi
 
-            echo -e "$TESTNAME_$INSTR_NUM $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK | $FATAL_FOUND"
+            echo -e ""$TESTNAME"_"$INSTR_NUM" "$INSTR_NAME" $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK | $FATAL_FOUND"
         done
     done
 done

@@ -15,6 +15,7 @@ lw $v0, 4($t2)    # Load in the value in this address
 addiu $t0, $t0, -1 # Subtract 1 from counter variable
 addiu $t2, $t2, 4 # We add one to the array using $t0 as a pointer
 j 0xFC0002C # LOOP
+nop
 jr $zero
 nop
 

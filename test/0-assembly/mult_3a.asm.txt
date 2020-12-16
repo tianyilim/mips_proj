@@ -1,4 +1,5 @@
 lw $t2, 16($zero)
+nop
 mult $t2, $zero
 mfhi $v0
 jr $zero

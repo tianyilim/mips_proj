@@ -1,5 +1,6 @@
 lw $t6, 20($zero)  #0000ec5b
 lw $t7, 24($zero)   #7f5785de
+nop
 or $t6, $t6, $t7
 addiu $v0, $t7, 0
 jr $zero

@@ -1,6 +1,7 @@
 lw $t2, 4($zero)  # 7fffffff
 lw $t3, 4($zero)  # 7fffffff
 lw $t4, 16($zero) # ff3de00b
+nop
 mult $t2, $t4
 mult $t2, $t3
 mfhi $v0

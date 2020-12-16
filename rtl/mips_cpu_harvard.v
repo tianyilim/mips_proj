@@ -24,7 +24,8 @@ module mips_cpu_harvard(
         EXEC1 = 3'b001,
         EXEC2 = 3'b010,
         EXEC3 = 3'b011,
-        HALTED = 3'b100
+        HALTED = 3'b100,
+        WAIT_RESET = 3'b101
     } state_t;
 
     typedef enum logic[1:0] {
@@ -238,12 +239,15 @@ module mips_cpu_harvard(
     always @(posedge clk) begin
         if (rst) begin
             $display("CPU : Resetting");
-            state <= FETCH;
+            state <= WAIT_RESET;
             pc <= 32'hBFC00000; // need to reset to bfc00000
             active <= 1;
         end
         else if (!clk_enable) begin // do nothing
 
+        end
+        else if(state == WAIT_RESET) begin
+            state <= FETCH;
         end
         else if((state == FETCH) && (active == 1)) begin
             $display("CPU : FETCH : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);

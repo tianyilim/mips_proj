@@ -36,6 +36,11 @@ module mips_avalon_slave(
     logic[31:0] addr_shift;
     assign addr_shift = address >> 2; // Byte addressing
 
+    logic [31:0] txn_addr;
+    logic [31:0] txn_writedata;
+    logic [3:0] txn_byteenable;     // Check that these 3 are not modified over the course of a transaction
+
+    // Assertions go here
     always@(negedge clk) begin
         if (!$isunknown(address) && |address[1:0] && (read || write)) begin
             $fatal(1, "RAM : FATAL : Attempted to access a non word-aligned address 0x%h", address);
@@ -43,6 +48,32 @@ module mips_avalon_slave(
 
         if ( (wait_ctr != -1) && !(read || write) ) begin
             $fatal(1, "RAM : FATAL : De-asserted read or write before termination of a transaction");
+        end
+
+        if ((!$isunknown(read) && !$isunknown(write)) && ( read && write ) ) begin
+            $fatal(1, "RAM : FATAL : Read and write asserted at the same time, read: %b, write: %b", read, write);
+        end
+
+        if ( waiting && !(read || write)) begin
+            $fatal(1, "RAM : FATAL : Read/write not held high through transaction");
+        end
+        
+        if (waiting && read) begin
+            if (address != txn_addr) begin
+                $fatal(1, "RAM : FATAL : Address not constant through READ transaction");
+            end
+        end
+
+        if (waiting && write) begin
+            if (address != txn_addr) begin
+                $fatal(1, "RAM : FATAL : Address not constant through WRITE transaction");
+            end
+            if (writedata != txn_writedata) begin
+                $fatal(1, "RAM : FATAL : Writedata not constant through WRITE transaction");
+            end
+            if (byteenable != txn_byteenable) begin
+                $fatal(1, "RAM : FATAL : byteenable not constant through WRITE transaction");
+            end
         end
     end
     
@@ -75,9 +106,7 @@ module mips_avalon_slave(
     always@(posedge clk) begin
         // Only respond if address is within address space
         if (address >= ADDR_START & address < ADDR_END) begin
-            assert (!write) else $error("RAM : FATAL : Tried to write to instruction area of memory with address 0x%h", address);
-            assert( (write==1 && read==1)!=1 ) else $error("RAM : FATAL : Read and write asserted at the same time, read: %b, write: %b, %b", read, write, (write==1 && read==1)!=1);
-
+            assert (!write) else $display("RAM : FATAL : Tried to write to instruction area of memory with address 0x%h", address);
             if (read) begin
                 if (waiting) begin
                     if (wait_ctr==0) begin
@@ -95,6 +124,8 @@ module mips_avalon_slave(
                 end else begin
                     wait_ctr = READ_DELAY-1; // Offset for timing requirements
                     waiting = 1;
+                    txn_addr <= address;        // Update transaction counter
+
                     if (READ_DELAY==1) begin
                         readdata = memory_instr[addr_shift-ADDR_START_SHIFT];   // Special case where wait cycles are instantly 0
                     end
@@ -102,7 +133,6 @@ module mips_avalon_slave(
                 end
             end
         end else if (address < MEM_SIZE) begin // Data memory section
-            assert( (write==1 && read==1)!=1 ) else $error("RAM : FATAL : Read and write asserted at the same time, read: %b, write: %b", read, write);
             if (write) begin
                 if (waiting) begin
                     if (wait_ctr==0) begin
@@ -125,6 +155,10 @@ module mips_avalon_slave(
                 end else begin
                     wait_ctr = WRITE_DELAY-1; // Offset for timing requirements
                     waiting = 1;
+                    txn_addr <= address;        // Update transaction counter
+                    txn_writedata <= writedata;        // Update transaction counter
+                    txn_byteenable <= byteenable;        // Update transaction counter
+
                     if (WRITE_DELAY==1) begin
                         towrite[31:24] = (byteenable[3]) ? writedata[31:24] : towrite[31:24];
                         towrite[23:16] = (byteenable[2]) ? writedata[23:16] : towrite[23:16];
@@ -154,6 +188,8 @@ module mips_avalon_slave(
                 end else begin
                     wait_ctr = READ_DELAY-1; // Offset for timing requirements
                     waiting = 1;
+                    txn_addr <= address;        // Update transaction counter
+
                     if (READ_DELAY==1) begin
                         readdata = memory_data[addr_shift];   // Special case where wait cycles are instantly 0
                     end

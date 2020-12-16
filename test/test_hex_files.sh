@@ -19,6 +19,18 @@ else
     TEST_DIR=$1
 fi
 
+# Find test directory
+if ! find "${TEST_DIR}"/mips_cpu/*.v 1> /dev/null 2>&1; then
+    # No mips folder test directory
+    TESTING="${TEST_DIR}"/mips_cpu_*.v
+elif ! find "${TEST_DIR}"/mips_cpu*.v 1> /dev/null 2>&1; then
+    # No mips files in rtl
+    TESTING="${TEST_DIR}"/mips_cpu/*.v
+else
+    # Both testing files
+    TESTING=""${TEST_DIR}"/mips_cpu/*.v "${TEST_DIR}"/mips_cpu*.v"
+fi
+# echo $TESTING
 
 # instructions to test / compile for
 # Slice the input argv array without considering the first (directory) element
@@ -81,20 +93,6 @@ for i in "${TEST_INSTRS[@]}"; do
             # rtl/mips_cpu_register_file.v \
             # rtl/mips_cpu_sixteen_bit_extension.v \
         set -e
-
-# if ls /path/to/your/files* 1> /dev/null 2>&1; then
-
-        if ! find "${TEST_DIR}"/mips_cpu/*.v 1> /dev/null 2>&1; then
-            # No mips folder test directory
-            TESTING="${TEST_DIR}"/mips_cpu_*.v
-        elif ! find "${TEST_DIR}"/mips_cpu*.v 1> /dev/null 2>&1; then
-            # No mips files in rtl
-            TESTING="${TEST_DIR}"/mips_cpu/*.v
-        else
-            # Both testing files
-            TESTING=""${TEST_DIR}"/mips_cpu/*.v "${TEST_DIR}"/mips_cpu*.v"
-        fi
-        # echo $TESTING
 
         iverilog -Wall -g 2012 ${TESTING} \
         test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \

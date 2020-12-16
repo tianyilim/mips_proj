@@ -32,6 +32,19 @@ rm test/function/waveforms/*
 rm test/function/expected_output/*
 rm test/function/src_bin/*.data.hex
 
+# Find test directory
+if ! find "${TEST_DIR}"/mips_cpu/*.v 1> /dev/null 2>&1; then
+    # No mips folder test directory
+    TESTING="${TEST_DIR}"/mips_cpu_*.v
+elif ! find "${TEST_DIR}"/mips_cpu*.v 1> /dev/null 2>&1; then
+    # No mips files in rtl
+    TESTING="${TEST_DIR}"/mips_cpu/*.v
+else
+    # Both testing files
+    TESTING=""${TEST_DIR}"/mips_cpu/*.v "${TEST_DIR}"/mips_cpu*.v"
+fi
+# echo $TESTING
+
 for TESTCASE in "${TEST_FUNCTS[@]}"; do
     # echo \'"$TESTCASE"\'
     
@@ -74,8 +87,9 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
             INPUT_BASENAME="${INPUT_BASENAME%.*.*}"
             INSTR_NUM="${INPUT_BASENAME#*_}"
             
-            iverilog -Wall -g 2012 \
-            "${TEST_DIR}"/mips_cpu_*.v \
+            
+
+            iverilog -Wall -g 2012 ${TESTING} \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"test/function/src_bin/"${BASENAME}.instr.hex"\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\""${INPUT}"\" \

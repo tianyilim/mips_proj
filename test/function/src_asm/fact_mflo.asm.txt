@@ -3,13 +3,14 @@ addiu $v0, $zero, 1     # Initialise with 0
 beq $t0, $zero, 6       # Exit here
 mult $v0, $t0           # Actual factorial code goes here
 mfhi $t1
-bne $t1, $zero, 5       # Check if anything in hi register (should not be)
+bne $t1, $zero, 6       # Check if anything in hi register (should not be)
 mflo $v0
 addiu $t0, $t0, 0xFFFF  # Decrement counter here (by -1)
 j 0xFC00008             # Jump back to a branch instr
+nop
 jr $zero
 nop
-lw $v0, 4($zero)       # Error code is FFFFFFFF
+lw $v0, 4($zero)        # Error code is FFFFFFFF
 jr $zero                # Jump back to end of program
 
 Comment: factorial function

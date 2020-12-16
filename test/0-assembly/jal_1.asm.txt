@@ -1,13 +1,13 @@
 nop
 nop
-jal 0xFC0001C     
+jal 0xFC0001C           # code line 8
 nop
-jr $zero
+jr $zero                # Exit code
 nop
 nop
 nop
-addiu $v0, $ra, 10
-jr $zero
+addiu $v0, $ra, 10      # 
+jr $ra                  # Returns to line 5
 
 
 comment: jal test 1

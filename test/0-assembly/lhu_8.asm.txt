@@ -1,7 +1,8 @@
 lw $t2, 40($zero)          #address contains 0xBFC00008
-lhu $v0, 8($t2)                 
+nop
+lhu $v0, 12($t2)                 
 addiu $t3, $zero, 20,     #addiu is  0x23640014 
 jr $zero,
 
 
-comment: lb instr address  
+comment: lhu instr address  

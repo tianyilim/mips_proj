@@ -1,4 +1,5 @@
 lw $t2, 0($zero)
+nop
 divu $t2, $t2,
 mflo $v0,
 jr $zero,

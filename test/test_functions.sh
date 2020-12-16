@@ -11,44 +11,58 @@ fi
 
 # instructions to test / compile for
 # Slice the input argv array without considering the first (directory) element
-TEST_FUNCTS=()
+TEST_INSTRS=()
 if (("$#" > 1)); then
     for args in "${@:2}"; do
         if [ ! "$args" = "" ]; then
-            TEST_FUNCTS+=("$args") # Instruction
+            TEST_INSTRS+=("$args") # Instruction
         else
-            TEST_FUNCTS=("")
+            TEST_INSTRS=("")
             break
         fi
     done
 else
-    echo "No argument given, will run for all testcases"
-    TEST_FUNCTS=("")
+    # echo "No argument given, will run for all testcases"
+    TEST_INSTRS=("")
 fi
 
 # Clean out the testcases
-rm test/function/logs/*
-rm test/function/waveforms/*
-rm test/function/expected_output/*
-rm test/function/src_bin/*.data.hex
+rm test/function/logs/* > /dev/null 2>&1
+rm test/function/waveforms/* > /dev/null 2>&1
+rm test/function/expected_output/* > /dev/null 2>&1
+rm test/function/src_bin/*.data.hex > /dev/null 2>&1
 
-for TESTCASE in "${TEST_FUNCTS[@]}"; do
+# Find test directory
+if ! find "${TEST_DIR}"/mips_cpu/*.v 1> /dev/null 2>&1; then
+    # No mips folder test directory
+    TESTING="${TEST_DIR}"/mips_cpu_*.v
+elif ! find "${TEST_DIR}"/mips_cpu*.v 1> /dev/null 2>&1; then
+    # No mips files in rtl
+    TESTING="${TEST_DIR}"/mips_cpu/*.v
+else
+    # Both testing files
+    TESTING=""${TEST_DIR}"/mips_cpu/*.v "${TEST_DIR}"/mips_cpu*.v"
+fi
+# echo $TESTING
+
+for TESTCASE in "${TEST_INSTRS[@]}"; do
     # echo \'"$TESTCASE"\'
     
-    for FILENAME in test/function/src_asm/"${TESTCASE}"*.asm.txt; do
+    for FILENAME in test/function/src_asm/*"${TESTCASE}"*.asm.txt; do
         [ -e "$FILENAME" ] || continue # Avoid case where there are no matches
         # echo "Assembling '$FILENAME'"
 
         BASENAME=`basename ${FILENAME}` # Name of test case
         BASENAME="${BASENAME%.*.*}"
-        TESTNAME="${BASENAME%%_*}"
+        TESTNAME="${BASENAME%_*}"
         INSTR_NAME="${BASENAME#*_}"
+        # echo $BASENAME, $TESTNAME, $INSTR_NAME
 
         python3 test/parse_comments.py ${FILENAME} # Get rid of comments and move items into the test file
 
         ./test/Assembler/src/assembler.out # Perform assembly
         if [ $? != 0 ]; then
-            echo $FILENAME, $BASENAME.instr.hex # Debug outputs
+            # echo $FILENAME, $BASENAME.instr.hex # Debug outputs
             cat test/Assembler/src/test.txt # Debug outputs
             # Remove the assembled file (if it exists) if no success
             rm test/function/src_bin/$BASENAME.instr.hex
@@ -60,8 +74,8 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
         python3 test/function/src_py/"$BASENAME".py
 
         COMMENT=$(grep -w --ignore-case "comment" test/function/src_asm/${BASENAME}.asm.txt)
-        echo ""
-        echo "Testing function ${BASENAME} with $COMMENT"
+        # echo ""
+        # echo "Testing function ${BASENAME} with $COMMENT"
 
         # Run testbench and check if outputs are as expected.
         for INPUT in test/function/src_bin/"${BASENAME}"*.data.hex; do
@@ -72,14 +86,14 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
 
             INPUT_BASENAME=`basename ${INPUT}` # Name for each test case
             INPUT_BASENAME="${INPUT_BASENAME%.*.*}"
-            INSTR_NUM="${INPUT_BASENAME#*_}"
-            
-            iverilog -Wall -g 2012 \
-            "${TEST_DIR}"/mips_cpu_*.v \
+            INSTR_NUM="${INPUT_BASENAME#*_*_}"
+            # echo $INSTR_NUM
+
+            iverilog -Wall -g 2012 ${TESTING} \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"test/function/src_bin/"${BASENAME}.instr.hex"\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\""${INPUT}"\" \
-            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
+            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=20000 \
             -P mips_CPU_bus_tb.READ_DELAY=2 \
             -s mips_CPU_bus_tb \
             -o joe.out
@@ -109,12 +123,12 @@ for TESTCASE in "${TEST_FUNCTS[@]}"; do
                 FAIL_COUNT=$FAIL_COUNT+1
             fi
 
-            echo -e "$TESTNAME_$INSTR_NUM $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK | $FATAL_FOUND"
+            echo -e ""$TESTNAME"_"$INSTR_NUM" "$INSTR_NAME" $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK | $FATAL_FOUND | $COMMENT"
         done
     done
 done
 
-rm joe.out
+rm joe.out > /dev/null 2>&1
 
 # Factorial cases
 

@@ -51,6 +51,9 @@ module mips_cache_data(
     assign cache_index = addr_offset[CACHE_DEPTH_BITS-1:0];
     assign cache_tag = addr_offset[31:CACHE_DEPTH_BITS];
 
+    logic [31:0] readdata_reg;  // Output from registers
+    assign readdata = (data_valid) ? data_in : readdata_reg;
+
     // // Implementing byte_enable as we write
     // wire [31:0] reg_in_tmp [CACHE_ASSOC-1:0];    // Byte_enable implementation
     // wire [31:0] reg_input [CACHE_ASSOC-1:0]; // Implements the Byte_enable case when writing
@@ -135,6 +138,7 @@ module mips_cache_data(
                     if ( write_cond ) begin
                     // if ( data_valid || (|byte_en && write_en)  ) begin
                         $display("DATA_CACHE : Replacement required: Valid buffer: %4b", valid_buf[cache_index]);
+                        readdata_reg <= data_in;
                         // Trivial case - assoc with something not VALID - write into that.
                         // x: dont care. Use casex to include don't cares
                         // if xxx0; write to 0
@@ -269,7 +273,7 @@ module mips_cache_data(
 
                     if (read_en) begin
                         // Assign return vals
-                        readdata <= data_buf[cache_index][cache_assoc_index];
+                        readdata_reg <= data_buf[cache_index][cache_assoc_index];
                         // $display("DATA_CACHE : Read 0x%h from index 0x%h, assoc 0x%h", data_buf[cache_index][cache_assoc_index], cache_index, cache_index);
 
                     end else if (write_en) begin

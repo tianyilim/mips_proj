@@ -1,8 +1,7 @@
-addiu $t2, $zero, 28,
-lb $t4, 3($t2)                 #address contains 0x636d3811
-addiu $v0, $t4, 0,
+addiu $t3, $zero, 25, 
+lb $v0, 0($t3)                 #address 24 contains 0x7f5785de
 jr $zero,
 
 
-comment: Access byte 3
+comment: address 25
 

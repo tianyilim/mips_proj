@@ -136,6 +136,9 @@ module mips_CPU_bus_tb;
 
 		@(negedge cpu_clk);
 		cpu_reset = 1;
+
+		@(negedge cpu_clk);
+		@(negedge cpu_clk);
 		
 		@(negedge cpu_clk);
 		cpu_reset = 0;

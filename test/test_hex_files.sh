@@ -19,6 +19,18 @@ else
     TEST_DIR=$1
 fi
 
+# Find test directory
+if ! find "${TEST_DIR}"/mips_cpu/*.v 1> /dev/null 2>&1; then
+    # No mips folder test directory
+    TESTING="${TEST_DIR}"/mips_cpu_*.v
+elif ! find "${TEST_DIR}"/mips_cpu*.v 1> /dev/null 2>&1; then
+    # No mips files in rtl
+    TESTING="${TEST_DIR}"/mips_cpu/*.v
+else
+    # Both testing files
+    TESTING=""${TEST_DIR}"/mips_cpu/*.v "${TEST_DIR}"/mips_cpu*.v"
+fi
+# echo $TESTING
 
 # instructions to test / compile for
 # Slice the input argv array without considering the first (directory) element
@@ -80,30 +92,18 @@ for i in "${TEST_INSTRS[@]}"; do
             # rtl/mips_cpu_harvard.v \
             # rtl/mips_cpu_register_file.v \
             # rtl/mips_cpu_sixteen_bit_extension.v \
+        set -e
 
-        if [ -e "${TEST_DIR}"/mips_cpu/*.v ]; then
-            iverilog -Wall -g 2012 \
-            "${TEST_DIR}"/mips_cpu_*.v \
-            "${TEST_DIR}"/mips_cpu/*.v \
-            test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
-            -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
-            -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
-            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
-            -P mips_CPU_bus_tb.READ_DELAY=2 \
-            -s mips_CPU_bus_tb \
-            -o joe.out
-        else
-            iverilog -Wall -g 2012 \
-            "${TEST_DIR}"/mips_cpu_*.v \
-            test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
-            -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
-            -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
-            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
-            -P mips_CPU_bus_tb.READ_DELAY=2 \
-            -s mips_CPU_bus_tb \
-            -o joe.out
-        fi
+        iverilog -Wall -g 2012 ${TESTING} \
+        test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
+        -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
+        -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
+        -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
+        -P mips_CPU_bus_tb.READ_DELAY=2 \
+        -s mips_CPU_bus_tb \
+        -o joe.out
         
+        set +e
 
         # Save the waveforms
 
@@ -164,7 +164,7 @@ done
 
 # echo -e "$PASS_COUNT testcases passed."
 # echo -e "$FAIL_COUNT testcases failed."
-rm joe.out
+rm joe.out > /dev/null 2>&1
 
 if [ ! $FAIL_COUNT = 0 ]; then
     # echo "Testbench failed."

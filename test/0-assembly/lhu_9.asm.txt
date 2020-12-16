@@ -1,0 +1,6 @@
+addiu $t3, $zero, 18, 
+lhu $v0, 0($t3)                 #address contains 0xff3de00b
+jr $zero,
+
+
+comment: address 18

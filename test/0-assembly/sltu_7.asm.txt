@@ -1,5 +1,6 @@
 addiu $t2, $zero, 20,
 addiu $t3, $zero, 20,
+nop
 sltu $v0, $t2, $t3,
 jr $zero,
 

@@ -24,7 +24,8 @@ module mips_cpu_harvard(
         EXEC1 = 3'b001,
         EXEC2 = 3'b010,
         EXEC3 = 3'b011,
-        HALTED = 3'b100
+        HALTED = 3'b100,
+        WAIT_RESET = 3'b101
     } state_t;
 
     typedef enum logic[1:0] {
@@ -238,12 +239,15 @@ module mips_cpu_harvard(
     always @(posedge clk) begin
         if (rst) begin
             $display("CPU : Resetting");
-            state <= FETCH;
+            state <= WAIT_RESET;
             pc <= 32'hBFC00000; // need to reset to bfc00000
             active <= 1;
         end
         else if (!clk_enable) begin // do nothing
 
+        end
+        else if(state == WAIT_RESET) begin
+            state <= FETCH;
         end
         else if((state == FETCH) && (active == 1)) begin
             $display("CPU : FETCH : write_en = %d, instr = %h, instr_type =%b, pc = %h, register_v0 = %h", write_enable, instr, instr_type, pc, register_v0);
@@ -278,11 +282,17 @@ module mips_cpu_harvard(
                       Hi <= rs_data % rt_data;
                     end
                     JALR: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       write_back_data <= pc + 8;
                       branch_delay_slot <= rs_data;
                       jump_check <= 1;
                     end
                     JR: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       branch_delay_slot <= rs_data;
                       jump_check <= 1;
                     end
@@ -349,18 +359,27 @@ module mips_cpu_harvard(
                       write_back_data <= rs_data & {{16'h0000},imm} ;
                     end
                     BEQ: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       if (rs_data == rt_data) begin
                           branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                           jump_check <= 1;
                       end
                     end
                     BGTZ: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       if ($signed(rs_data) > 0) begin
                           branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                           jump_check <= 1;
                       end
                     end
                     BLEZ: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       if ($signed(rs_data) <= 0) begin
                           branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                           jump_check <= 1;
@@ -369,12 +388,18 @@ module mips_cpu_harvard(
                     BRANCH: begin
                       case(rt_addr)
                           5'b00001: begin //BGEZ
+                              if (jump_check == 1) begin
+                                  $fatal(2, "Branch in branch delay slot");
+                              end
                               if ($signed(rs_data) >= 0) begin
                                   branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                                   jump_check <= 1;
                               end
                           end
                           5'b10001: begin //BGEZAL
+                              if (jump_check == 1) begin
+                                  $fatal(2, "Branch in branch delay slot");
+                              end
                               if ($signed(rs_data) >= 0) begin
                                   branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                                   jump_check <= 1;
@@ -382,12 +407,18 @@ module mips_cpu_harvard(
                               end
                           end
                           5'b00000: begin // BLTZ
+                              if (jump_check == 1) begin
+                                  $fatal(2, "Branch in branch delay slot");
+                              end
                               if ($signed(rs_data) < 0) begin
                                   branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                                   jump_check <= 1;
                               end
                           end
                           5'b10000: begin //BLTZAL
+                              if (jump_check == 1) begin
+                                  $fatal(2, "Branch in branch delay slot");
+                              end
                               if ($signed(rs_data) < 0) begin
                                   branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                                   jump_check <= 1;
@@ -398,6 +429,9 @@ module mips_cpu_harvard(
                       endcase
                     end
                     BNE: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       if (rs_data != rt_data) begin
                           branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                           jump_check <= 1;
@@ -473,10 +507,16 @@ module mips_cpu_harvard(
                       write_back_data <= rs_data ^ {{16'h0000},imm} ;
                     end
                     JUMP: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       branch_delay_slot <= {pc_next[31:28],jump_addr,2'b00};
                       jump_check <= 1;
                     end
                     JAL: begin
+                      if (jump_check == 1) begin
+                        $fatal(2, "Branch in branch delay slot");
+                      end
                       branch_delay_slot <= {pc_next[31:28],jump_addr,2'b00};
                       jump_check <= 1;
                       write_back_data <= pc + 8;

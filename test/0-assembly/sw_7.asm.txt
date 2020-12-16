@@ -1,0 +1,25 @@
+lw $t0, 0($zero)  # 0 init counter var
+nop       #
+beq $t0, $zero, 8 # 4 Jump to read section
+lw $v0, 4($t1)    # 8 Load in the value in this address
+nop                # C nop here because v0 is used later
+addu $v0, $v0, $v0 # 10 Multiply the value by 2
+sw $v0, 4($t1)    # 14 Store back in the value in this address
+addiu $t1, $t1, 4 # 18 We add one to the array using $t0 as a pointer
+addiu $t0, $t0, -1 # 1C Subtract 1 from counter variable
+j 0xFC00008        # 20 LOOP
+nop
+lw $t0, 0($zero)  # 28 reset counter var
+nop     #
+beq $t0, $zero, 6 # 2C Jump to end
+nop
+lw $v0, 4($t2)    # Load in the value in this address
+nop    #
+addiu $t0, $t0, -1 # Subtract 1 from counter variable
+addiu $t2, $t2, 4 # We add one to the array using $t0 as a pointer
+j 0xFC00034 # LOOP
+nop
+jr $zero
+nop
+
+comment: Repeatedly accessing and modifying things in an array

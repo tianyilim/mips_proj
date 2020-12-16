@@ -42,6 +42,8 @@ module mips_cache_controller(
 
     logic instr_stall;  // Instruction cache fetch stall
     logic data_stall;   // Data cache (on read/write) fetch stall
+    logic instr_stall_effective;
+    logic data_stall_effective; // these can be sped up by mux bypassing 
 
     logic [1:0] wb_state;
     logic wb_full;      // Write buffer fetch stall (on FULL)
@@ -88,13 +90,17 @@ module mips_cache_controller(
     } state_t;
 
     //
-    assign clk_enable = !(instr_stall || data_stall || wb_full);
+    assign clk_enable = !(instr_stall_effective || data_stall_effective || wb_full);
     assign mem_address = (state==STATE_WRITE) ? addr_wbtomem : (instr_stall) ? instr_address : data_address;
 
-    assign mem_read = (instr_stall || data_stall) && (state==STATE_FETCH);
+    // mem_read can go on faster
+    assign mem_read = (instr_stall || data_stall) && (state==STATE_FETCH || state==STATE_IDLE);
 
     assign instr_data_valid = instr_stall && !waitrequest && (state==STATE_FETCH);
     assign data_data_valid = data_stall && !waitrequest && (state==STATE_FETCH);
+
+    assign instr_stall_effective = instr_stall && (waitrequest || wb_active);   // Don't come out of stall while a write txn in progress
+    assign data_stall_effective = data_stall && (waitrequest || wb_active);
 
     always @ (posedge clk) begin
         if (rst) begin
@@ -119,7 +125,7 @@ module mips_cache_controller(
                         // mem_read <= 1;
                     end else if (!wb_empty) begin
                         state <= STATE_WRITE;
-                        // wb_active <= 1;
+                        wb_active <= 1;
                     end
                 end
                 STATE_WRITE : begin

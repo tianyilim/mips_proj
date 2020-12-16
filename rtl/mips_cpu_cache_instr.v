@@ -66,6 +66,9 @@ module mips_cache_instr(
     assign cache_hit = |cache_hit_bus;  // Takes a bitwise OR of the whole bus
     assign stall = !cache_hit & read_en;   // Prone to error CHECK!
 
+    logic [31:0] readdata_reg;  // Output from registers
+    assign readdata = (data_valid) ? data_in : readdata_reg;
+
     // Each time our cache doesn't hit we must stall cycle.
     // Exception is when writing an address that has byte_en 1111; the whole register will
     // Be modified anyway so it doesn't matter.
@@ -95,6 +98,7 @@ module mips_cache_instr(
                     // And in that case is it necessary to have extra byte_en logic?
                     if (data_valid) begin
                         $display("INSTR_CACHE : Replacement required: Valid buffer: %4b", valid_buf[cache_index]);
+                        readdata_reg <= data_in;
                         // Trivial case - assoc with something not VALID - write into that.
                         // x: dont care. Use casex to include don't cares
                         // if xxx0; write to 0
@@ -225,7 +229,7 @@ module mips_cache_instr(
                             end
                         endcase
                     
-                        readdata <= data_buf[cache_index][cache_assoc_index];
+                        readdata_reg <= data_buf[cache_index][cache_assoc_index];
                         // $display("INSTR_CACHE : Read 0x%h from index 0x%h, assoc 0x%h", data_buf[cache_index][cache_assoc_index], cache_index, cache_index);
                     end
                 end

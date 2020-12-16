@@ -1,5 +1,6 @@
 lw $t2, 40($zero)          #address contains 0xBFC00008
-lbu $v0, 8($t2)                 
+nop
+lbu $v0, 12($t2)                 
 addiu $t3, $zero, 20,     #addiu is  0x23640014  
 jr $zero,
 

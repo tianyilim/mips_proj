@@ -1,4 +1,5 @@
 lw $t2, 16($zero)
+nop
 ori $zero, $t2, AAAA 
 addiu $v0, $zero, 0     
 jr $zero

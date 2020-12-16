@@ -1,4 +1,5 @@
 lw $t3, 16($zero) # ff3de00b
+nop
 xori $t4, $t3, 2  # ff3de00b with 00000002
 addiu $v0, $t4, 0  
 jr $zero

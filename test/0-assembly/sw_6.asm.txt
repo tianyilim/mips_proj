@@ -22,7 +22,7 @@ nop
 addu $v0, $v0, $t1                          #ans += *ptr;
 addiu $t0, $t0, 4                           #ptr++
 addiu $t2, $t2, 1                           #i++
-bne $t2, $t5, -5
+bne $t2, $t5, -6
 nop
 jr $zero
 

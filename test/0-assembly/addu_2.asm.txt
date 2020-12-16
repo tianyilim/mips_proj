@@ -1,5 +1,6 @@
 lw $t2, 24($zero)   #7f5785de
 lw $t3, 20($zero)    #0000ec5b
+nop
 addu $v0, $t2, $t3,
 jr $zero
 

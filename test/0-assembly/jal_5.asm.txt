@@ -7,6 +7,3 @@ addiu $v0, $ra, 0
 jr $zero
 
 comment: change $ra in branch delay slot
-
-
-

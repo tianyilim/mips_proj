@@ -1,4 +1,5 @@
 lw $t2, 0($zero)
+nop
 addiu $v0, $t2, 12
 jr $zero
 

@@ -95,11 +95,9 @@ module mips_CPU_bus_tb;
 	// initial block for CPU clock
 	initial begin
 		cpu_clk = 0;
-
 		forever begin
 			#CPU_CLK_TIME;
 			cpu_clk = 1;
-			
 			// count number of cycles taken to run program, count only when CPU is running
 			if (cpu_reset == 0 && cpu_active == 1) begin
 				current_cpu_cycles_ran = current_cpu_cycles_ran + 1;
@@ -117,11 +115,17 @@ module mips_CPU_bus_tb;
 	// initial block for memory clock
 	initial begin
 		mem_clk = 0;
-
 		// We assume that the memory clock is not necessarily in sync with the CPU clock, hence the different delay
 		forever begin
 			#MEM_CLK_TIME;
 			mem_clk = ~mem_clk;
+		end
+	end
+
+	// assertions
+	always @(negedge cpu_clk) begin
+		if (cpu_reset==1 && (mem_read || mem_write)) begin
+			$fatal(1, "TB : FATAL : %02t : CPU attempted to start read/write transaction during reset", $time);
 		end
 	end
 	

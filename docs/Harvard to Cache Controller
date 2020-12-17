@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-12-17T14:11:26.310Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="GZwIeZAA-cszmXyvFpRn" version="14.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-12-17T14:11:45.297Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="BNHLjFlKC4Q7tIC6Yq05" version="14.0.3" type="github">
   <diagram id="hYkcjz8Myecf8tYXNl3D" name="Page-1">
-    <mxGraphModel dx="276" dy="137" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1185" dy="588" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -112,9 +112,10 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="Qp43raJvPr8Gr8fpi-2D-24" value="Avalon&lt;br&gt;Bus&lt;br&gt;Signals" style="endArrow=classic;startArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fontStyle=1;strokeWidth=3;" edge="1" parent="1" source="Qp43raJvPr8Gr8fpi-2D-1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
+          <mxGeometry x="-0.3333" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="640" y="280" as="sourcePoint" />
-            <mxPoint x="640" y="260" as="targetPoint" />
+            <mxPoint x="680" y="255" as="targetPoint" />
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Qp43raJvPr8Gr8fpi-2D-27" value="Other signals" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">

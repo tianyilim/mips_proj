@@ -1,0 +1,12 @@
+jal 0xFFFFFFC
+nop
+addiu $v0, $zero, 5
+jr $zero
+
+
+comment:
+@0xBFFFFFFC
+jal 0x0000004
+nop
+addiu $v0, $zero, 10
+jr $zero

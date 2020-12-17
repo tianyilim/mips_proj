@@ -81,9 +81,9 @@ for i in "${TEST_INSTRS[@]}"; do
         fi
 
         if [ -e "${NAME}.ovf.hex" ]; then
-            OVFNAME=test/1-binary/${BASENAME}.data.hex
-        elif [ -e "${NAME}.data.txt" ]; then
-            OVFNAME=test/1-binary/${BASENAME}.data.txt
+            OVFNAME=test/1-binary/${BASENAME}.ovf.hex
+        elif [ -e "${NAME}.ovf.txt" ]; then
+            OVFNAME=test/1-binary/${BASENAME}.ovf.txt
         else
             OVFNAME=""
         fi
@@ -108,7 +108,7 @@ for i in "${TEST_INSTRS[@]}"; do
         -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
         -P mips_CPU_bus_tb.OVF_INIT_FILE=\"${OVFNAME}\" \
         -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
-        -P mips_CPU_bus_tb.READ_DELAY=2 \
+        -P mips_CPU_bus_tb.READ_DELAY=0 \
         -s mips_CPU_bus_tb \
         -o joe.out
         

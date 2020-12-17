@@ -1,0 +1,7 @@
+addiu $t3, $zero, 0
+lw $t3 20($zero)     #0000ec5b
+nop
+sll $v0, $t3, 15
+jr $zero
+
+comment: sanity check

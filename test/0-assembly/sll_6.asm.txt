@@ -1,0 +1,7 @@
+addiu $t5, $zero, 0
+lw $t5 36($zero)     #14ba6b80
+nop
+sll $v0, $t5, 12
+jr $zero
+
+comment: sanity check

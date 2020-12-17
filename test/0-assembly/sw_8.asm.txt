@@ -1,0 +1,6 @@
+addiu $t2, $zero, 0x7B3C
+sw $t2, 4($zero)
+lw $v0, 4($zero)
+jr $zero
+
+comment: sanity check

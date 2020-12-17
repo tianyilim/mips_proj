@@ -1,0 +1,7 @@
+addiu $t3, $zero, 25, 
+lbu $v0, 0($t3)                 #address 24 contains 0x7f5785de
+jr $zero,
+
+
+comment: address 25
+

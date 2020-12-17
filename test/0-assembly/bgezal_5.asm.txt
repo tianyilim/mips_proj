@@ -1,0 +1,10 @@
+addiu $t2, $zero, -10
+bgezal $t2, 2
+nop
+addiu $v0, $ra, 0
+jr $zero
+
+
+
+
+comment: check $ra when branch fails

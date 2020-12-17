@@ -1,0 +1,15 @@
+addiu $t2, $zero, 15
+addiu $t3, $zero, 10
+j 0xFC00024
+nop
+nop
+addiu $v0, $zero, 15     #z
+jr $zero
+nop
+nop
+bne $t2, $t3 -5      #jmp to #z
+nop
+jr $zero
+
+comment: wrap around
+

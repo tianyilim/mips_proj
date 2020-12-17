@@ -22,17 +22,21 @@ module mips_avalon_slave(
     localparam ADDR_START_SHIFT = ADDR_START >> 2;
     localparam ADDR_END_SHIFT = ADDR_END >> 2;
     
-    parameter READ_DELAY = 2;               // How long will waitrequest be asserted on read?
-    parameter WRITE_DELAY = READ_DELAY;     // How long will waitrequest be asserted on write?
+    parameter READ_DELAY = 2;               // How long will waitrequest be asserted on read? (can be 0)
+    parameter WRITE_DELAY = READ_DELAY;
+    // parameter WRITE_DELAY = (READ_DELAY==0) ? 1 : READ_DELAY;     // How long will waitrequest be asserted on write?
     parameter DATA_INIT_FILE = "";          // 
     parameter RAM_INIT_FILE = "";           // Initialise instruction part (ROM)
     parameter OVF_INIT_FILE = "";           // Initialise extended instructions
 
-    logic[31:0] towrite;                 // Just something to implement byteeenable
+    wire[31:0] towrite;                 // Just something to implement byteeenable
+    wire[31:0] write_prefetch;
+
     reg[31:0] memory_data [MEM_SIZE-1:0];     // Data memory
     reg[31:0] memory_instr [MEM_SIZE-1:0];    // Instruction memory is contained here
     reg[31:0] ovf_instr [7:0];
-    integer wait_ctr = -1;                   // Waits implemented here
+
+    integer wait_ctr = 0;                   // Waits implemented here
     integer waiting = 0;
 
     logic[31:0] addr_shift;
@@ -44,33 +48,37 @@ module mips_avalon_slave(
 
     logic OVF_EXISTS;   // Check if there is indeed a request to fill up overflow
 
+    logic [31:0] readdata_mux;      // Implements the final output of readdata
+
     // Assertions go here
     always@(negedge clk) begin
         if (!$isunknown(address) && |address[1:0] && (read || write)) begin
             $fatal(1, "RAM : FATAL : Attempted to access a non word-aligned address 0x%h", address);
         end
 
-        if ( (wait_ctr != -1) && !(read || write) ) begin
-            $fatal(1, "RAM : FATAL : De-asserted read or write before termination of a transaction");
-        end
+        // if ( (wait_ctr != -1) && !(read || write) ) begin
+        //     $fatal(1, "RAM : FATAL : De-asserted read or write before termination of a transaction");
+        // end
 
         if ((!$isunknown(read) && !$isunknown(write)) && ( read && write ) ) begin
             $fatal(1, "RAM : FATAL : Read and write asserted at the same time, read: %b, write: %b", read, write);
         end
 
-        if ( waiting && !(read || write)) begin
-            $fatal(1, "RAM : FATAL : Read/write not held high through transaction");
+        if ( waitrequest && !(read || write)) begin
+            // $fatal(1, "RAM : FATAL : Read/write not held high through transaction");
+            $display("RAM : FATAL : Read/write not held high through transaction, %b, %b, %b", waitrequest, read, write);
         end
         
-        if (waiting && read) begin
+        if (waitrequest && read && (wait_ctr != 0)) begin
+            // ignore the first instance of waitrequest assertion, as txn_addr has not been asserted yet.
             if (address != txn_addr) begin
-                $fatal(1, "RAM : FATAL : Address not constant through READ transaction");
+                $fatal(1, "RAM : FATAL : Address not constant through READ transaction, Address=0x%h, Txn_addr=0x%h", address, txn_addr);
             end
         end
 
-        if (waiting && write) begin
+        if (waitrequest && write && (wait_ctr != 0)) begin
             if (address != txn_addr) begin
-                $fatal(1, "RAM : FATAL : Address not constant through WRITE transaction");
+                $fatal(1, "RAM : FATAL : Address not constant through WRITE transaction, Address=0x%h, Txn_addr=0x%h", address, txn_addr);
             end
             if (writedata != txn_writedata) begin
                 $fatal(1, "RAM : FATAL : Writedata not constant through WRITE transaction");
@@ -81,9 +89,10 @@ module mips_avalon_slave(
         end
     end
     
-    // Checking stuff isn't broken
+    // Initialise RAM
     initial begin
         integer i;
+        $display("RAM : INIT : Initialising RAM module with read delay %1d and write delay %1d", READ_DELAY, WRITE_DELAY);
         /* Initialise to zero by default */
         for (i=0; i<MEM_SIZE; i++) begin
             memory_instr[i]=0;
@@ -116,128 +125,88 @@ module mips_avalon_slave(
         end
     end
 
-    assign waitrequest = (read | write) && (wait_ctr != 0);
+    assign waitrequest = ( (read && wait_ctr!=READ_DELAY) || (write && wait_ctr!=WRITE_DELAY) );
+    assign write_prefetch = memory_data[addr_shift];
+    assign towrite[31:24] = (byteenable[3]) ? writedata[31:24] : write_prefetch[31:24];
+    assign towrite[23:16] = (byteenable[2]) ? writedata[23:16] : write_prefetch[23:16];
+    assign towrite[15:8] =  (byteenable[1]) ? writedata[15:8] : write_prefetch[15:8];
+    assign towrite[7:0] =   (byteenable[0]) ? writedata[7:0] : write_prefetch[7:0];
+
+    // read might be combinatorial
+    always_comb begin
+        if (read && wait_ctr==READ_DELAY) begin
+            if (address >= ADDR_START & address < ADDR_END) begin   // instr section
+                readdata = memory_instr[addr_shift-ADDR_START_SHIFT];
+            end else if (address < MEM_SIZE) begin // Data memory section
+                readdata = memory_data[addr_shift];
+            end else if (OVF_EXISTS && (address>=32'hBFFFFFFC) && (address<=32'hC000001C)) begin
+                readdata = ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
+            end
+        end
+    end
+
+    // assign readdata = (wait_ctr==0) ? 
 
     always@(posedge clk) begin
+
+        if (read) begin
+            if (wait_ctr==READ_DELAY) begin
+                $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
+            end else begin
+                $display("RAM : STATUS : Read requested at address 0x%h, wait for %1d cycles", address, READ_DELAY-wait_ctr);
+            end
+        end
+
+        if (write) begin
+            if (wait_ctr==WRITE_DELAY) begin
+                memory_data[addr_shift] = towrite;    // Offset the addressing space
+                $display("RAM : WRITE : Wrote 0x%h data at address 0x%h", writedata, address);
+            end else begin
+                $display("RAM : STATUS : Write 0x%h data request at address 0x%h, wait for %1d cycles", writedata, address, WRITE_DELAY-wait_ctr);
+            end
+        end
+        
         // Only respond if address is within address space
         if (address >= ADDR_START & address < ADDR_END) begin
             assert (!write) else $display("RAM : FATAL : Tried to write to instruction area of memory with address 0x%h", address);
             if (read) begin
-                if (waiting) begin
-                    if (wait_ctr==0) begin
-                        // Have waited relevant cycles, perform the write operation
-                        waiting = 0;
-                        wait_ctr = -1;
-                        $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
-                    end else if (wait_ctr==1) begin
-                        readdata = memory_instr[addr_shift-ADDR_START_SHIFT];    // Offset the addressing space (and also in time)
-                        wait_ctr = 0;
-                    end else begin
-                        wait_ctr = wait_ctr-1;  // Decrement wait counter
-                        // $display("RAM : STATUS : Waiting for %1d more cycles before writing to address 0x%h", wait_ctr, address);
-                    end
+                if (wait_ctr != READ_DELAY) begin
+                    if (wait_ctr==0) txn_addr <= address;
+                    wait_ctr = wait_ctr + 1;    // Just increment wait counter haha
                 end else begin
-                    wait_ctr = READ_DELAY-1; // Offset for timing requirements
-                    waiting = 1;
-                    txn_addr <= address;        // Update transaction counter
-
-                    if (READ_DELAY==1) begin
-                        readdata = memory_instr[addr_shift-ADDR_START_SHIFT];   // Special case where wait cycles are instantly 0
-                    end
-                    $display("RAM : STATUS : Read requested at address 0x%h, wait for %1d cycles", address, wait_ctr);
+                    wait_ctr = 0;
                 end
             end
         end else if (address < MEM_SIZE) begin // Data memory section
             if (write) begin
-                if (waiting) begin
+                if (wait_ctr != WRITE_DELAY) begin
                     if (wait_ctr==0) begin
-                        waiting = 0;
-                        wait_ctr = -1;
-                        $display("RAM : WRITE : Wrote 0x%h data at address 0x%h", writedata, address);
-                    end else if (wait_ctr==1) begin
-                        // Have waited relevant cycles, perform the write operation
-                        // Damn, this feels inefficient...
-                        towrite[31:24] = (byteenable[3]) ? writedata[31:24] : towrite[31:24];
-                        towrite[23:16] = (byteenable[2]) ? writedata[23:16] : towrite[23:16];
-                        towrite[15:8] =  (byteenable[1]) ? writedata[15:8] : towrite[15:8];
-                        towrite[7:0] =   (byteenable[0]) ? writedata[7:0] : towrite[7:0];
-                        memory_data[addr_shift] = towrite;    // Offset the addressing space
-                        wait_ctr = wait_ctr-1;
-                    end else begin
-                        wait_ctr = wait_ctr-1;  // Decrement wait counter
-                        // $display("RAM : STATUS : Waiting for %1d more cycles before writing to address 0x%h", wait_ctr, address);
+                        txn_addr <= address;
+                        txn_byteenable <= byteenable;
+                        txn_writedata <= writedata;
                     end
+                    wait_ctr = wait_ctr + 1;    // Just increment wait counter haha
                 end else begin
-                    wait_ctr = WRITE_DELAY-1; // Offset for timing requirements
-                    waiting = 1;
-                    txn_addr <= address;        // Update transaction counter
-                    txn_writedata <= writedata;        // Update transaction counter
-                    txn_byteenable <= byteenable;        // Update transaction counter
-
-                    if (WRITE_DELAY==1) begin
-                        towrite[31:24] = (byteenable[3]) ? writedata[31:24] : towrite[31:24];
-                        towrite[23:16] = (byteenable[2]) ? writedata[23:16] : towrite[23:16];
-                        towrite[15:8] =  (byteenable[1]) ? writedata[15:8] : towrite[15:8];
-                        towrite[7:0] =   (byteenable[0]) ? writedata[7:0] : towrite[7:0];
-                        memory_data[addr_shift] = towrite;    // Offset the addressing space
-                    end else begin
-                        towrite = memory_data[addr_shift];   // Just fetch this first
-                    end
-
-                    $display("RAM : STATUS : Write 0x%h data request at address 0x%h, wait for %1d cycles", writedata, address, wait_ctr);
+                    wait_ctr = 0;
                 end
             end else if (read) begin
-                if (waiting) begin
-                    if (wait_ctr==0) begin
-                        // Have waited relevant cycles, perform the write operation
-                        waiting = 0;
-                        wait_ctr = -1;
-                        $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
-                    end else if (wait_ctr==1) begin
-                        readdata = memory_data[addr_shift];    // Offset the addressing space (and also in time)
-                        wait_ctr = 0;
-                    end else begin
-                        wait_ctr = wait_ctr-1;  // Decrement wait counter
-                        // $display("RAM : STATUS : Waiting for %1d more cycles before writing to address 0x%h", wait_ctr, address);
-                    end
+                if (wait_ctr != READ_DELAY) begin
+                    if (wait_ctr==0) txn_addr <= address;
+                    wait_ctr = wait_ctr + 1;    // Just increment wait counter haha
                 end else begin
-                    wait_ctr = READ_DELAY-1; // Offset for timing requirements
-                    waiting = 1;
-                    txn_addr <= address;        // Update transaction counter
-
-                    if (READ_DELAY==1) begin
-                        readdata = memory_data[addr_shift];   // Special case where wait cycles are instantly 0
-                    end
-                    $display("RAM : STATUS : Read requested at address 0x%h, wait for %1d cycles", address, wait_ctr);
+                    wait_ctr = 0;
                 end
             end
         end else if (OVF_EXISTS && (address>=32'hBFFFFFFC) && (address<=32'hC000001C)) begin
             assert (!write) else $display("RAM : FATAL : Tried to write to instruction overflow area of memory with address 0x%h", address);
             if (read) begin
-                if (waiting) begin
-                    if (wait_ctr==0) begin
-                        // Have waited relevant cycles, perform the write operation
-                        waiting = 0;
-                        wait_ctr = -1;
-                        $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
-                    end else if (wait_ctr==1) begin
-                        readdata = ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];    // Offset the addressing space (and also in time)
-                        wait_ctr = 0;
-                    end else begin
-                        wait_ctr = wait_ctr-1;  // Decrement wait counter
-                        // $display("RAM : STATUS : Waiting for %1d more cycles before writing to address 0x%h", wait_ctr, address);
-                    end
+                if (wait_ctr != READ_DELAY) begin
+                    if (wait_ctr==0) txn_addr <= address;
+                    wait_ctr = wait_ctr + 1;    // Just increment wait counter haha
                 end else begin
-                    wait_ctr = READ_DELAY-1; // Offset for timing requirements
-                    waiting = 1;
-                    txn_addr <= address;        // Update transaction counter
-
-                    if (READ_DELAY==1) begin
-                        readdata = ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];   // Special case where wait cycles are instantly 0
-                    end
-                    $display("RAM : STATUS : Read requested at address 0x%h, wait for %1d cycles", address, wait_ctr);
+                    wait_ctr = 0;
                 end
-            end            
+            end
         end else begin
             // $display("RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
             if ($isunknown(address)) begin

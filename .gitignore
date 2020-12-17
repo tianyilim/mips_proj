@@ -13,3 +13,5 @@ play*.sh
 
 coolstuff.py
 currstate.txt
+
+!test/waveforms/mips_CPU_bus_tb.gtkw

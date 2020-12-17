@@ -96,8 +96,10 @@ module mips_cache_controller(
     // mem_read can go on faster
     assign mem_read = (instr_stall || data_stall) && (state==STATE_FETCH || state==STATE_IDLE);
 
-    assign instr_data_valid = instr_stall && !waitrequest && (state==STATE_FETCH);
-    assign data_data_valid = data_stall && !waitrequest && (state==STATE_FETCH);
+    assign instr_data_valid = instr_stall && !waitrequest && (state!=STATE_WRITE);
+    assign data_data_valid = data_stall && !waitrequest && (state!=STATE_WRITE);
+    // assign instr_data_valid = instr_stall && !waitrequest;
+    // assign data_data_valid = data_stall && !waitrequest;
 
     assign instr_stall_effective = instr_stall && (waitrequest || wb_active);   // Don't come out of stall while a write txn in progress
     assign data_stall_effective = data_stall && (waitrequest || wb_active);
@@ -120,7 +122,7 @@ module mips_cache_controller(
                     // data_data_valid <= 0;
 
                     // State transitions
-                    if (instr_stall || data_stall) begin
+                    if ( (instr_stall_effective || data_stall_effective) && waitrequest) begin
                         state <= STATE_FETCH;
                         // mem_read <= 1;
                     end else if (!wb_empty) begin
@@ -136,7 +138,7 @@ module mips_cache_controller(
 
                     // State transitions
                     if (!waitrequest) begin
-                        if (instr_stall || data_stall) begin
+                        if (instr_stall_effective || data_stall_effective) begin
                             state <= STATE_FETCH;
                             // mem_read <= 1;
                             wb_active <= 0;
@@ -170,7 +172,7 @@ module mips_cache_controller(
                     end
 
                     // State transitions
-                    if (!waitrequest & !(instr_stall || data_stall) ) begin
+                    if (!waitrequest & !(instr_stall_effective || data_stall_effective) ) begin
                         state <= STATE_IDLE;
                     end
                 end

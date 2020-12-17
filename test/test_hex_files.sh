@@ -55,116 +55,122 @@ fi
 declare -i PASS_COUNT=0
 declare -i FAIL_COUNT=0
 
-for i in "${TEST_INSTRS[@]}"; do
-    for FILENAME in test/1-binary/${i}*.instr.hex; do
-        [ -e "$FILENAME" ] || continue # Avoid case where there are no matches
+TEST_DELAY=( 0 1 5 )
+for DELAY in "${TEST_DELAY[@]}"; do
+    # echo \'$DELAY\'
+    # continue
+
+    for i in "${TEST_INSTRS[@]}"; do
+        for FILENAME in test/1-binary/${i}*.instr.hex; do
+            [ -e "$FILENAME" ] || continue # Avoid case where there are no matches
+            
+            NAME="${FILENAME%.*}"
+            NAME="${NAME%.*}"
+            BASENAME=`basename ${NAME}` # Name of test case
+            INSTR_NAME=${BASENAME%_*}
+
+            declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
+
+            if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
+                # echo "Test answer ${BASENAME} does not exist"
+                continue
+            fi
+            # if sample output does not exist, don't bother running the test case
+
+            if [ -e "${NAME}.data.hex" ]; then
+                DATANAME=test/1-binary/${BASENAME}.data.hex
+            elif [ -e "${NAME}.data.txt" ]; then
+                DATANAME=test/1-binary/${BASENAME}.data.txt
+            else
+                DATANAME="test/datamem.txt"
+            fi
+
+            if [ -e "${NAME}.ovf.hex" ]; then
+                OVFNAME=test/1-binary/${BASENAME}.ovf.hex
+            elif [ -e "${NAME}.ovf.txt" ]; then
+                OVFNAME=test/1-binary/${BASENAME}.ovf.txt
+            else
+                OVFNAME=""
+            fi
+
+            # echo \'"$NAME"\', \'"$DATANAME"\', \'"$OVFNAME"\'
+
+            # List of files:
+                # rtl/mips_cpu_bus.v \
+                # rtl/mips_cpu_cache_controller.v \
+                # rtl/mips_cpu_cache_data.v \
+                # rtl/mips_cpu_cache_instr.v \
+                # rtl/mips_cpu_cache_writebuffer.v \
+                # rtl/mips_cpu_eight_bit_extension.v \
+                # rtl/mips_cpu_harvard.v \
+                # rtl/mips_cpu_register_file.v \
+                # rtl/mips_cpu_sixteen_bit_extension.v \
+            set -e
+
+            iverilog -Wall -g 2012 ${TESTING} \
+            test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
+            -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
+            -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
+            -P mips_CPU_bus_tb.OVF_INIT_FILE=\"${OVFNAME}\" \
+            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=50000 \
+            -P mips_CPU_bus_tb.READ_DELAY=\"${DELAY}\" \
+            -s mips_CPU_bus_tb \
+            -o joe.out
+            
+            set +e
+
+            # Save the waveforms
+
+            # Auto-run and log into the a log file into 3-output
+            ./joe.out > test/3-output/${BASENAME}.log
+            cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}.vcd
+            # cat test/3-output/${BASENAME}.log  # Display debug output directly
+
+            V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}.log)
+            CYCLES_STR=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
+            V0_OUT=${V0_OUT#"TB : V0 : "}
+            declare -i CYCLES=${CYCLES_STR#"TB : CYCLES : "}
+            CPI=$(expr $CYCLES / $INSTR_COUNT)  # Check if CPI limit has been exceeded
+            CPI_PASS=1 # Removed CPI pass factor
+            if [ $CPI -gt 36 ]; then
+                # CPI="${RED}$CPI${RESTORE}"
+                CPI="$CPI"
+            else
+                # CPI="${YELLOW}$CPI${RESTORE}"
+                CPI="$CPI"
+            fi
+
+            V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
+            DIFF_FOUND=$(diff -q --ignore-all-space --ignore-blank-lines --strip-trailing-cr --ignore-case <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt) # compare expected and given output
+            DIFFPASS=$?
+            if [ ! $DIFFPASS = 0 ]; then
+                V0_CHECK="$V0_CHECK"
+                # V0_CHECK="${RED}$V0_CHECK${RESTORE}"
+            fi
+
+            FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}.log)
+            FATAL_PASS=$?
+
+            COMMENT=$(grep -w --ignore-case "comment" test/0-assembly/${BASENAME}.asm.txt)
         
-        NAME="${FILENAME%.*}"
-        NAME="${NAME%.*}"
-        BASENAME=`basename ${NAME}` # Name of test case
-        INSTR_NAME=${BASENAME%_*}
+            # If fatal is found anywhere in the log file, consider the testcase as failed
+            if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ]; then
+                # FAIL="${GREEN}Pass${RESTORE}"
+                FAIL="Pass"
+                PASS_COUNT=$PASS_COUNT+1
+            else
+                # FAIL="${RED}Fail${RESTORE}"
+                FAIL="Fail"
+                FAIL_COUNT=$FAIL_COUNT+1
+            fi
 
-        declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
+            echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "RAM_DELAY: "$DELAY | $FATAL_FOUND | $COMMENT"
 
-        if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
-            # echo "Test answer ${BASENAME} does not exist"
-            continue
-        fi
-        # if sample output does not exist, don't bother running the test case
+            # Opens with savefiles, Cleanup
+            # gtkwave mips_CPU_bus_tb.vcd mips_CPU_bus_tb.gtkw -a mips_CPU_bus_tb.gtkw; \
 
-        if [ -e "${NAME}.data.hex" ]; then
-            DATANAME=test/1-binary/${BASENAME}.data.hex
-        elif [ -e "${NAME}.data.txt" ]; then
-            DATANAME=test/1-binary/${BASENAME}.data.txt
-        else
-            DATANAME="test/datamem.txt"
-        fi
-
-        if [ -e "${NAME}.ovf.hex" ]; then
-            OVFNAME=test/1-binary/${BASENAME}.ovf.hex
-        elif [ -e "${NAME}.ovf.txt" ]; then
-            OVFNAME=test/1-binary/${BASENAME}.ovf.txt
-        else
-            OVFNAME=""
-        fi
-
-        # echo \'"$NAME"\', \'"$DATANAME"\', \'"$OVFNAME"\'
-
-        # List of files:
-            # rtl/mips_cpu_bus.v \
-            # rtl/mips_cpu_cache_controller.v \
-            # rtl/mips_cpu_cache_data.v \
-            # rtl/mips_cpu_cache_instr.v \
-            # rtl/mips_cpu_cache_writebuffer.v \
-            # rtl/mips_cpu_eight_bit_extension.v \
-            # rtl/mips_cpu_harvard.v \
-            # rtl/mips_cpu_register_file.v \
-            # rtl/mips_cpu_sixteen_bit_extension.v \
-        set -e
-
-        iverilog -Wall -g 2012 ${TESTING} \
-        test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
-        -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
-        -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
-        -P mips_CPU_bus_tb.OVF_INIT_FILE=\"${OVFNAME}\" \
-        -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
-        -P mips_CPU_bus_tb.READ_DELAY=0 \
-        -s mips_CPU_bus_tb \
-        -o joe.out
-        
-        set +e
-
-        # Save the waveforms
-
-        # Auto-run and log into the a log file into 3-output
-        ./joe.out > test/3-output/${BASENAME}.log
-        cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}.vcd
-        # cat test/3-output/${BASENAME}.log  # Display debug output directly
-
-        V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}.log)
-        CYCLES_STR=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
-        V0_OUT=${V0_OUT#"TB : V0 : "}
-        declare -i CYCLES=${CYCLES_STR#"TB : CYCLES : "}
-        CPI=$(expr $CYCLES / $INSTR_COUNT)  # Check if CPI limit has been exceeded
-        CPI_PASS=1 # Removed CPI pass factor
-        if [ $CPI -gt 36 ]; then
-            # CPI="${RED}$CPI${RESTORE}"
-            CPI="$CPI"
-        else
-            # CPI="${YELLOW}$CPI${RESTORE}"
-            CPI="$CPI"
-        fi
-
-        V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
-        DIFF_FOUND=$(diff -q --ignore-all-space --ignore-blank-lines --strip-trailing-cr --ignore-case <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt) # compare expected and given output
-        DIFFPASS=$?
-        if [ ! $DIFFPASS = 0 ]; then
-            V0_CHECK="$V0_CHECK"
-            # V0_CHECK="${RED}$V0_CHECK${RESTORE}"
-        fi
-
-        FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}.log)
-        FATAL_PASS=$?
-
-        COMMENT=$(grep -w --ignore-case "comment" test/0-assembly/${BASENAME}.asm.txt)
-    
-        # If fatal is found anywhere in the log file, consider the testcase as failed
-        if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ]; then
-            # FAIL="${GREEN}Pass${RESTORE}"
-            FAIL="Pass"
-            PASS_COUNT=$PASS_COUNT+1
-        else
-            # FAIL="${RED}Fail${RESTORE}"
-            FAIL="Fail"
-            FAIL_COUNT=$FAIL_COUNT+1
-        fi
-
-        echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "INSTRS: "$INSTR_COUNT, "CPI: "$CPI, $FATAL_FOUND, $COMMENT"
-
-        # Opens with savefiles, Cleanup
-        # gtkwave mips_CPU_bus_tb.vcd mips_CPU_bus_tb.gtkw -a mips_CPU_bus_tb.gtkw; \
-
-    done;
+        done;
+    done
 done
 
 # echo -e "Ran $(($FAIL_COUNT+$PASS_COUNT)) testcases."

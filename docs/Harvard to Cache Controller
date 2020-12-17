@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-12-17T13:53:51.601Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="_szcas8980k95Uotusas" version="14.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-12-17T14:11:26.310Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="GZwIeZAA-cszmXyvFpRn" version="14.0.3" type="github">
   <diagram id="hYkcjz8Myecf8tYXNl3D" name="Page-1">
-    <mxGraphModel dx="981" dy="526" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="276" dy="137" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -119,6 +119,12 @@
         </mxCell>
         <mxCell id="Qp43raJvPr8Gr8fpi-2D-27" value="Other signals" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
           <mxGeometry x="580" y="80" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Qp43raJvPr8Gr8fpi-2D-29" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;align=center;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="428" y="408" width="4" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="Qp43raJvPr8Gr8fpi-2D-30" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;align=center;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="408" y="388" width="4" height="4" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -7,6 +7,7 @@ module mips_CPU_bus_tb;
 	parameter MEM_CLK_TIME = CPU_CLK_TIME;
 	parameter INSTR_INIT_FILE = "";
 	parameter DATA_INIT_FILE = "";
+	parameter OVF_INIT_FILE = "";
 	parameter READ_DELAY = 2;
 	parameter WRITE_DELAY = READ_DELAY;
 
@@ -64,6 +65,7 @@ module mips_CPU_bus_tb;
 		11: DECODEERROR—Indicates attempted access to anundefined location
 	*/
 	mips_avalon_slave #(.RAM_INIT_FILE(INSTR_INIT_FILE), .DATA_INIT_FILE(DATA_INIT_FILE),
+						.OVF_INIT_FILE(OVF_INIT_FILE),
 						.READ_DELAY(READ_DELAY), .WRITE_DELAY(WRITE_DELAY))
 		MEM(
 		.clk(mem_clk),					

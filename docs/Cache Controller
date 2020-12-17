@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-12-17T14:10:44.922Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="w3MvOHszMFBe5pG5pa8G" version="14.0.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-12-17T14:12:31.380Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36" etag="azo2JQ6Rd6DZP5XFLKqo" version="14.0.3" type="github">
   <diagram id="j4uRK4XC3W5wg2J-r7jZ" name="Page-1">
-    <mxGraphModel dx="1185" dy="588" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="981" dy="486" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -131,13 +131,14 @@
             <mxPoint x="290" y="290" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="l5H09zj2R6d8J3PscO7P-32" value="Harvard&lt;br&gt;Data&lt;br&gt;Read Path" style="endArrow=classic;startArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxCell id="l5H09zj2R6d8J3PscO7P-32" value="Harvard&lt;br&gt;Data&lt;br&gt;Read Path" style="endArrow=classic;startArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;spacingTop=-10;" edge="1" parent="1">
+          <mxGeometry x="-0.2857" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="20" y="300" as="sourcePoint" />
             <mxPoint x="160" y="300" as="targetPoint" />
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="l5H09zj2R6d8J3PscO7P-33" value="Harvard&lt;br&gt;Data&lt;br&gt;Write Path" style="endArrow=classic;startArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;" edge="1" parent="1">
+        <mxCell id="l5H09zj2R6d8J3PscO7P-33" value="Harvard&lt;br&gt;Data&lt;br&gt;Write Path" style="endArrow=classic;startArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;spacingTop=10;" edge="1" parent="1">
           <mxGeometry x="-0.2857" width="50" height="50" relative="1" as="geometry">
             <mxPoint x="20" y="340" as="sourcePoint" />
             <mxPoint x="160" y="340" as="targetPoint" />

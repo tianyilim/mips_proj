@@ -31,7 +31,7 @@ module mips_cache_writebuffer(
     } state_t;
 
     parameter BUF_BITS = 3;
-    parameter BUFSIZE = $pow(2, BUF_BITS);  // Keeps it easy to keep track
+    parameter BUFSIZE = 2**BUF_BITS;  // Keeps it easy to keep track
 
     reg [BUFSIZE-1:0] full_buf; 
     reg [31:0] addr_buf [BUFSIZE-1:0];
@@ -47,7 +47,7 @@ module mips_cache_writebuffer(
     integer index;  // Iterator for reset
 
     // Combinatorial FULL/EMPTY
-    assign full = full_buf==$pow(2,BUFSIZE)-1;
+    assign full = full_buf==(2**BUFSIZE-1);
     assign empty = full_buf==0;
     assign state_out = state;   // Debug
     assign write_writeenable = !empty & active; // Write when there are things to write - and when we are allowed to!
@@ -56,11 +56,11 @@ module mips_cache_writebuffer(
     assign write_data = data_buf[write_ptr];
     assign write_byteenable = byte_en_buf[write_ptr];   // These can be combinatorially assigned as write is handled elsewhere
 
-    always @(posedge clk) begin
-        if (!rst) begin
-            write_sense <= write_en;
-        end
-    end
+    // always @(posedge clk) begin
+    //     if (!rst) begin
+    //         write_sense <= write_en;
+    //     end
+    // end
 
     always @(posedge clk) begin
         if (rst) begin
@@ -79,6 +79,7 @@ module mips_cache_writebuffer(
                 byte_en_buf[index] <= 0;
             end
         end else begin  // unreset behaviour
+            write_sense <= write_en;
             // $display("WB : Unreset");
             // writing always happens when not empty unless active low
             if (active) begin
@@ -114,7 +115,7 @@ module mips_cache_writebuffer(
             end
             STATE_WRITE: begin
                 // full check
-                if (full_buf==$pow(2,BUFSIZE)-1) begin
+                if (full_buf== (2**BUFSIZE-1) ) begin
                     state <= STATE_FULL;        // Dont' accept any more write requests
                     read_ptr <= write_ptr;      
                     // Our next empty slot for reading is the one currently being written out of

@@ -80,7 +80,15 @@ for i in "${TEST_INSTRS[@]}"; do
             DATANAME="test/datamem.txt"
         fi
 
-        # echo $NAME, $DATANAME
+        if [ -e "${NAME}.ovf.hex" ]; then
+            OVFNAME=test/1-binary/${BASENAME}.data.hex
+        elif [ -e "${NAME}.data.txt" ]; then
+            OVFNAME=test/1-binary/${BASENAME}.data.txt
+        else
+            OVFNAME=""
+        fi
+
+        # echo \'"$NAME"\', \'"$DATANAME"\', \'"$OVFNAME"\'
 
         # List of files:
             # rtl/mips_cpu_bus.v \
@@ -98,6 +106,7 @@ for i in "${TEST_INSTRS[@]}"; do
         test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
         -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
         -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
+        -P mips_CPU_bus_tb.OVF_INIT_FILE=\"${OVFNAME}\" \
         -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
         -P mips_CPU_bus_tb.READ_DELAY=2 \
         -s mips_CPU_bus_tb \

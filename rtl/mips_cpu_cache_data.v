@@ -22,7 +22,7 @@ module mips_cache_data(
 );
     // Desiging a 4-way associative cache
     parameter CACHE_BITS = 5;
-    parameter CACHE_SIZE = $pow(2, CACHE_BITS);
+    parameter CACHE_SIZE = 2**CACHE_BITS;
     localparam CACHE_ASSOC = 4;  // 4-way. Not adjustable. Just for readability.
     localparam CACHE_ASSOC_BITS = 2;    // [4-bit one-hot becomes 2-bit.]
     localparam CACHE_DEPTH = CACHE_SIZE/CACHE_ASSOC;

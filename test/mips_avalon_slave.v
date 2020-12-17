@@ -25,11 +25,13 @@ module mips_avalon_slave(
     parameter READ_DELAY = 2;               // How long will waitrequest be asserted on read?
     parameter WRITE_DELAY = READ_DELAY;     // How long will waitrequest be asserted on write?
     parameter DATA_INIT_FILE = "";          // 
-    parameter RAM_INIT_FILE = "";           // Initialise RAM from elsewhere
+    parameter RAM_INIT_FILE = "";           // Initialise instruction part (ROM)
+    parameter OVF_INIT_FILE = "";           // Initialise extended instructions
 
     logic[31:0] towrite;                 // Just something to implement byteeenable
     reg[31:0] memory_data [MEM_SIZE-1:0];     // Data memory
     reg[31:0] memory_instr [MEM_SIZE-1:0];    // Instruction memory is contained here
+    reg[31:0] ovf_instr [7:0];
     integer wait_ctr = -1;                   // Waits implemented here
     integer waiting = 0;
 
@@ -39,6 +41,8 @@ module mips_avalon_slave(
     logic [31:0] txn_addr;
     logic [31:0] txn_writedata;
     logic [3:0] txn_byteenable;     // Check that these 3 are not modified over the course of a transaction
+
+    logic OVF_EXISTS;   // Check if there is indeed a request to fill up overflow
 
     // Assertions go here
     always@(negedge clk) begin
@@ -98,6 +102,17 @@ module mips_avalon_slave(
             $readmemh(DATA_INIT_FILE, memory_data);
         end else begin
             $fatal(1, "RAM : FATAL : Unable to find Data Init file");
+        end
+
+        // Ovf_instr sits from 0xBFFFFFFC to 0xC000001C
+        if (OVF_INIT_FILE !="") begin
+            $display("RAM : INIT : Loading Overflow Check contents from %s", OVF_INIT_FILE);
+            $readmemh(OVF_INIT_FILE, ovf_instr);
+            OVF_EXISTS = 1'b1;
+        end else begin
+            // No overflow file required
+            $display("RAM : INIT : No Overflow check content required.");
+            OVF_EXISTS = 1'b0;
         end
     end
 
@@ -196,12 +211,43 @@ module mips_avalon_slave(
                     $display("RAM : STATUS : Read requested at address 0x%h, wait for %1d cycles", address, wait_ctr);
                 end
             end
+        end else if (OVF_EXISTS && (address>=32'hBFFFFFFC) && (address<=32'hC000001C)) begin
+            assert (!write) else $display("RAM : FATAL : Tried to write to instruction overflow area of memory with address 0x%h", address);
+            if (read) begin
+                if (waiting) begin
+                    if (wait_ctr==0) begin
+                        // Have waited relevant cycles, perform the write operation
+                        waiting = 0;
+                        wait_ctr = -1;
+                        $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
+                    end else if (wait_ctr==1) begin
+                        readdata = ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];    // Offset the addressing space (and also in time)
+                        wait_ctr = 0;
+                    end else begin
+                        wait_ctr = wait_ctr-1;  // Decrement wait counter
+                        // $display("RAM : STATUS : Waiting for %1d more cycles before writing to address 0x%h", wait_ctr, address);
+                    end
+                end else begin
+                    wait_ctr = READ_DELAY-1; // Offset for timing requirements
+                    waiting = 1;
+                    txn_addr <= address;        // Update transaction counter
+
+                    if (READ_DELAY==1) begin
+                        readdata = ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];   // Special case where wait cycles are instantly 0
+                    end
+                    $display("RAM : STATUS : Read requested at address 0x%h, wait for %1d cycles", address, wait_ctr);
+                end
+            end            
         end else begin
             // $display("RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
             if ($isunknown(address)) begin
             end else begin
                 if (read || write) begin
-                    $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+                    if (OVF_EXISTS) begin
+                        $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h, instruction space 0x%h to 0x%h, or overflow space 0xBFFFFFFC to 0xC000001C", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+                    end else begin
+                        $fatal(1, "RAM : FATAL : Attempted to access 0x%h, not in data space 0x%h to 0x%h or instruction space 0x%h to 0x%h", address, 0, MEM_SIZE, ADDR_START, ADDR_END);
+                    end
                 end
             end
         end

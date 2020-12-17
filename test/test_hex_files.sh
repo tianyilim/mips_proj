@@ -81,9 +81,9 @@ for i in "${TEST_INSTRS[@]}"; do
         fi
 
         if [ -e "${NAME}.ovf.hex" ]; then
-            OVFNAME=test/1-binary/${BASENAME}.data.hex
-        elif [ -e "${NAME}.data.txt" ]; then
-            OVFNAME=test/1-binary/${BASENAME}.data.txt
+            OVFNAME=test/1-binary/${BASENAME}.ovf.hex
+        elif [ -e "${NAME}.ovf.txt" ]; then
+            OVFNAME=test/1-binary/${BASENAME}.ovf.txt
         else
             OVFNAME=""
         fi

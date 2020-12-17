@@ -1,0 +1,14 @@
+addiu $t2, $zero, 10
+j 0xFC00020
+nop
+nop
+addiu $v0, $zero, 15     #z
+jr $zero
+nop
+nop
+bgezal $t2, -5     #jmp to #z
+nop
+jr $zero
+
+
+comment: bgezal wrap around

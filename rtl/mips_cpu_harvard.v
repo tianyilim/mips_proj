@@ -160,8 +160,8 @@ module mips_cpu_harvard(
                                                            (opcode == ORI) ||
                                                            (opcode == SLTI) ||
                                                            (opcode == SLTIU) ||
-                                                           ((opcode == BRANCH) && (rt_addr == 5'b10000) && jump_check == 1) || // BLTZAL
-                                                           ((opcode == BRANCH) && (rt_addr == 5'b10001) && jump_check == 1) || //BGEZAL
+                                                           ((opcode == BRANCH) && (rt_addr == 5'b10000)) || // BLTZAL
+                                                           ((opcode == BRANCH) && (rt_addr == 5'b10001)) || //BGEZAL
                                                            (opcode == XORI))) ? 1 : 0;
     assign write_enable_i_exec3 = ((state == EXEC3) && (instr_type == I) && ((opcode == LB)  ||
                                                                                (opcode == LBU) ||
@@ -403,8 +403,8 @@ module mips_cpu_harvard(
                               if ($signed(rs_data) >= 0) begin
                                   branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                                   jump_check <= 1;
-                                  write_back_data <= pc + 8;
                               end
+                              write_back_data <= pc + 8;
                           end
                           5'b00000: begin // BLTZ
                               if (jump_check == 1) begin
@@ -422,8 +422,8 @@ module mips_cpu_harvard(
                               if ($signed(rs_data) < 0) begin
                                   branch_delay_slot <= pc_next + $signed(imm_signed_extended * 4);
                                   jump_check <= 1;
-                                  write_back_data <= pc + 8;
                               end
+                              write_back_data <= pc + 8;
                           end
 
                       endcase

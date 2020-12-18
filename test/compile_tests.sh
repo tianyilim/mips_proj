@@ -28,6 +28,7 @@ else
     done
 fi
 
+rm test/1-binary/*.instr.hex > /dev/null 2>&1
 # echo \'"${cases[@]}"\'
 
 for i in "${cases[@]}"; do

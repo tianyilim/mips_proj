@@ -32,6 +32,10 @@ else
 fi
 # echo $TESTING
 
+# Clean out the testcases
+rm test/waveforms/*.vcd > /dev/null 2>&1
+rm test/3-output/* > /dev/null 2>&1
+
 # instructions to test / compile for
 # Slice the input argv array without considering the first (directory) element
 TEST_INSTRS=()
@@ -57,7 +61,7 @@ declare -i FAIL_COUNT=0
 
 TEST_DELAY=( 0 1 5 )
 for DELAY in "${TEST_DELAY[@]}"; do
-    # echo \'$DELAY\'
+    echo \'$DELAY\'
     # continue
 
     for i in "${TEST_INSTRS[@]}"; do
@@ -112,8 +116,8 @@ for DELAY in "${TEST_DELAY[@]}"; do
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \
             -P mips_CPU_bus_tb.OVF_INIT_FILE=\"${OVFNAME}\" \
-            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=50000 \
-            -P mips_CPU_bus_tb.READ_DELAY=\"${DELAY}\" \
+            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=10000 \
+            -P mips_CPU_bus_tb.READ_DELAY=$DELAY \
             -s mips_CPU_bus_tb \
             -o joe.out
             
@@ -122,12 +126,12 @@ for DELAY in "${TEST_DELAY[@]}"; do
             # Save the waveforms
 
             # Auto-run and log into the a log file into 3-output
-            ./joe.out > test/3-output/${BASENAME}.log
+            ./joe.out > test/3-output/${BASENAME}_${DELAY}.log
             cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}.vcd
             # cat test/3-output/${BASENAME}.log  # Display debug output directly
 
-            V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}.log)
-            CYCLES_STR=$(grep "TB : CYCLES" test/3-output/${BASENAME}.log)
+            V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}_${DELAY}.log)
+            CYCLES_STR=$(grep "TB : CYCLES" test/3-output/${BASENAME}_${DELAY}.log)
             V0_OUT=${V0_OUT#"TB : V0 : "}
             declare -i CYCLES=${CYCLES_STR#"TB : CYCLES : "}
             CPI=$(expr $CYCLES / $INSTR_COUNT)  # Check if CPI limit has been exceeded
@@ -148,7 +152,7 @@ for DELAY in "${TEST_DELAY[@]}"; do
                 # V0_CHECK="${RED}$V0_CHECK${RESTORE}"
             fi
 
-            FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}.log)
+            FATAL_FOUND=$(grep "FATAL" test/3-output/${BASENAME}_${DELAY}.log)
             FATAL_PASS=$?
 
             COMMENT=$(grep -w --ignore-case "comment" test/0-assembly/${BASENAME}.asm.txt)

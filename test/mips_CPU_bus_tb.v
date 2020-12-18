@@ -135,7 +135,7 @@ module mips_CPU_bus_tb;
 	initial begin
 		$dumpfile("mips_CPU_bus_tb.vcd");
         $dumpvars(0, mips_CPU_bus_tb);
-		$display("TB : STATUS : %02t : Starting test", $time);
+		$display("TB : STATUS : %02t : Starting test with delay %1d", $time, READ_DELAY);
 		// global initializations
 		cpu_reset = 0;
 		current_cpu_cycles_ran = 0;

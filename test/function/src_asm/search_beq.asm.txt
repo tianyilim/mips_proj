@@ -1,0 +1,25 @@
+addiu $s0, $zero, 4   #start of the array
+addiu $s1, $zero, 4   #start of the array
+lw $a0, 0($zero)      #value you are trying to find
+j 0xFC00018    #jump to start of function
+nop
+nop
+lw $t0, 0($s1)        #start of function
+nop
+beq $t0, $a0, 7       #is it the number we are looking for
+nop
+addiu $s1, $s1, 4     
+beq $t0, $zero, 9     #return 10
+nop
+j 0xFC00018           #jump back to start
+nop
+nop
+subu $v0, $s1, $s0    #return index
+srl $v0 $v0 2
+jr $zero
+nop
+nop
+addiu $v0, $zero, 10
+jr $zero
+
+

@@ -51,6 +51,7 @@ module mips_cache_controller(
     logic wb_active;    // activates writing aspect of WB
 
     logic [31:0] addr_wbtomem;      // Preventing multiple drivers of mem_addr
+    logic addr_in_wb;               // Ensuring cache coherency
 
     logic [31:0] instr_data_in;
     logic instr_data_valid;
@@ -77,7 +78,7 @@ module mips_cache_controller(
     mips_cache_writebuffer cache_writebuffer(.clk(clk), .rst(rst), .addr(data_address),
                                 .write_en(data_write), .writedata(data_writedata), 
                                 .byteenable(data_byteenable), .active(wb_active),
-                                .waitrequest(waitrequest),
+                                .waitrequest(waitrequest), .addr_in_wb(addr_in_wb),
                                 .write_addr(addr_wbtomem), .write_data(mem_writedata), 
                                 .write_byteenable(wb_byteenable), .write_writeenable(mem_write),
                                 .state_out(wb_state), .full(wb_full), .empty(wb_empty)
@@ -117,7 +118,7 @@ module mips_cache_controller(
             case (state)    // State machine
                 STATE_IDLE : begin
                     // Lmao do nothing
-                    $display("CACHE_CTRL : STATE : IDLE");
+                    $display("CACHE_CTRL : STATE : IDLE : Instr_Stall: %b; Data_Stall: %b; Wb_full: %b");
                     // instr_data_valid <= 0;
                     // data_data_valid <= 0;
 
@@ -138,7 +139,8 @@ module mips_cache_controller(
 
                     // State transitions
                     if (!waitrequest) begin
-                        if (instr_stall_effective || data_stall_effective) begin
+                        if ((instr_stall_effective || data_stall_effective) && !(addr_in_wb)) begin
+                            // Cache coherency, continue writing if there is something in the cache that will be later accessed
                             state <= STATE_FETCH;
                             // mem_read <= 1;
                             wb_active <= 0;

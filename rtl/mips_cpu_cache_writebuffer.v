@@ -8,6 +8,10 @@ module mips_cache_writebuffer(
     input logic[31:0] writedata,
     input logic[3:0] byteenable,
 
+    output logic addr_in_wb,        // is the current data address contained in
+                                    // in the WB?
+                                    // if so, is there a risk of cache in-coherency?
+
     input logic active,             // Enable this when the module is to be active
                                     // Sometimes we need to temporarily stop writing
                                     // and 'hijack' the process for a read miss.
@@ -42,6 +46,8 @@ module mips_cache_writebuffer(
     logic [BUF_BITS-1:0] read_ptr;           // Pointer for Cache to write to WB
     logic [BUF_BITS-1:0] write_ptr;          // Pointer for WB to write to MEM
 
+    logic [BUFSIZE-1:0] addr_in_wb_arr;     // Keeps track if the current address is in the buffer
+
     logic write_sense;                      // Only take the first write in the case where write_en is high
 
     integer index;  // Iterator for reset
@@ -56,11 +62,12 @@ module mips_cache_writebuffer(
     assign write_data = data_buf[write_ptr];
     assign write_byteenable = byte_en_buf[write_ptr];   // These can be combinatorially assigned as write is handled elsewhere
 
-    // always @(posedge clk) begin
-    //     if (!rst) begin
-    //         write_sense <= write_en;
-    //     end
-    // end
+    always_comb begin
+        for (index=0; index<BUFSIZE; index=index+1) begin
+            addr_in_wb_arr[index] = (addr==addr_buf[index]);
+        end
+        addr_in_wb = |addr_in_wb_arr;   // Take the bitwise or
+    end
 
     always @(posedge clk) begin
         if (rst) begin

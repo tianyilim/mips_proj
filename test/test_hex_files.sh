@@ -127,7 +127,7 @@ for DELAY in "${TEST_DELAY[@]}"; do
 
             # Auto-run and log into the a log file into 3-output
             ./joe.out > test/3-output/${BASENAME}_${DELAY}.log
-            cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}.vcd
+            cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}_${DELAY}.vcd
             # cat test/3-output/${BASENAME}.log  # Display debug output directly
 
             V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}_${DELAY}.log)

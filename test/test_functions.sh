@@ -89,12 +89,12 @@ for TESTCASE in "${TEST_INSTRS[@]}"; do
             INSTR_NUM="${INPUT_BASENAME#*_*_}"
             # echo $INSTR_NUM
 
-            iverilog -Wall -g 2012 ${TESTING} \
+            iverilog -g 2012 ${TESTING} \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"test/function/src_bin/"${BASENAME}.instr.hex"\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\""${INPUT}"\" \
-            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=20000 \
-            -P mips_CPU_bus_tb.READ_DELAY=2 \
+            -P mips_CPU_bus_tb.TIMEOUT_CYCLES=50000 \
+            -P mips_CPU_bus_tb.READ_DELAY=1 \
             -s mips_CPU_bus_tb \
             -o joe.out
 

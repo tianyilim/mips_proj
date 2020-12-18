@@ -111,7 +111,7 @@ for DELAY in "${TEST_DELAY[@]}"; do
                 # rtl/mips_cpu_sixteen_bit_extension.v \
             set -e
 
-            iverilog -Wall -g 2012 ${TESTING} \
+            iverilog -g 2012 ${TESTING} \
             test/mips_avalon_slave.v test/mips_CPU_bus_tb.v \
             -P mips_CPU_bus_tb.INSTR_INIT_FILE=\"${FILENAME}\"  \
             -P mips_CPU_bus_tb.DATA_INIT_FILE=\"${DATANAME}\" \

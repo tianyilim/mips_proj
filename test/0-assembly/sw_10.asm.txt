@@ -1,16 +1,19 @@
-addiu $t0, $zero, 0x420
-addiu $t1, $zero, 0x421
-addiu $t2, $zero, 0x422
-addiu $t3, $zero, 0x423
-addiu $t4, $zero, 0x424
-addiu $t5, $zero, 0x425
-addiu $t6, $zero, 0x426
-sw $t0, 0($zero)
-sw $t1, 32($zero)
-sw $t2, 64($zero)
-sw $t3, 96($zero)
-sw $t4, 128($zero)
-sw $t5, 160($zero)
-sw $t6, 192($zero)
-lw $v0, 64($zero)
-jr $zero
+addiu $t0, $zero, 0x420  # 00
+addiu $t1, $zero, 0x421  # 04
+addiu $t2, $zero, 0x422  # 08
+addiu $t3, $zero, 0x423  # 0C
+addiu $t4, $zero, 0x424  # 10
+addiu $t9, $zero, 5      # 14 Setup loop counter
+beq $t9, $zero, 11       # 18 branch to end if number of loops ends
+sw $t0, 0($zero)         # 1C cache[0]
+sw $t1, 32($zero)        # 20 cache[1]
+sw $t2, 64($zero)        # 24 cache[2]
+sw $t3, 96($zero)        # 28 cache[3]
+lw $v0, 64($zero)        # 2C cache[2] - v0=0x422
+lw $v0, 32($zero)        # 30 cache[1] - v0=0x421
+sw $t4, 128($zero)       # 34 cache[3] - Overwrites line 9
+lw $v0, 96($zero)        # 38 cache[3] - Expected ans 0x423
+addiu $t9, $t9, -1       # 3C subtract from loop counter
+j 0xFC00018              # 40 Jump back to branch
+nop                      # 44
+jr $zero                 # 4C

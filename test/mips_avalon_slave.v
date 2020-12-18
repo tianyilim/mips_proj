@@ -24,6 +24,7 @@ module mips_avalon_slave(
     
     parameter READ_DELAY = 2;               // How long will waitrequest be asserted on read? (can be 0)
     parameter WRITE_DELAY = READ_DELAY;
+    // parameter WRITE_DELAY = 100;
     // parameter WRITE_DELAY = (READ_DELAY==0) ? 1 : READ_DELAY;     // How long will waitrequest be asserted on write?
     parameter DATA_INIT_FILE = "";          // 
     parameter RAM_INIT_FILE = "";           // Initialise instruction part (ROM)
@@ -159,7 +160,7 @@ module mips_avalon_slave(
 
         if (write) begin
             if (wait_ctr==WRITE_DELAY) begin
-                memory_data[addr_shift] = towrite;    // Offset the addressing space
+                memory_data[addr_shift] <= towrite;    // Offset the addressing space
                 $display("RAM : WRITE : Wrote 0x%h data at address 0x%h", writedata, address);
             end else begin
                 $display("RAM : STATUS : Write 0x%h data request at address 0x%h, wait for %1d cycles", writedata, address, WRITE_DELAY-wait_ctr);

@@ -61,7 +61,7 @@ declare -i FAIL_COUNT=0
 
 TEST_DELAY=( 0 1 5 )
 for DELAY in "${TEST_DELAY[@]}"; do
-    echo \'$DELAY\'
+    # echo \'$DELAY\'
     # continue
 
     for i in "${TEST_INSTRS[@]}"; do

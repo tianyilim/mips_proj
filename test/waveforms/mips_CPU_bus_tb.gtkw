@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Thu Dec 17 19:07:26 2020
+[*] Fri Dec 18 17:28:58 2020
 [*]
-[dumpfile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/addu_1.vcd"
-[dumpfile_mtime] "Thu Dec 17 19:06:14 2020"
-[dumpfile_size] 20423
+[dumpfile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/sb_1_0.vcd"
+[dumpfile_mtime] "Fri Dec 18 17:28:48 2020"
+[dumpfile_size] 18258
 [savefile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/mips_CPU_bus_tb.gtkw"
 [timestart] 0
 [size] 1920 1017
 [pos] -1 -1
-*-6.093658 75 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-6.093658 115 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] mips_CPU_bus_tb.
 [treeopen] mips_CPU_bus_tb.CPU.
 [treeopen] mips_CPU_bus_tb.CPU.cc.
@@ -24,14 +24,12 @@ mips_CPU_bus_tb.mem_clk
 mips_CPU_bus_tb.CPU.register_v0[31:0]
 @28
 mips_CPU_bus_tb.cpu_reset
-@29
 mips_CPU_bus_tb.CPU.cc.waitrequest
-@28
 mips_CPU_bus_tb.cpu_active
 mips_CPU_bus_tb.CPU.cc.clk_enable
 [color] 3
 mips_CPU_bus_tb.CPU.cc.instr_stall
-mips_CPU_bus_tb.CPU.cc.instr_stall_effective
+@29
 mips_CPU_bus_tb.CPU.cc.data_stall
 @24
 [color] 2
@@ -56,6 +54,9 @@ mips_CPU_bus_tb.CPU.cc.instr_address[31:0]
 mips_CPU_bus_tb.CPU.cc.instr_readdata[31:0]
 @28
 mips_CPU_bus_tb.CPU.cc.data_read
+@22
+mips_CPU_bus_tb.CPU.cc.data_readdata[31:0]
+@28
 mips_CPU_bus_tb.CPU.cc.data_data_valid
 mips_CPU_bus_tb.CPU.cc.data_write
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.write_sense
@@ -72,22 +73,26 @@ mips_CPU_bus_tb.MEM.txn_addr[31:0]
 mips_CPU_bus_tb.CPU.cc.mem_byteenable[3:0]
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_read
+mips_CPU_bus_tb.MEM.read_txn
 @22
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_readdata[31:0]
 @28
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_write
+mips_CPU_bus_tb.MEM.write_txn
 @22
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_writedata[31:0]
 @420
 [color] 5
 mips_CPU_bus_tb.MEM.wait_ctr
-[color] 5
-mips_CPU_bus_tb.MEM.waiting
 @28
+mips_CPU_bus_tb.CPU.cc.cache_writebuffer.waitrequest_cfm
+[color] 4
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.active
+mips_CPU_bus_tb.CPU.cc.cache_writebuffer.active_txn
+mips_CPU_bus_tb.CPU.cc.cache_writebuffer.empty
 @24
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.write_ptr[2:0]
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.read_ptr[2:0]

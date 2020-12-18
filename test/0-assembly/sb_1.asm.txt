@@ -1,4 +1,4 @@
 addiu $s0 $s0 15
-sb $s0 9($zero)
-lw $v0 8($zero)
+sb $s0 9($zero) # 00000000
+lw $v0 8($zero) 
 jr $zero

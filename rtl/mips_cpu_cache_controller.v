@@ -42,8 +42,8 @@ module mips_cache_controller(
 
     logic instr_stall;  // Instruction cache fetch stall
     logic data_stall;   // Data cache (on read/write) fetch stall
-    logic instr_stall_effective;
-    logic data_stall_effective; // these can be sped up by mux bypassing 
+    logic instr_stall_delay;
+    logic data_stall_delay;
 
     logic [1:0] wb_state;
     logic wb_full;      // Write buffer fetch stall (on FULL)
@@ -53,10 +53,10 @@ module mips_cache_controller(
     logic [31:0] addr_wbtomem;      // Preventing multiple drivers of mem_addr
     logic addr_in_wb;               // Ensuring cache coherency
 
-    logic [31:0] instr_data_in;
     logic instr_data_valid;
-    logic [31:0] data_data_in;
     logic data_data_valid;
+
+    logic waitrequest_delay;
 
     // Instanstiate the write-buffer and data/instr caches
     // Remember that the addresses when there are stalls correspond to the ones
@@ -91,41 +91,36 @@ module mips_cache_controller(
     } state_t;
 
     //
-    assign clk_enable = !(instr_stall_effective || data_stall_effective || wb_full);
-    assign mem_address = (state==STATE_WRITE) ? addr_wbtomem : (instr_stall) ? instr_address : data_address;
+    assign clk_enable = !(instr_stall || data_stall || wb_full);
+    assign mem_address = (state==STATE_WRITE) ? addr_wbtomem : (instr_stall_delay || instr_stall) ? instr_address : data_address;
 
     // mem_read can go on faster
-    assign mem_read = (instr_stall || data_stall) && (state==STATE_FETCH || state==STATE_IDLE);
+    assign mem_read = ( (instr_stall||instr_stall_delay) || (data_stall||data_stall_delay) ) && (state==STATE_FETCH || state==STATE_IDLE);
 
-    assign instr_data_valid = instr_stall && !waitrequest && (state!=STATE_WRITE);
-    assign data_data_valid = data_stall && !waitrequest && (state!=STATE_WRITE);
-    // assign instr_data_valid = instr_stall && !waitrequest;
-    // assign data_data_valid = data_stall && !waitrequest;
+    always_ff @(posedge clk) begin
+        instr_stall_delay <= instr_stall;
+        data_stall_delay <= data_stall;
 
-    assign instr_stall_effective = instr_stall && (waitrequest || wb_active);   // Don't come out of stall while a write txn in progress
-    assign data_stall_effective = data_stall && (waitrequest || wb_active);
+        // We know that the data valid cannot be high for two back-to-back cycles
+        // And must follow these conditions
+        instr_data_valid <= instr_stall && !waitrequest && (state!=STATE_WRITE) && !(instr_data_valid==1);
+        data_data_valid <= data_stall && !waitrequest && (state!=STATE_WRITE) && !(data_data_valid==1);
+    end
 
     always @ (posedge clk) begin
         if (rst) begin
             state <= STATE_IDLE;
-            // data_data_valid <= 0;
-            // instr_data_valid <= 0;
             wb_active <= 0;
-
-            // mem_read <= 0;  // Known state at start
 
         end else begin
             case (state)    // State machine
                 STATE_IDLE : begin
                     // Lmao do nothing
-                    $display("CACHE_CTRL : STATE : IDLE : Instr_Stall: %b; Data_Stall: %b; Wb_full: %b");
-                    // instr_data_valid <= 0;
-                    // data_data_valid <= 0;
+                    $display("CACHE_CTRL : STATE : IDLE");
 
                     // State transitions
-                    if ( (instr_stall_effective || data_stall_effective) && waitrequest) begin
+                    if (instr_stall || data_stall) begin
                         state <= STATE_FETCH;
-                        // mem_read <= 1;
                     end else if (!wb_empty) begin
                         state <= STATE_WRITE;
                         wb_active <= 1;
@@ -133,16 +128,13 @@ module mips_cache_controller(
                 end
                 STATE_WRITE : begin
                     $display("CACHE_CTRL : STATE : WRITE");
-                    // waitrequest already connected directly?
-                    // mem_address <= addr_wbtomem;
                     wb_active <= 1;
 
                     // State transitions
                     if (!waitrequest) begin
-                        if ((instr_stall_effective || data_stall_effective) && !(addr_in_wb)) begin
+                        if ((instr_stall || data_stall) && !(addr_in_wb)) begin
                             // Cache coherency, continue writing if there is something in the cache that will be later accessed
                             state <= STATE_FETCH;
-                            // mem_read <= 1;
                             wb_active <= 0;
                         end else if (wb_empty) begin
                             state <= STATE_IDLE;
@@ -150,31 +142,16 @@ module mips_cache_controller(
                         end
                     end
                 end
+
                 STATE_FETCH : begin
                     $display("CACHE_CTRL : STATE : FETCH");
                     
                     if (instr_stall || data_stall) begin
                         $display("CACHE_CTRL : STATUS : instr_stall: %b, data_stall: %b", instr_stall, data_stall);
-                        // mem_address <= (instr_stall) ? instr_address : data_address;
-
-                        if (!waitrequest) begin
-                            $display("CACHE_CTRL : STATUS : waitrequest complete");
-                            // mem_read <= 0;
-                            if (instr_stall) begin
-                                // instr_data_valid <= 1;
-                                // data_data_valid <= 0;
-                            end else if (data_stall) begin
-                                // data_data_valid <= 1;
-                                // instr_data_valid <= 0;
-                            end
-                        end else begin
-                            // instr_data_valid <= 0;
-                            // data_data_valid <= 0;
-                        end
                     end
 
                     // State transitions
-                    if (!waitrequest & !(instr_stall_effective || data_stall_effective) ) begin
+                    if (!waitrequest & !(instr_stall || data_stall) ) begin
                         state <= STATE_IDLE;
                     end
                 end

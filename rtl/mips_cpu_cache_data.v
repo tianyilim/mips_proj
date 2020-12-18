@@ -104,7 +104,8 @@ module mips_cache_data(
     assign cache_hit_bus[3] = valid_buf[cache_index][3] & tags_buf[cache_index][3] == cache_tag;
 
     assign cache_hit = |cache_hit_bus;  // Takes a bitwise OR of the whole bus
-    assign stall = !cache_hit && ( (read_en) || (write_en && !(&byte_en)) );
+    assign stall = !cache_hit && !data_valid && ( read_en || ( write_en && !(&byte_en))  );
+    // Don't need to stall if data is valid already
 
     // No stall if write_en and byte_en are both asserted
 

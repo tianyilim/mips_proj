@@ -1,5 +1,6 @@
 addiu $t2, $zero, 10
-bgezal $t2, 3
+addiu $t3, $zero, 10
+beq $t2, $t3, 3
 addiu $v0, $zero, 10
 jr $zero
 nop

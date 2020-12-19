@@ -1,5 +1,5 @@
 addiu $t2, $zero, 10
-bgezal $t2, 3
+bgtz $t2, 3
 addiu $v0, $zero, 10
 jr $zero
 nop

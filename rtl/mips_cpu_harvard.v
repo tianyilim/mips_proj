@@ -588,7 +588,7 @@ module mips_cpu_harvard(
                           write_back_data <= {{16{data_readdata[15]}},data_readdata[15:0]};
                         end
                         else if(imm_base_addr[1:0] == 2) begin
-                          write_back_data <= {{16{data_readdata[15]}},data_readdata[31:16]};
+                          write_back_data <= {{16{data_readdata[31]}},data_readdata[31:16]};
                         end
                         else begin
                           $display("CPU : Accessing non-aligned address, base + imm =%b", imm_base_addr);

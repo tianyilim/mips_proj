@@ -1,0 +1,70 @@
+addiu $zero, $zero, 1                #tests all registers initialised 0 and gives it a value
+addiu $at, $at, 2
+addiu $v0, $v0, 3
+addiu $v1, $v1, 4
+addiu $a0, $a0, 5
+addiu $a1, $a1, 6
+addiu $a2, $a2, 7
+addiu $a3, $a3, 8
+addiu $t0, $t0, 9
+addiu $t1, $t1, 10
+addiu $t2, $t2, 11
+addiu $t3, $t3, 12
+addiu $t4, $t4, 13
+addiu $t5, $t5, 14
+addiu $t6, $t6, 15
+addiu $t7, $t7, 16
+addiu $s0, $s0, 17
+addiu $s1, $s1, 18
+addiu $s2, $s2, 19
+addiu $s3, $s3, 20
+addiu $s4, $s4, 21
+addiu $s5, $s5, 22
+addiu $s6, $s6, 23
+addiu $s7, $s7, 24
+addiu $t8, $t8, 25
+addiu $t9, $t9, 26
+addiu $k0, $k0, 27
+addiu $k1, $k1, 28
+addiu $gp, $gp, 29
+addiu $sp, $sp, 30
+addiu $fp, $fp, 31
+addiu $ra, $ra, 32
+nop
+addu $v0, $v0, $zero
+addu $at, $at, $v1
+addu $a0, $a0, $a1
+addu $a2, $a2, $a3
+addu $t0, $t0, $t1
+addu $t2, $t2, $t3
+addu $t4, $t4, $t5
+addu $t6, $t6, $t7
+addu $s0, $s0, $s1
+addu $s2, $s2, $s3
+addu $s4, $s4, $s5
+addu $s6, $s6, $s7
+addu $t8, $t8, $t9
+addu $k0, $k0, $k1
+addu $gp, $gp, $sp
+addu $fp, $fp, $ra
+nop
+addu $v0, $v0, $at
+addu $v0, $v0, $a0
+addu $v0, $v0, $a2
+addu $v0, $v0, $t0
+addu $v0, $v0, $t2
+addu $v0, $v0, $t4
+addu $v0, $v0, $t6
+addu $v0, $v0, $s0
+addu $v0, $v0, $s2
+addu $v0, $v0, $s4
+addu $v0, $v0, $s6
+addu $v0, $v0, $t8
+addu $v0, $v0, $k0
+addu $v0, $v0, $gp
+addu $v0, $v0, $fp
+jr $zero
+
+
+
+comment : test all registers

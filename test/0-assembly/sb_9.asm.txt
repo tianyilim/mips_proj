@@ -1,0 +1,7 @@
+addiu $t6, $zero, 0xab94
+addiu $t7, $zero, 0x3da
+sb $t6, 0($t7)
+lw $v0, -2($t7)
+jr $zero
+sll $zero, $zero, 9
+addiu $v0, $zero, 0x0340

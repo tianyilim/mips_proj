@@ -56,7 +56,7 @@ module mips_cache_writebuffer(
     assign full = full_buf==(2**BUFSIZE-1);
     assign empty = full_buf==0;
     assign state_out = state;   // Debug
-    assign write_writeenable = !(empty) && active; // Write when there are things to write - and when we are allowed to!
+    assign write_writeenable = !empty && active; // Write when there are things to write - and when we are allowed to!
 
     assign write_addr = addr_buf[write_ptr];
     assign write_data = data_buf[write_ptr];
@@ -72,16 +72,16 @@ module mips_cache_writebuffer(
         addr_in_wb = |addr_in_wb_arr;   // Take the bitwise or
     end
 
-    always_ff @ (posedge clk) begin
-        if (active_txn==0 && active && !empty) active_txn <= 1;
+    // always_ff @ (posedge clk) begin
+    //     if (active_txn==0 && active && !empty) active_txn <= 1;
 
-        if (!waitrequest && waitrequest_cfm==1) begin
-            waitrequest_cfm <= 0;
-        end
-        if (active && waitrequest_cfm==0 && waitrequest) begin
-            waitrequest_cfm <= 1;
-        end
-    end
+    //     if (!waitrequest && waitrequest_cfm==1) begin
+    //         waitrequest_cfm <= 0;
+    //     end
+    //     if (active && waitrequest_cfm==0 && waitrequest) begin
+    //         waitrequest_cfm <= 1;
+    //     end
+    // end
 
     always @(posedge clk) begin
         if (rst) begin
@@ -112,7 +112,7 @@ module mips_cache_writebuffer(
                     // write_addr <= addr_buf[write_ptr];
                     // write_data <= data_buf[write_ptr];
                     // write_byteenable <= byte_en_buf[write_ptr];
-                    if (~waitrequest_cfm && active_txn) begin
+                    if (~waitrequest) begin
                         // Only do this the cycle after waitrequest
                         // write_writeenable <= 0;
                         full_buf[write_ptr] <= 0;

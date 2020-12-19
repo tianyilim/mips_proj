@@ -95,32 +95,41 @@ module mips_cache_controller(
     assign mem_address = (state==STATE_WRITE) ? addr_wbtomem : (instr_stall_delay || instr_stall) ? instr_address : data_address;
 
     // mem_read can go on faster
-    assign mem_read = ( (instr_stall||instr_stall_delay) || (data_stall||data_stall_delay) ) && (state==STATE_FETCH || state==STATE_IDLE);
+    // assign mem_read = ( (instr_stall||instr_stall_delay) || (data_stall||data_stall_delay) ) && (state==STATE_FETCH || state==STATE_IDLE);
+    // assign mem_read = ( instr_stall || data_stall ) && (state==STATE_FETCH);
+
+    // We know that the data valid cannot be high for two back-to-back cycles
+    // And must follow these conditions
+    assign instr_data_valid = instr_stall_delay && !waitrequest && (state==STATE_FETCH);
+    assign data_data_valid = data_stall_delay && !waitrequest && (state==STATE_FETCH);
 
     always_ff @(posedge clk) begin
         instr_stall_delay <= instr_stall;
         data_stall_delay <= data_stall;
-
-        // We know that the data valid cannot be high for two back-to-back cycles
-        // And must follow these conditions
-        instr_data_valid <= instr_stall && !waitrequest && (state!=STATE_WRITE) && !(instr_data_valid==1);
-        data_data_valid <= data_stall && !waitrequest && (state!=STATE_WRITE) && !(data_data_valid==1);
     end
+
+    // always_comb begin
+    //     // We know that the data valid cannot be high for two back-to-back cycles
+    //     // And must follow these conditions
+    //     instr_data_valid = instr_stall && !waitrequest && (state!=STATE_WRITE);
+    //     data_data_valid = data_stall && !waitrequest && (state!=STATE_WRITE);
+    // end
 
     always @ (posedge clk) begin
         if (rst) begin
             state <= STATE_IDLE;
             wb_active <= 0;
+            mem_read <= 0;
 
         end else begin
             case (state)    // State machine
                 STATE_IDLE : begin
                     // Lmao do nothing
                     $display("CACHE_CTRL : STATE : IDLE");
-
                     // State transitions
                     if (instr_stall || data_stall) begin
                         state <= STATE_FETCH;
+                        mem_read <= 1;
                     end else if (!wb_empty) begin
                         state <= STATE_WRITE;
                         wb_active <= 1;
@@ -135,6 +144,7 @@ module mips_cache_controller(
                         if ((instr_stall || data_stall) && !(addr_in_wb)) begin
                             // Cache coherency, continue writing if there is something in the cache that will be later accessed
                             state <= STATE_FETCH;
+                            mem_read <= 1;
                             wb_active <= 0;
                         end else if (wb_empty) begin
                             state <= STATE_IDLE;
@@ -153,6 +163,7 @@ module mips_cache_controller(
                     // State transitions
                     if (!waitrequest & !(instr_stall || data_stall) ) begin
                         state <= STATE_IDLE;
+                        mem_read <= 0;
                     end
                 end
             endcase

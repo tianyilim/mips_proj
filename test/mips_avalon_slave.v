@@ -146,13 +146,25 @@ module mips_avalon_slave(
     assign towrite[7:0] =   (byteenable[0]) ? writedata[7:0] : write_prefetch[7:0];
 
     // read data
-    always_ff @(posedge clk) begin
+    // always_ff @(posedge clk) begin
+    //     if ( read && (wait_ctr==READ_DELAY) ) begin
+    //         case (readdata_source)
+    //         2'b00: readdata <= memory_instr[addr_shift-ADDR_START_SHIFT];
+    //         2'b01: readdata <= memory_data[addr_shift];
+    //         2'b10: readdata <= ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
+    //         endcase
+    //     end
+    // end
+
+    always_comb begin
         if ( read && (wait_ctr==READ_DELAY) ) begin
             case (readdata_source)
-            2'b00: readdata <= memory_instr[addr_shift-ADDR_START_SHIFT];
-            2'b01: readdata <= memory_data[addr_shift];
-            2'b10: readdata <= ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
+            2'b00: readdata = memory_instr[addr_shift-ADDR_START_SHIFT];
+            2'b01: readdata = memory_data[addr_shift];
+            2'b10: readdata = ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
             endcase
+        end else begin
+            readdata = 32'hZZZZZZZZ;
         end
     end
 
@@ -172,7 +184,9 @@ module mips_avalon_slave(
     // Remaining stuff - incrementing wait counters, write
     always@(posedge clk) begin
         if (read) begin
-                wait_ctr <= wait_ctr + 1;
+                if (READ_DELAY != 0) begin
+                    wait_ctr <= wait_ctr + 1;
+                end
             if (wait_ctr==READ_DELAY) begin
                 $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
             end else begin
@@ -182,7 +196,9 @@ module mips_avalon_slave(
         end
 
         if (write) begin
-            wait_ctr <= wait_ctr + 1;
+            if (WRITE_DELAY != 0) begin
+                wait_ctr <= wait_ctr + 1;
+            end
             if (wait_ctr==WRITE_DELAY) begin
                 memory_data[addr_shift] <= towrite;    // Offset the addressing space
                 $display("RAM : WRITE : Wrote 0x%h data at address 0x%h", writedata, address);
@@ -197,20 +213,20 @@ module mips_avalon_slave(
         end
 
         // Begin a transaction
-        if (read && read_txn==0) begin
+        if (read && read_txn==0 && READ_DELAY!=0 ) begin
             read_txn <= 1;
         end
         // end a transaction
-        if (read_txn==1 && wait_ctr==READ_DELAY+1) begin
+        if (read_txn==1 && wait_ctr>=READ_DELAY ) begin
             read_txn <= 0;
             wait_ctr <= 0;
         end
         // Begin a transaction
-        if (write && write_txn==0) begin
+        if (write && write_txn==0 && WRITE_DELAY!=0 ) begin
             write_txn <= 1;
         end
         // end a transaction
-        if (write_txn==1 && wait_ctr==WRITE_DELAY+1) begin
+        if (write_txn==1 && wait_ctr>=WRITE_DELAY) begin
             write_txn <= 0;
             wait_ctr <= 0;
         end

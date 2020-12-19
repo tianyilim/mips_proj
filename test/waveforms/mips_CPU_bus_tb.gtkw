@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Fri Dec 18 17:28:58 2020
+[*] Sat Dec 19 07:00:25 2020
 [*]
-[dumpfile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/sb_1_0.vcd"
-[dumpfile_mtime] "Fri Dec 18 17:28:48 2020"
-[dumpfile_size] 18258
+[dumpfile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/sb_9_1.vcd"
+[dumpfile_mtime] "Sat Dec 19 06:42:57 2020"
+[dumpfile_size] 22511
 [savefile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/mips_CPU_bus_tb.gtkw"
 [timestart] 0
 [size] 1920 1017
-[pos] -1 -1
-*-6.093658 115 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -9 -33
+*-6.093658 45 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] mips_CPU_bus_tb.
 [treeopen] mips_CPU_bus_tb.CPU.
 [treeopen] mips_CPU_bus_tb.CPU.cc.
@@ -24,12 +24,10 @@ mips_CPU_bus_tb.mem_clk
 mips_CPU_bus_tb.CPU.register_v0[31:0]
 @28
 mips_CPU_bus_tb.cpu_reset
-mips_CPU_bus_tb.CPU.cc.waitrequest
 mips_CPU_bus_tb.cpu_active
 mips_CPU_bus_tb.CPU.cc.clk_enable
 [color] 3
 mips_CPU_bus_tb.CPU.cc.instr_stall
-@29
 mips_CPU_bus_tb.CPU.cc.data_stall
 @24
 [color] 2
@@ -71,6 +69,9 @@ mips_CPU_bus_tb.MEM.txn_addr[31:0]
 @28
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_byteenable[3:0]
+@29
+mips_CPU_bus_tb.CPU.cc.waitrequest
+@28
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_read
 mips_CPU_bus_tb.MEM.read_txn

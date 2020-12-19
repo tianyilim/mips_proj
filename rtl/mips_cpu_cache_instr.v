@@ -65,6 +65,7 @@ module mips_cache_instr(
 
     assign cache_hit = |cache_hit_bus;  // Takes a bitwise OR of the whole bus
     assign stall = !cache_hit && read_en && !data_valid;   // Prone to error CHECK!
+    // assign stall = !cache_hit && read_en;   // Prone to error CHECK!
 
     logic [31:0] readdata_reg;  // Output from registers
     assign readdata = (data_valid) ? data_in : readdata_reg;

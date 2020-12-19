@@ -1,13 +1,13 @@
-addu $a2, $zero, $zero					#1
-lui $a2, 0xd720							#1 sign bit is 1, therefore < 0
-ori $a2, $a2, 3636						#1
-bgtz $a2, 3								#2 branch if > 0, branch taken
-addiu $v0, $zero, 0						#3
-jr $zero								#3
-addiu $s0, $s0, 0						#3 do nothing
-addiu $v0, $zero, 1						#2
-jr $zero								#2
+lw $t2, 32($zero)
+nop
+bgtz $t2, 3
+nop
+jr $zero
+nop
+addiu $v0, $zero, 1
+jr $zero
 
-comments:
-1. $a2 has a random number which is <= 0
-2. Use bgez to set $v0 = 1 if branch taken, else set $v0 = 0 if not equal. Therefore, $v0 should be 0
+
+
+comment: rs<0
+

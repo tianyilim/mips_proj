@@ -1,11 +1,10 @@
-addu $a2, $zero, $zero					#1
-bltz $a2, 3								#2 branch not taken
-addiu $v0, $zero, 0						#2
-jr $zero								#2
-addiu $s0, $s0, 0						#2 do nothing
-addiu $v0, $zero, 1						#2
-jr $zero								#2
+addiu $t2, $zero, 0
+bltz $t2, 3
+nop
+jr $zero
+nop
+addiu $v0, $zero, 1
+jr $zero
 
-comments:
-1. $a2 = 0
-2. Use bgez to set $v0 = 1 if branch taken, else set $v0 = 0 if not equal. Therefore, $v0 should be 0
+comment: rs=0
+

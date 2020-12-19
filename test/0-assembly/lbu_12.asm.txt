@@ -1,0 +1,4 @@
+lbu $v0, 42($zero)  # contains 0xBFC00000
+jr $zero 
+
+comment: offest 3 sign extension

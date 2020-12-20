@@ -1,0 +1,11 @@
+lw $t2, 8($zero)
+nop
+jalr $zero, $t2
+nop
+jr $zero
+nop
+nop
+addiu $v0, $zero, 10
+jr $zero
+
+comment: rd is $zero (should still jump)

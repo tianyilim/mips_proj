@@ -17,3 +17,5 @@ addiu $t9, $t9, -1       # 3C subtract from loop counter
 j 0xFC00018              # 40 Jump back to branch
 nop                      # 44
 jr $zero                 # 4C
+
+comment: repeated writes to sparse mem addresses

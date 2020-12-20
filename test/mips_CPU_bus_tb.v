@@ -28,6 +28,8 @@ module mips_CPU_bus_tb;
 	reg cpu_active;				// output from CPU
 	wire[31:0] cpu_register_v0;	// output from CPU
 
+	logic finishing;			// tell memory to write file
+
 	// memory signals out of CPU (master)
 	logic[31:0] cpu_address;		// master -> slave
 	logic[3:0] cpu_byteenable;		// master -> slave
@@ -75,7 +77,8 @@ module mips_CPU_bus_tb;
 		.write(mem_write),				// master -> slave
 		.waitrequest(mem_waitrequest),	// slave -> master
 		.readdata(mem_readdata),		// slave -> master
-		.writedata(mem_writedata)		// master -> slave
+		.writedata(mem_writedata),		// master -> slave
+		.finishing(finishing)
 	);
 	
 	// instantiate the CPU
@@ -97,6 +100,7 @@ module mips_CPU_bus_tb;
 	// initial block for CPU clock
 	initial begin
 		cpu_clk = 0;
+		finishing = 0;
 		forever begin
 			#CPU_CLK_TIME;
 			cpu_clk = 1;
@@ -154,6 +158,8 @@ module mips_CPU_bus_tb;
 			@(posedge cpu_clk);
 			$display("\nTB : ACTIVE : %02t : ########################################", $time);
 		end
+		finishing = 1;
+		@(posedge cpu_clk);
 		
 		$display("TB : CYCLES : %d", current_cpu_cycles_ran);
 		$display("TB : V0 : %h", cpu_register_v0);

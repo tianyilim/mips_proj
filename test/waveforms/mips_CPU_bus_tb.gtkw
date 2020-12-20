@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Sat Dec 19 07:00:25 2020
+[*] Sun Dec 20 16:33:42 2020
 [*]
-[dumpfile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/sb_9_1.vcd"
-[dumpfile_mtime] "Sat Dec 19 06:42:57 2020"
-[dumpfile_size] 22511
+[dumpfile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/sw_1_0.vcd"
+[dumpfile_mtime] "Sun Dec 20 16:29:14 2020"
+[dumpfile_size] 22681
 [savefile] "/mnt/c/Users/0tian/OneDrive - Imperial College London/Year Two/mips_proj/test/waveforms/mips_CPU_bus_tb.gtkw"
 [timestart] 0
 [size] 1920 1017
-[pos] -9 -33
-*-6.093658 45 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -1 -1
+*-6.093658 205 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] mips_CPU_bus_tb.
 [treeopen] mips_CPU_bus_tb.CPU.
 [treeopen] mips_CPU_bus_tb.CPU.cc.
@@ -69,9 +69,7 @@ mips_CPU_bus_tb.MEM.txn_addr[31:0]
 @28
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_byteenable[3:0]
-@29
 mips_CPU_bus_tb.CPU.cc.waitrequest
-@28
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_read
 mips_CPU_bus_tb.MEM.read_txn
@@ -81,6 +79,7 @@ mips_CPU_bus_tb.CPU.cc.mem_readdata[31:0]
 @28
 [color] 5
 mips_CPU_bus_tb.CPU.cc.mem_write
+mips_CPU_bus_tb.CPU.cc.cache_writebuffer.write_valid
 mips_CPU_bus_tb.MEM.write_txn
 @22
 [color] 5
@@ -89,13 +88,12 @@ mips_CPU_bus_tb.CPU.cc.mem_writedata[31:0]
 [color] 5
 mips_CPU_bus_tb.MEM.wait_ctr
 @28
-mips_CPU_bus_tb.CPU.cc.cache_writebuffer.waitrequest_cfm
 [color] 4
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.active
-mips_CPU_bus_tb.CPU.cc.cache_writebuffer.active_txn
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.empty
-@24
+@25
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.write_ptr[2:0]
+@24
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.read_ptr[2:0]
 @22
 mips_CPU_bus_tb.CPU.cc.cache_writebuffer.addr[31:0]

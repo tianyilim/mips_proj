@@ -137,7 +137,8 @@ for DELAY in "${TEST_DELAY[@]}"; do
 
             # Auto-run and log into the a log file into 3-output
             ./joe.out > test/3-output/${BASENAME}_${DELAY}.log
-            cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}_${DELAY}.vcd
+            cp mips_CPU_bus_tb.vcd test/waveforms/${BASENAME}_${DELAY}.vcd > /dev/null 2>&1
+            cp test/3-output/memory_out.hex test/3-output/${BASENAME}_${DELAY}_mem.hex > /dev/null 2>&1
             # cat test/3-output/${BASENAME}.log  # Display debug output directly
 
             V0_OUT=$(grep "TB : V0" test/3-output/${BASENAME}_${DELAY}.log)
@@ -194,6 +195,7 @@ done
 # echo -e "$PASS_COUNT testcases passed."
 # echo -e "$FAIL_COUNT testcases failed."
 rm joe.out > /dev/null 2>&1
+rm test/3-output/memory_out.hex > /dev/null 2>&1
 
 if [ ! $FAIL_COUNT = 0 ]; then
     # echo "Testbench failed."

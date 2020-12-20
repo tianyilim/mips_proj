@@ -8,6 +8,8 @@ rtl/mips_cache_l2.v
 test/Assembler/src/test.txt
 test/Assembler/src/output.txt
 
+test/3-output/*.hex
+
 yaya.sh
 play*.sh
 

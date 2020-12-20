@@ -10,7 +10,8 @@ module mips_avalon_slave(
     input logic[3:0] byteenable,
 
     output logic waitrequest,
-    output logic[31:0] readdata
+    output logic[31:0] readdata,
+    input logic finishing
 );
 
     // Implements a memory-mapped avalon controller RAM module
@@ -66,9 +67,9 @@ module mips_avalon_slave(
             $fatal(1, "RAM : FATAL : Read and write asserted at the same time, read: %b, write: %b", read, write);
         end
 
-        if ( (read_txn && !read) || (write_txn && !write) ) begin
+        if ( (read_txn && !read) || ( write_txn && (!write && wait_ctr<WRITE_DELAY) ) ) begin
             // $fatal(1, "RAM : FATAL : Read/write not held high through transaction");
-            $display("RAM : FATAL : Read/write not held high through transaction");
+            $fatal(1, "RAM : FATAL : Read/write not held high through transaction");
         end
         
         if (read_txn) begin
@@ -137,6 +138,11 @@ module mips_avalon_slave(
         end
     end
 
+    always @(finishing) begin
+        $display("RAM : FIN : Dumping memory content.");
+        $writememh("test/3-output/memory_out.hex", memory_data, 0, 200);
+    end
+
     assign waitrequest = ( (wait_ctr<WRITE_DELAY) && (write_txn||write) ) || ( (wait_ctr<READ_DELAY) && (read_txn||read) );
 
     assign write_prefetch = memory_data[addr_shift];
@@ -156,12 +162,12 @@ module mips_avalon_slave(
     //     end
     // end
 
-    always_comb begin
+    always_ff @ (posedge clk) begin
         if ( read && (wait_ctr==READ_DELAY) ) begin
             case (readdata_source)
-            2'b00: readdata = memory_instr[addr_shift-ADDR_START_SHIFT];
-            2'b01: readdata = memory_data[addr_shift];
-            2'b10: readdata = ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
+            2'b00: readdata <= memory_instr[addr_shift-ADDR_START_SHIFT];
+            2'b01: readdata <= memory_data[addr_shift];
+            2'b10: readdata <= ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
             endcase
         end else begin
             readdata = 32'hZZZZZZZZ;
@@ -195,11 +201,10 @@ module mips_avalon_slave(
             end
         end
 
-        if (write) begin
-            if (WRITE_DELAY != 0) begin
-                wait_ctr <= wait_ctr + 1;
-            end
-            if (wait_ctr==WRITE_DELAY) begin
+        if (write_txn || write) begin
+            wait_ctr <= wait_ctr + 1;
+
+            if (wait_ctr==WRITE_DELAY+1) begin
                 memory_data[addr_shift] <= towrite;    // Offset the addressing space
                 $display("RAM : WRITE : Wrote 0x%h data at address 0x%h", writedata, address);
             end else begin
@@ -222,11 +227,11 @@ module mips_avalon_slave(
             wait_ctr <= 0;
         end
         // Begin a transaction
-        if (write && write_txn==0 && WRITE_DELAY!=0 ) begin
+        if (write && write_txn==0 ) begin
             write_txn <= 1;
         end
         // end a transaction
-        if (write_txn==1 && wait_ctr>=WRITE_DELAY) begin
+        if (wait_ctr>=WRITE_DELAY+1) begin
             write_txn <= 0;
             wait_ctr <= 0;
         end

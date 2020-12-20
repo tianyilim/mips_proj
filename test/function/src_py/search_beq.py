@@ -5,7 +5,7 @@ def search(n,x):
             return i
     return 10
 
-test = [1,3,5,8,12,16,19]
+test = range(1,8)
 
 for i in test:
     x = [0,0,0,0,0,3]

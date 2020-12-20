@@ -1,0 +1,7 @@
+lw $t2, 16($zero)    # contains 0xff3de00b 
+addiu $t3, $zero, 44
+sh $t2, 0($t3)
+lw $v0, 44($zero)
+jr $zero
+
+comment: rt > 4 bits

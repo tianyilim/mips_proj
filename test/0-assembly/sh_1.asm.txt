@@ -2,3 +2,5 @@ addiu $s0 $s0 0x4fe3
 sh $s0 10($zero)
 lw $v0 8($zero)
 jr $zero
+
+comment: address is 10

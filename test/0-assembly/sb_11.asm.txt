@@ -5,4 +5,4 @@ lw $v0, 8($zero)
 jr $zero
 
 
-comment : rt more than 1 byte
+comment : rt more than 2 bits

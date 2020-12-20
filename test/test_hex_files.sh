@@ -155,6 +155,17 @@ for DELAY in "${TEST_DELAY[@]}"; do
                 CPI="$CPI"
             fi
 
+            if [ -e test/2-simulator/${BASENAME}.mem.txt ]; then
+                # echo "Ref text test/2-simulator/${BASENAME}.mem.txt found"
+                MEM_DIFF=$(cmp test/3-output/${BASENAME}_${DELAY}_mem.hex test/2-simulator/${BASENAME}.mem.txt)
+                MEM_CMP=$?
+                MEM_DIFF="Ref Memory and Output differ on ${MEM_DIFF#*, }"
+            else
+                # echo "Ref text test/2-simulator/${BASENAME}.mem.txt not found"
+                MEM_DIFF=""
+                MEM_CMP=0
+            fi
+
             V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
             DIFF_FOUND=$(diff -q --ignore-all-space --ignore-blank-lines --strip-trailing-cr --ignore-case <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt) # compare expected and given output
             DIFFPASS=$?
@@ -169,7 +180,7 @@ for DELAY in "${TEST_DELAY[@]}"; do
             COMMENT=$(grep -w --ignore-case "comment" test/0-assembly/${BASENAME}.asm.txt)
         
             # If fatal is found anywhere in the log file, consider the testcase as failed
-            if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ]; then
+            if [ $DIFFPASS = 0 ] && [ $FATAL_PASS = 1 ] && [ ! $CPI_PASS = 0 ] && [ $MEM_CMP = 0 ]; then
                 # FAIL="${GREEN}Pass${RESTORE}"
                 FAIL="Pass"
                 PASS_COUNT=$PASS_COUNT+1
@@ -179,7 +190,7 @@ for DELAY in "${TEST_DELAY[@]}"; do
                 FAIL_COUNT=$FAIL_COUNT+1
             fi
 
-            echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "RAM_DELAY: "$DELAY | $FATAL_FOUND | $COMMENT"
+            echo -e "$BASENAME $INSTR_NAME $FAIL | "V0: "$V0_OUT, "EXP: "$V0_CHECK, "CYCLES: "$CYCLES, "RAM_DELAY: "$DELAY | $FATAL_FOUND | $MEM_DIFF | $COMMENT"
 
             # Opens with savefiles, Cleanup
             # gtkwave mips_CPU_bus_tb.vcd mips_CPU_bus_tb.gtkw -a mips_CPU_bus_tb.gtkw; \

@@ -3,4 +3,4 @@ sw $t2, 4($zero)
 lw $v0, 4($zero)
 jr $zero
 
-comment: sanity check
+comment: uses only addiu,sw,lw,jr

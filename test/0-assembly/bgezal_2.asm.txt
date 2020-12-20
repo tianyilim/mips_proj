@@ -2,7 +2,7 @@ nop
 nop
 lw $t2, 0($zero) 
 nop
-bgezal $t2, 4
+bgezal $t2, 3
 addiu $v0, $ra, 0
 jr $zero
 nop

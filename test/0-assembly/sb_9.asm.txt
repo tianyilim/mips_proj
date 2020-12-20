@@ -1,5 +1,5 @@
-addiu $t6, $zero, 0xab94
-addiu $t7, $zero, 0x3da
+addiu $t6, $zero, 15
+addiu $t7, $zero, 0xba     
 sb $t6, 0($t7)
 lw $v0, -2($t7)
 jr $zero

@@ -1,6 +1,6 @@
 addiu $s0 $s0 0x4fe3
-sh $s0 10($zero)
+sh $s0 8($zero)
 lw $v0 8($zero)
 jr $zero
 
-comment: positive byte 2
+comment: positive byte 0

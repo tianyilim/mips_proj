@@ -1,7 +1,7 @@
-addiu $t3, $zero, 18, 
-lh $v0, 0($t3)                 #address contains 0xff3de00b
+addiu $t3, $zero, 34, 
+lh $v0, 0($t3)                 #address contains 0xfd39619f
 jr $zero,
 
 
-comment: address 18
+comment: address 34
 

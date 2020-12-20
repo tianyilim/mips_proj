@@ -1,7 +1,7 @@
 addu $t9, $zero, $zero						#1
 lui $t9, 0x0000	
 nop							#1
-ori $t9, $t9, 0x0234						#1 t9 now is 00000234
+ori $t9, $t9, 0x0080						#1 t9 now is 00000080
 addu $s7, $zero, $zero						#2
 lui $s7, 0x1234	
 nop							#2
@@ -12,7 +12,7 @@ lw $v0, -8($t9)								#4
 jr $zero
 
 comment:
-# 1. CPU points to memory location 0xbfc00234 using $t9
+# 1. CPU points to memory location 0x00000080 using $t9
 # 2. CPU has 0x12345678 in $s7
 # 3. CPU stores $s7 into the location pointed by $t9
 # 4. CPU reads 0x12345678 from memory[0xbfc00234] back into $v0

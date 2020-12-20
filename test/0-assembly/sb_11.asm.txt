@@ -1,0 +1,8 @@
+lw $t2, 16($zero)          # contains 0xff3de00b
+addiu $t3, $zero, 8
+sb $t2, 8($zero)
+lw $v0, 8($zero)
+jr $zero
+
+
+comment : rt more than 2 bits

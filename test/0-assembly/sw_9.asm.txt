@@ -4,4 +4,4 @@ sw $t2, 44($zero)
 lw $v0, 44($zero)
 jr $zero
 
-comment: sanity check
+comment: uses only sw,lw,jr

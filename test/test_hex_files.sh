@@ -159,7 +159,11 @@ for DELAY in "${TEST_DELAY[@]}"; do
                 # echo "Ref text test/2-simulator/${BASENAME}.mem.txt found"
                 MEM_DIFF=$(cmp test/3-output/${BASENAME}_${DELAY}_mem.hex test/2-simulator/${BASENAME}.mem.txt)
                 MEM_CMP=$?
-                MEM_DIFF="Ref Memory and Output differ on ${MEM_DIFF#*, }"
+                if [ ! $MEM_CMP = 0 ]; then
+                    MEM_DIFF="Ref Memory and Output differ on ${MEM_DIFF#*, }"
+                else 
+                    MEM_DIFF=""
+                fi
             else
                 # echo "Ref text test/2-simulator/${BASENAME}.mem.txt not found"
                 MEM_DIFF=""

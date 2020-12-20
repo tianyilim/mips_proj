@@ -1,7 +1,7 @@
 addu $t9, $zero, $zero						#1
 lui $t9, 0x0000		
 nop						#1
-ori $t9, $t9, 0x03ba						#1
+ori $t9, $t9, 0x00b0						#1
 lui $s7, 0x5647		
 nop						#2
 ori $s7, $s7, 0xeeff						#2

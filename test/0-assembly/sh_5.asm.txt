@@ -1,0 +1,7 @@
+addiu $t2, $zero, 0x4fe3
+addiu $t3, $zero, 46
+sh $t2, -2($t3)
+lw $v0, 44($zero)
+jr $zero
+
+comment: negative address offset

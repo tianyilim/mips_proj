@@ -105,7 +105,7 @@ module mips_cache_controller(
         instr_stall_delay <= instr_stall;
         data_stall_delay <= data_stall;
 
-        if (mem_read && !waitrequest) begin
+        if (mem_read && !waitrequest && !rst) begin
             instr_data_valid <= instr_stall;
             data_data_valid <= data_stall;
         end else begin
@@ -125,8 +125,8 @@ module mips_cache_controller(
         if (rst) begin
             state <= STATE_IDLE;
             wb_active <= 0;
-            instr_data_valid <= 0;
-            data_data_valid <= 0;
+            // instr_data_valid <= 0;
+            // data_data_valid <= 0;
             // mem_read <= 0;
 
         end else begin

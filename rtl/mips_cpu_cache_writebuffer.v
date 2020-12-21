@@ -73,7 +73,7 @@ module mips_cache_writebuffer(
 
     // the cycle where the write gets clocked in
     always_ff @ (posedge clk) begin
-        if (write_writeenable && !waitrequest && write_valid!=1) begin
+        if (write_writeenable && !waitrequest && write_valid!=1 && !rst) begin
             write_valid <= 1;
         end else begin
             write_valid <= 0;
@@ -87,7 +87,6 @@ module mips_cache_writebuffer(
             read_ptr <= 0;
             write_ptr <= 0;
             write_sense <= 0;
-            write_valid <= 0;
             for (index=0; index<BUFSIZE; index=index+1) begin
                 full_buf[index] <= 0;
                 addr_buf[index] <= 0;

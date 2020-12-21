@@ -75,7 +75,7 @@ for DELAY in "${TEST_DELAY[@]}"; do
 
             declare -i INSTR_COUNT=`wc -l $FILENAME | cut -f1 -d' '`; # echo $INSTR_COUNT
 
-            if [ ! -e test/2-simulator/${BASENAME}.txt ]; then
+            if [ ! -e test/2-reference/${BASENAME}.txt ]; then
                 # echo "Test answer ${BASENAME} does not exist"
                 continue
             fi
@@ -155,9 +155,9 @@ for DELAY in "${TEST_DELAY[@]}"; do
                 CPI="$CPI"
             fi
 
-            if [ -e test/2-simulator/${BASENAME}.mem.txt ]; then
-                # echo "Ref text test/2-simulator/${BASENAME}.mem.txt found"
-                MEM_DIFF=$(cmp test/3-output/${BASENAME}_${DELAY}_mem.hex test/2-simulator/${BASENAME}.mem.txt)
+            if [ -e test/2-reference/${BASENAME}.mem.txt ]; then
+                # echo "Ref text test/2-reference/${BASENAME}.mem.txt found"
+                MEM_DIFF=$(cmp test/3-output/${BASENAME}_${DELAY}_mem.hex test/2-reference/${BASENAME}.mem.txt)
                 MEM_CMP=$?
                 if [ ! $MEM_CMP = 0 ]; then
                     MEM_DIFF="Ref Memory and Output differ on ${MEM_DIFF#*, }"
@@ -165,13 +165,13 @@ for DELAY in "${TEST_DELAY[@]}"; do
                     MEM_DIFF=""
                 fi
             else
-                # echo "Ref text test/2-simulator/${BASENAME}.mem.txt not found"
+                # echo "Ref text test/2-reference/${BASENAME}.mem.txt not found"
                 MEM_DIFF=""
                 MEM_CMP=0
             fi
 
-            V0_CHECK=$(cat test/2-simulator/${BASENAME}.txt)
-            DIFF_FOUND=$(diff -q --ignore-all-space --ignore-blank-lines --strip-trailing-cr --ignore-case <(echo $V0_OUT) test/2-simulator/${BASENAME}.txt) # compare expected and given output
+            V0_CHECK=$(cat test/2-reference/${BASENAME}.txt)
+            DIFF_FOUND=$(diff -q --ignore-all-space --ignore-blank-lines --strip-trailing-cr --ignore-case <(echo $V0_OUT) test/2-reference/${BASENAME}.txt) # compare expected and given output
             DIFFPASS=$?
             if [ ! $DIFFPASS = 0 ]; then
                 V0_CHECK="$V0_CHECK"

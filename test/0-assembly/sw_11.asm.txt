@@ -1,0 +1,7 @@
+addiu $t1, $0, 0x200
+addiu $t2, $0, 0x300
+lui $s0, 0xbfc0
+lui $s1, 0x014b
+addiu $s2, $s1, 0x1020
+sw $s2, 0x1c($s0)
+jr $31

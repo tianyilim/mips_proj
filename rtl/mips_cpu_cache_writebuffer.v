@@ -4,6 +4,8 @@ module mips_cache_writebuffer(
     input logic rst,
     
     input logic[31:0] addr,
+    input logic[31:0] instr_addr,
+
     input write_en,
     input logic[31:0] writedata,
     input logic[3:0] byteenable,
@@ -64,7 +66,7 @@ module mips_cache_writebuffer(
 
     always_comb begin
         for (index=0; index<BUFSIZE; index=index+1) begin
-            addr_in_wb_arr[index] = (addr==addr_buf[index]);
+            addr_in_wb_arr[index] = (addr==addr_buf[index]) || (instr_addr==addr_buf[index]);
         end
         addr_in_wb = |addr_in_wb_arr;   // Take the bitwise or
     end

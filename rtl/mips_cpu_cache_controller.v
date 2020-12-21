@@ -74,6 +74,7 @@ module mips_cache_controller(
                                 );
 
     mips_cache_writebuffer cache_writebuffer(.clk(clk), .rst(rst), .addr(data_address),
+                                .instr_addr(instr_address),
                                 .write_en(data_write), .writedata(data_writedata), 
                                 .byteenable(data_byteenable), .active(wb_active),
                                 .waitrequest(waitrequest), .addr_in_wb(addr_in_wb),

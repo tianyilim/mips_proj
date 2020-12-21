@@ -62,22 +62,11 @@ module mips_cache_writebuffer(
     assign write_data = data_buf[write_ptr];
     assign write_byteenable = byte_en_buf[write_ptr];   // These can be combinatorially assigned as write is handled elsewhere
 
-    logic write_valid; // one cycle after waitrequest de-asserts
-
     always_comb begin
         for (index=0; index<BUFSIZE; index=index+1) begin
             addr_in_wb_arr[index] = (addr==addr_buf[index]);
         end
         addr_in_wb = |addr_in_wb_arr;   // Take the bitwise or
-    end
-
-    // the cycle where the write gets clocked in
-    always_ff @ (posedge clk) begin
-        if (write_writeenable && !waitrequest && write_valid!=1 && !rst) begin
-            write_valid <= 1;
-        end else begin
-            write_valid <= 0;
-        end
     end
 
     always @(posedge clk) begin
@@ -103,15 +92,17 @@ module mips_cache_writebuffer(
                 //     // Only do this the cycle after waitrequest
                 //     write_ptr <= write_ptr + 1;
                 // end
-                write_ptr <= write_ptr + (state!=STATE_IDLE || write_valid);
+                // write_ptr <= write_ptr + (state!=STATE_IDLE || write_valid);
 
                 if (full_buf[write_ptr]) begin
                     if (!waitrequest) begin
                         full_buf[write_ptr] <= 0;
+                        write_ptr <= write_ptr + 1;
                     end
                 end else begin
                     // Keep on incrementing the write pointer encounters empty
                     // If not empty
+                    write_ptr <= write_ptr + (state!=STATE_IDLE);
                 end
             end
 

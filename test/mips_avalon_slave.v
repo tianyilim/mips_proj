@@ -49,6 +49,8 @@ module mips_avalon_slave(
     logic [31:0] txn_writedata;
     logic [3:0] txn_byteenable;     // Check that these 3 are not modified over the course of a transaction
 
+    logic past_read;
+
     logic OVF_EXISTS;   // Check if there is indeed a request to fill up overflow
 
     logic [1:0] readdata_source;
@@ -105,6 +107,7 @@ module mips_avalon_slave(
         integer i;
         read_txn <= 0;
         write_txn <= 0;
+        past_read <= 0;
         $display("RAM : INIT : Initialising RAM module with read delay %1d and write delay %1d", READ_DELAY, WRITE_DELAY);
         /* Initialise to zero by default */
         for (i=0; i<MEM_SIZE; i++) begin
@@ -138,9 +141,11 @@ module mips_avalon_slave(
         end
     end
 
-    always @(finishing) begin
-        $display("RAM : FIN : Dumping memory content.");
-        $writememh("test/3-output/memory_out.hex", memory_data, 0, 200);
+    always @ (negedge clk) begin
+        if (finishing==1) begin
+            $display("RAM : FIN : Dumping memory content.");
+            $writememh("test/3-output/memory_out.hex", memory_data, 0, 200);
+        end
     end
 
     assign waitrequest = ( (wait_ctr<WRITE_DELAY) && (write_txn||write) ) || ( (wait_ctr<READ_DELAY) && (read_txn||read) );
@@ -151,26 +156,16 @@ module mips_avalon_slave(
     assign towrite[15:8] =  (byteenable[1]) ? writedata[15:8] : write_prefetch[15:8];
     assign towrite[7:0] =   (byteenable[0]) ? writedata[7:0] : write_prefetch[7:0];
 
-    // read data
-    // always_ff @(posedge clk) begin
-    //     if ( read && (wait_ctr==READ_DELAY) ) begin
-    //         case (readdata_source)
-    //         2'b00: readdata <= memory_instr[addr_shift-ADDR_START_SHIFT];
-    //         2'b01: readdata <= memory_data[addr_shift];
-    //         2'b10: readdata <= ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
-    //         endcase
-    //     end
-    // end
-
     always_ff @ (posedge clk) begin
         if ( read && (wait_ctr==READ_DELAY) ) begin
             case (readdata_source)
             2'b00: readdata <= memory_instr[addr_shift-ADDR_START_SHIFT];
             2'b01: readdata <= memory_data[addr_shift];
             2'b10: readdata <= ovf_instr[addr_shift-(32'hBFFFFFFC >> 2)];
+            default: readdata <= 32'hZZZZZZZZ;
             endcase
         end else begin
-            readdata = 32'hZZZZZZZZ;
+            readdata <= 32'hZZZZZZZZ;
         end
     end
 
@@ -194,7 +189,6 @@ module mips_avalon_slave(
                     wait_ctr <= wait_ctr + 1;
                 end
             if (wait_ctr==READ_DELAY) begin
-                $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
             end else begin
                 $display("RAM : STATUS : Read requested at address 0x%h, wait for %1d cycles", address, READ_DELAY-wait_ctr);
                 if (wait_ctr==0) txn_addr <= address;
@@ -204,7 +198,7 @@ module mips_avalon_slave(
         if (write_txn || write) begin
             wait_ctr <= wait_ctr + 1;
 
-            if (wait_ctr==WRITE_DELAY+1) begin
+            if (wait_ctr==WRITE_DELAY) begin
                 memory_data[addr_shift] <= towrite;    // Offset the addressing space
                 $display("RAM : WRITE : Wrote 0x%h data at address 0x%h", writedata, address);
             end else begin
@@ -226,12 +220,24 @@ module mips_avalon_slave(
             read_txn <= 0;
             wait_ctr <= 0;
         end
+
+        if (wait_ctr==READ_DELAY && read) begin
+            past_read <= 1;
+        end else begin
+            past_read <= 0;
+        end
+        // Output stuff onto stdout
+        if (past_read==1) begin
+            $display("RAM : READ : Read 0x%h data at address 0x%h", readdata, address);
+        end else begin
+            // $display("RAM : READ : Waiting to read 0x%h data at address 0x%h, %b", readdata, address, past_read);
+        end
         // Begin a transaction
         if (write && write_txn==0 ) begin
             write_txn <= 1;
         end
         // end a transaction
-        if (wait_ctr>=WRITE_DELAY+1) begin
+        if (wait_ctr>=WRITE_DELAY) begin
             write_txn <= 0;
             wait_ctr <= 0;
         end

@@ -16,4 +16,6 @@ play*.sh
 coolstuff.py
 currstate.txt
 
+.vscode
+
 !test/waveforms/mips_CPU_bus_tb.gtkw
